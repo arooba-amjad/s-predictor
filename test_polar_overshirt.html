@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polar Overshirt Size Predictor Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-case {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .result {
+            background: #e8f5e8;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+        .error {
+            background: #ffe8e8;
+            color: #c00;
+        }
+    </style>
+</head>
+<body>
+    <h1>Polar Overshirt Size Predictor Test</h1>
+    <p>Testing the size prediction functionality with the new polar overshirt measurements.</p>
+    
+    <div id="testResults"></div>
+
+    <script>
+        const testResults = document.getElementById('testResults');
+        
+        // Test cases based on the polar overshirt size charts
+        const testCases = [
+            {
+                name: "Test Case 1: Exact M size match",
+                data: {
+                    garmentType: 'polar-overshirt',
+                    gender: 'male',
+                    age: 30,
+                    height: 175,
+                    weight: 70,
+                    bodyType: 'average',
+                    measurements: {
+                        chestHalf: 58,
+                        waistHalf: 56,
+                        bottomHalf: 57,
+                        shoulderLength: 15,
+                        totalLength: 73
+                    }
+                }
+            },
+            {
+                name: "Test Case 2: XS size match",
+                data: {
+                    garmentType: 'polar-overshirt',
+                    gender: 'male',
+                    age: 25,
+                    height: 165,
+                    weight: 55,
+                    bodyType: 'slim',
+                    measurements: {
+                        chestHalf: 54,
+                        waistHalf: 52,
+                        bottomHalf: 53,
+                        shoulderLength: 14,
+                        totalLength: 71
+                    }
+                }
+            },
+            {
+                name: "Test Case 3: XXL size match",
+                data: {
+                    garmentType: 'polar-overshirt',
+                    gender: 'male',
+                    age: 35,
+                    height: 185,
+                    weight: 90,
+                    bodyType: 'plus',
+                    measurements: {
+                        chestHalf: 64,
+                        waistHalf: 62,
+                        bottomHalf: 63,
+                        shoulderLength: 16.5,
+                        totalLength: 76
+                    }
+                }
+            },
+            {
+                name: "Test Case 4: Estimated measurements (no detailed measurements provided)",
+                data: {
+                    garmentType: 'polar-overshirt',
+                    gender: 'male',
+                    age: 28,
+                    height: 170,
+                    weight: 65,
+                    bodyType: 'average',
+                    measurements: {}
+                }
+            }
+        ];
+
+        async function runTests() {
+            for (const testCase of testCases) {
+                const testDiv = document.createElement('div');
+                testDiv.className = 'test-case';
+                testDiv.innerHTML = `<h3>${testCase.name}</h3>`;
+                testResults.appendChild(testDiv);
+
+                try {
+                    const response = await fetch('/api/predict-size', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(testCase.data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        const resultDiv = document.createElement('div');
+                        resultDiv.className = 'result';
+                        resultDiv.innerHTML = `
+                            <strong>Predicted Size:</strong> ${result.predictedSize.size}<br>
+                            <strong>Confidence:</strong> ${result.predictedSize.confidence}%<br>
+                            <strong>Recommendations:</strong> ${result.predictedSize.recommendations.join(', ')}<br>
+                            <strong>Estimated Measurements:</strong> ${result.predictedSize.estimatedMeasurements ? 'Yes' : 'No'}
+                        `;
+                        testDiv.appendChild(resultDiv);
+                    } else {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'result error';
+                        errorDiv.textContent = `Error: ${response.status} ${response.statusText}`;
+                        testDiv.appendChild(errorDiv);
+                    }
+                } catch (error) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'result error';
+                    errorDiv.textContent = `Error: ${error.message}`;
+                    testDiv.appendChild(errorDiv);
+                }
+            }
+        }
+
+        // Run tests when page loads
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html> 
