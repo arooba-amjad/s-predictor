@@ -95,32 +95,32 @@
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="chestHalf">Chest 1/2 (cm)</label>
+                                <label for="chestHalf">Half-chest Circumference (cm)</label>
                                 <input type="number" id="chestHalf" name="chestHalf" min="40" max="80" step="0.5" placeholder="e.g., 56">
                             </div>
                             
                             <div class="form-group">
-                                <label for="waistHalf">Waist 1/2 (cm)</label>
-                                <input type="number" id="waistHalf" name="waistHalf" min="35" max="75" step="0.5" placeholder="e.g., 53">
+                                <label for="shoulderWidth">Shoulder Width (cm)</label>
+                                <input type="number" id="shoulderWidth" name="shoulderWidth" min="10" max="25" step="0.25" placeholder="e.g., 14">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="bottomHalf">Bottom 1/2 (cm)</label>
-                                <input type="number" id="bottomHalf" name="bottomHalf" min="40" max="80" step="0.5" placeholder="e.g., 54">
+                                <label for="sleeveLength">Sleeve Length (cm)</label>
+                                <input type="number" id="sleeveLength" name="sleeveLength" min="60" max="75" step="0.5" placeholder="e.g., 66">
                             </div>
                             
                             <div class="form-group">
-                                <label for="shoulderLength">Shoulder Length (cm)</label>
-                                <input type="number" id="shoulderLength" name="shoulderLength" min="10" max="25" step="0.25" placeholder="e.g., 14">
+                                <label for="neckCircumference">Neck Circumference (cm)</label>
+                                <input type="number" id="neckCircumference" name="neckCircumference" min="70" max="100" step="0.5" placeholder="e.g., 82">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="totalLength">Total Length (cm)</label>
-                                <input type="number" id="totalLength" name="totalLength" min="60" max="90" step="0.5" placeholder="e.g., 72">
+                                <label for="shirtLength">Shirt Length (cm)</label>
+                                <input type="number" id="shirtLength" name="shirtLength" min="60" max="90" step="0.5" placeholder="e.g., 72">
                             </div>
                         </div>
                     </div>
@@ -131,12 +131,12 @@
                         <p class="section-note">Provide measurements for more accurate pants sizing</p>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="pantsWaist">Waist (cm)</label>
-                                <input type="number" id="pantsWaist" name="pantsWaist" min="50" max="120" step="0.1" placeholder="e.g., 75">
+                                <label for="pantsWaist">Waist 1/2 (cm)</label>
+                                <input type="number" id="pantsWaist" name="pantsWaist" min="30" max="60" step="0.1" placeholder="e.g., 41">
                             </div>
                             <div class="form-group">
-                                <label for="pantsHip">Hip (cm)</label>
-                                <input type="number" id="pantsHip" name="pantsHip" min="70" max="150" step="0.1" placeholder="e.g., 95">
+                                <label for="pantsBottom">Bottom 1/2 (cm)</label>
+                                <input type="number" id="pantsBottom" name="pantsBottom" min="10" max="25" step="0.1" placeholder="e.g., 16.5">
                             </div>
                             <div class="form-group">
                                 <label for="pantsLength">Length (cm)</label>
@@ -197,23 +197,23 @@
                                 <span id="displayWeight" class="measurement-value">70 kg</span>
                             </div>
                             <div class="measurement-item">
-                                <span class="measurement-label">Chest 1/2</span>
+                                <span class="measurement-label" id="chestLabel">Chest 1/2</span>
                                 <span id="displayChestHalf" class="measurement-value">56 cm</span>
                             </div>
                             <div class="measurement-item">
-                                <span class="measurement-label">Waist 1/2</span>
+                                <span class="measurement-label" id="waistLabel">Waist 1/2</span>
                                 <span id="displayWaistHalf" class="measurement-value">53 cm</span>
                             </div>
                             <div class="measurement-item">
-                                <span class="measurement-label">Bottom 1/2</span>
+                                <span class="measurement-label" id="bottomLabel">Bottom 1/2</span>
                                 <span id="displayBottomHalf" class="measurement-value">54 cm</span>
                             </div>
                             <div class="measurement-item">
-                                <span class="measurement-label">Shoulder Length</span>
+                                <span class="measurement-label" id="shoulderLabel">Shoulder Length</span>
                                 <span id="displayShoulderLength" class="measurement-value">14 cm</span>
                             </div>
                             <div class="measurement-item">
-                                <span class="measurement-label">Total Length</span>
+                                <span class="measurement-label" id="lengthLabel">Total Length</span>
                                 <span id="displayTotalLength" class="measurement-value">72 cm</span>
                             </div>
                         </div>

@@ -65,8 +65,8 @@ const sizeCharts = {
         reference: 'Accurate Size Chart (cm)',
         measurements: {
             'length': { S: 97.5, M: 99, L: 100.5, XL: 102, XXL: 103.5 },
-            'waist': { S: 68, M: 72, L: 76, XL: 80, XXL: 84 },
-            'hip': { S: 118, M: 122, L: 126, XL: 130, XXL: 134 }
+            'waist': { S: 37, M: 39, L: 41, XL: 43, XXL: 45 },
+            'bottom': { S: 15.5, M: 16, L: 16.5, XL: 17, XXL: 17.5 }
         }
     },
     'hooded-jacket': {
@@ -104,13 +104,13 @@ function estimateMeasurements(height, weight, age, gender, bodyType, garmentType
     
     if (garmentType === 'pants') {
         // Estimate pants measurements in centimeters
-        const waistCm = estimateWaistFromBMI(bmi, height, gender) * 2.54; // Convert to cm
-        const hipCm = waistCm + 10; // Hip is typically 10cm larger than waist for better fit
+        const waistHalfCm = estimateWaistFromBMI(bmi, height, gender) * 2.54 / 2; // Convert to cm and get 1/2 waist
+        const bottomHalfCm = waistHalfCm + 4; // Bottom 1/2 in cm, roughly waist 1/2 + 4cm
         const lengthCm = height * 0.58; // Length is typically 58% of height for pants
         
         estimatedMeasurements = {
-            waist: waistCm,
-            hip: hipCm,
+            waist: waistHalfCm,
+            bottom: bottomHalfCm,
             length: lengthCm
         };
     } else {
@@ -432,12 +432,12 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     
     // Garment-specific recommendations
     if (garmentType === 'pants') {
-        recommendations.push('For pants, focus on length, waist, and hip measurements for best fit');
+        recommendations.push('For pants, focus on length, waist, and bottom measurements for best fit');
         if (finalMeasurements.length) {
             recommendations.push('Length measurement helps ensure proper fit for your height');
         }
-        if (finalMeasurements.waist && finalMeasurements.hip) {
-            recommendations.push('Waist and hip measurements ensure comfortable fit around the waist and hips');
+        if (finalMeasurements.waist && finalMeasurements.bottom) {
+            recommendations.push('Waist and bottom measurements ensure comfortable fit around the waist and bottom');
         }
     } else if (garmentType === 'hooded-jacket') {
         recommendations.push('Hooded jackets should have room for layering underneath');
@@ -461,7 +461,7 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
             inseam: finalMeasurements.inseam,
             // Include pants-specific measurements if available
             length: finalMeasurements.length,
-            hip: finalMeasurements.hip,
+            bottom: finalMeasurements.bottom,
             // Include shirt specific measurements if available
             chestHalf: finalMeasurements.chestHalf,
             waistHalf: finalMeasurements.waistHalf,
@@ -475,10 +475,10 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
 // Predict pants size (letter sizing) - Accurate algorithm
 function predictPantsSize(measurements, chartMeasurements, gender, bodyType) {
     const waist = measurements.waist;
-    const hip = measurements.hip;
+    const bottom = measurements.bottom;
     const length = measurements.length;
     
-    if (!waist && !hip && !length) {
+    if (!waist && !bottom && !length) {
         return 'M'; // Default size
     }
     
@@ -507,10 +507,10 @@ function predictPantsSize(measurements, chartMeasurements, gender, bodyType) {
             measurementCount++;
         }
         
-        if (hip && chartMeasurements.hip[size]) {
-            const hipDiff = Math.abs(chartMeasurements.hip[size] - hip);
-            totalDiff += hipDiff;
-            weightedDiff += hipDiff * 0.3; // Hip has 30% weight
+        if (bottom && chartMeasurements.bottom[size]) {
+            const bottomDiff = Math.abs(chartMeasurements.bottom[size] - bottom);
+            totalDiff += bottomDiff;
+            weightedDiff += bottomDiff * 0.3; // Bottom has 30% weight
             measurementCount++;
         }
         
