@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Size Predictor</title>
+    <title>Interactive Size Predictor</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -13,236 +13,327 @@
         <header class="header">
             <div class="logo">
                 <i class="fas fa-ruler-combined"></i>
-                <h1>Size Predictor</h1>
+                <h1>Interactive Size Predictor</h1>
             </div>
-            <p class="subtitle">Get your perfect fit with AI-powered size prediction</p>
+            <p class="subtitle">Get your perfect fit with our 3-step interactive sizing system</p>
         </header>
 
+        <!-- Progress Steps -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Select Item</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Choose Size</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Get Fit</div>
+                </div>
+            </div>
+        </div>
+
         <main class="main-content">
-            <div class="form-container">
-                <form id="sizeForm" class="size-form">
-                    <div class="form-section">
-                        <h2><i class="fas fa-tshirt"></i> Select Garment Type</h2>
-                        <div class="form-group">
-                            <label for="garmentType">Garment Type</label>
-                            <select id="garmentType" name="garmentType" required>
-                                <option value="">Select a garment type</option>
-                                <option value="jagvi-shirt">Jagvi Shirt (Long Sleeve)</option>
-                                <option value="short-sleeves">Short Sleeve Shirt</option>
-                                <option value="pants">Pants</option>
-                                <option value="hooded-jacket">Hooded Jacket</option>
-                                <option value="polar-overshirt">Polar Overshirt Jacket</option>
-                            </select>
+            <!-- Step 1: Select Item -->
+            <div id="step1" class="step-container active">
+                <div class="step-header">
+                    <h2><i class="fas fa-tshirt"></i> Step 1: Select Your Item</h2>
+                    <p>Choose the garment you want to fit and upload a reference image</p>
+                </div>
+
+                <div class="item-selection">
+                    <div class="item-grid">
+                        <div class="item-card" data-item="jagvi-shirt">
+                            <div class="item-image">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                            <h3>Jagvi Shirt</h3>
+                            <p>Long Sleeve</p>
+                            <div class="item-details">
+                                <span class="tag">Premium</span>
+                                <span class="tag">Formal</span>
+                            </div>
                         </div>
-                        <div id="garmentInfo" class="garment-info hidden">
-                            <div class="info-card">
-                                <i class="fas fa-info-circle"></i>
-                                <div class="info-content">
-                                    <h4 id="garmentName">Garment Name</h4>
-                                    <p id="garmentReference">Reference information</p>
-                                </div>
+                        <div class="item-card" data-item="short-sleeves">
+                            <div class="item-image">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                            <h3>Short Sleeve</h3>
+                            <p>Casual Shirt</p>
+                            <div class="item-details">
+                                <span class="tag">Casual</span>
+                                <span class="tag">Comfortable</span>
+                            </div>
+                        </div>
+                        <div class="item-card" data-item="hooded-jacket">
+                            <div class="item-image">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h3>Hooded Jacket</h3>
+                            <p>Summer 2025</p>
+                            <div class="item-details">
+                                <span class="tag">Trendy</span>
+                                <span class="tag">Versatile</span>
+                            </div>
+                        </div>
+                        <div class="item-card" data-item="polar-overshirt">
+                            <div class="item-image">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h3>Polar Overshirt</h3>
+                            <p>Layering Piece</p>
+                            <div class="item-details">
+                                <span class="tag">Layered</span>
+                                <span class="tag">Stylish</span>
+                            </div>
+                        </div>
+                        <div class="item-card" data-item="pants">
+                            <div class="item-image">
+                                <i class="fas fa-socks"></i>
+                            </div>
+                            <h3>Pants</h3>
+                            <p>JAGVI.Rive Gauche</p>
+                            <div class="item-details">
+                                <span class="tag">Premium</span>
+                                <span class="tag">Tailored</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-section">
-                        <h2><i class="fas fa-user"></i> Basic Information</h2>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="gender">Gender</label>
-                                <select id="gender" name="gender" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="age">Age</label>
-                                <input type="number" id="age" name="age" min="13" max="100" placeholder="Enter your age" required>
-                            </div>
+                    <div class="image-upload-section">
+                        <h3><i class="fas fa-camera"></i> Upload Reference Image (Optional)</h3>
+                        <p>Upload a photo of yourself or a similar item for better recommendations</p>
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload or drag and drop</p>
+                            <input type="file" id="imageUpload" accept="image/*" hidden>
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="height">Height (cm)</label>
-                                <input type="number" id="height" name="height" min="100" max="250" placeholder="e.g., 175" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="weight">Weight (kg)</label>
-                                <input type="number" id="weight" name="weight" min="30" max="200" step="0.1" placeholder="e.g., 70" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="bodyType">Body Type</label>
-                            <select id="bodyType" name="bodyType" required>
-                                <option value="">Select Body Type</option>
-                                <option value="slim">Slim</option>
-                                <option value="average">Average</option>
-                                <option value="athletic">Athletic</option>
-                                <option value="plus">Plus Size</option>
-                            </select>
+                        <div id="imagePreview" class="image-preview hidden">
+                            <img id="previewImg" src="" alt="Preview">
+                            <button id="removeImage" class="remove-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Shirt/Jacket Measurements Section -->
-                    <div id="shirtMeasurements" class="form-section hidden">
-                        <h2><i class="fas fa-tape"></i> Shirt/Jacket Measurements (Optional but Recommended)</h2>
-                        <p class="section-note">Provide measurements in centimeters for more accurate predictions</p>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="chestHalf">Half-chest Circumference (cm)</label>
-                                <input type="number" id="chestHalf" name="chestHalf" min="40" max="80" step="0.5" placeholder="e.g., 56">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="shoulderWidth">Shoulder Width (cm)</label>
-                                <input type="number" id="shoulderWidth" name="shoulderWidth" min="10" max="25" step="0.25" placeholder="e.g., 14">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="sleeveLength">Sleeve Length (cm)</label>
-                                <input type="number" id="sleeveLength" name="sleeveLength" min="60" max="75" step="0.5" placeholder="e.g., 66">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="neckCircumference">Neck Circumference (cm)</label>
-                                <input type="number" id="neckCircumference" name="neckCircumference" min="70" max="100" step="0.5" placeholder="e.g., 82">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="shirtLength">Shirt Length (cm)</label>
-                                <input type="number" id="shirtLength" name="shirtLength" min="60" max="90" step="0.5" placeholder="e.g., 72">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pants Measurements Section -->
-                    <div id="pantsMeasurements" class="form-section hidden">
-                        <h2><i class="fas fa-tape"></i> Pants Measurements (Optional but Recommended)</h2>
-                        <p class="section-note">Provide measurements for more accurate pants sizing</p>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="pantsWaist">Waist 1/2 (cm)</label>
-                                <input type="number" id="pantsWaist" name="pantsWaist" min="30" max="60" step="0.1" placeholder="e.g., 41">
-                            </div>
-                            <div class="form-group">
-                                <label for="pantsBottom">Bottom 1/2 (cm)</label>
-                                <input type="number" id="pantsBottom" name="pantsBottom" min="10" max="25" step="0.1" placeholder="e.g., 16.5">
-                            </div>
-                            <div class="form-group">
-                                <label for="pantsLength">Length (cm)</label>
-                                <input type="number" id="pantsLength" name="pantsLength" min="80" max="120" step="0.1" placeholder="e.g., 105">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-magic"></i>
-                        Predict My Size
+                    <button id="nextToStep2" class="next-btn" disabled>
+                        <i class="fas fa-arrow-right"></i>
+                        Continue to Size Selection
                     </button>
-                </form>
+                </div>
             </div>
 
-            <div id="resultContainer" class="result-container hidden">
-                <div class="result-header">
-                    <h2><i class="fas fa-chart-line"></i> Size Prediction Results</h2>
+            <!-- Step 2: Size Chart -->
+            <div id="step2" class="step-container">
+                <div class="step-header">
+                    <h2><i class="fas fa-chart-bar"></i> Step 2: Size Chart & Selection</h2>
+                    <p>Review the size chart and select your preferred size</p>
                 </div>
-                
-                <div class="result-content">
-                    <div class="garment-display">
-                        <div class="garment-icon">
-                            <i id="garmentIcon" class="fas fa-tshirt"></i>
+
+                <div class="size-chart-section">
+                    <div class="selected-item-display">
+                        <div class="item-icon">
+                            <i id="selectedItemIcon" class="fas fa-tshirt"></i>
                         </div>
-                        <div class="garment-details">
-                            <h3 id="resultGarmentName">Garment Name</h3>
-                            <p id="resultGarmentReference">Reference information</p>
+                        <div class="item-info">
+                            <h3 id="selectedItemName">Item Name</h3>
+                            <p id="selectedItemDesc">Item Description</p>
                         </div>
                     </div>
 
-                    <div class="size-display">
-                        <div class="size-circle">
-                            <span id="predictedSize" class="size-text">M</span>
-                        </div>
-                        <p class="size-label">Recommended Size</p>
-                    </div>
-                    
-                    <div class="confidence-meter">
-                        <div class="confidence-label">
-                            <span>Confidence Level</span>
-                            <span id="confidencePercent">85%</span>
-                        </div>
-                        <div class="confidence-bar">
-                            <div id="confidenceFill" class="confidence-fill"></div>
+                    <div class="size-chart-container">
+                        <h3>Size Chart</h3>
+                        <div class="size-chart" id="sizeChart">
+                            <!-- Size chart will be populated by JavaScript -->
                         </div>
                     </div>
-                    
-                    <div class="measurements-display">
-                        <h3>Your Measurements</h3>
-                        <div class="measurements-grid">
-                            <div class="measurement-item">
-                                <span class="measurement-label">Height</span>
-                                <span id="displayHeight" class="measurement-value">175 cm</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-label">Weight</span>
-                                <span id="displayWeight" class="measurement-value">70 kg</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-label" id="chestLabel">Chest 1/2</span>
-                                <span id="displayChestHalf" class="measurement-value">56 cm</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-label" id="waistLabel">Waist 1/2</span>
-                                <span id="displayWaistHalf" class="measurement-value">53 cm</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-label" id="bottomLabel">Bottom 1/2</span>
-                                <span id="displayBottomHalf" class="measurement-value">54 cm</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-label" id="shoulderLabel">Shoulder Length</span>
-                                <span id="displayShoulderLength" class="measurement-value">14 cm</span>
-                            </div>
-                            <div class="measurement-item">
-                                <span class="measurement-label" id="lengthLabel">Total Length</span>
-                                <span id="displayTotalLength" class="measurement-value">72 cm</span>
-                            </div>
+
+                    <div class="size-selection">
+                        <h3>Select Your Preferred Size</h3>
+                        <div class="size-options" id="sizeOptions">
+                            <!-- Size options will be populated by JavaScript -->
                         </div>
                     </div>
-                    
-                    <div class="recommendations">
-                        <h3><i class="fas fa-lightbulb"></i> Recommendations</h3>
-                        <ul id="recommendationsList" class="recommendations-list">
-                            <li>Consider trying on multiple sizes for the best fit</li>
-                        </ul>
+
+                    <div class="step-navigation">
+                        <button id="backToStep1" class="back-btn">
+                            <i class="fas fa-arrow-left"></i>
+                            Back to Item Selection
+                        </button>
+                        <button id="nextToStep3" class="next-btn" disabled>
+                            <i class="fas fa-arrow-right"></i>
+                            Continue to Measurements
+                        </button>
                     </div>
                 </div>
-                
-                <button id="resetBtn" class="reset-btn">
-                    <i class="fas fa-redo"></i>
-                    Start Over
-                </button>
+            </div>
+
+            <!-- Step 3: Measurements & Fit Analysis -->
+            <div id="step3" class="step-container">
+                <div class="step-header">
+                    <h2><i class="fas fa-tape"></i> Step 3: Your Measurements & Fit Analysis</h2>
+                    <p>Enter your measurements for personalized fit recommendations</p>
+                </div>
+
+                <div class="measurements-section">
+                    <div class="selected-size-display">
+                        <div class="size-badge">
+                            <span id="selectedSizeText">M</span>
+                        </div>
+                        <div class="size-info">
+                            <h3>Selected Size: <span id="displaySelectedSize">M</span></h3>
+                            <p>Now let's analyze how this size will fit you</p>
+                        </div>
+                    </div>
+
+                    <div class="measurements-form">
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Basic Information</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <select id="gender" name="gender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="age">Age</label>
+                                    <input type="number" id="age" name="age" min="13" max="100" placeholder="Enter your age" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="height">Height (cm)</label>
+                                    <input type="number" id="height" name="height" min="100" max="250" placeholder="e.g., 175" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="weight">Weight (kg)</label>
+                                    <input type="number" id="weight" name="weight" min="30" max="200" step="0.1" placeholder="e.g., 70" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bodyType">Body Type</label>
+                                <select id="bodyType" name="bodyType" required>
+                                    <option value="">Select Body Type</option>
+                                    <option value="slim">Slim</option>
+                                    <option value="average">Average</option>
+                                    <option value="athletic">Athletic</option>
+                                    <option value="plus">Plus Size</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="detailedMeasurements" class="form-section">
+                            <h3><i class="fas fa-tape"></i> Detailed Measurements (Optional but Recommended)</h3>
+                            <p class="section-note">Provide measurements for more accurate fit analysis</p>
+                            <div id="measurementFields">
+                                <!-- Measurement fields will be populated based on item type -->
+                            </div>
+                        </div>
+
+                        <button id="analyzeFit" class="analyze-btn">
+                            <i class="fas fa-magic"></i>
+                            Analyze My Fit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button id="backToStep2" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Size Selection
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-container hidden">
+                <div class="results-header">
+                    <h2><i class="fas fa-chart-line"></i> Your Fit Analysis Results</h2>
+                </div>
+
+                <div class="fit-analysis">
+                    <div class="selected-item-summary">
+                        <div class="item-icon">
+                            <i id="resultItemIcon" class="fas fa-tshirt"></i>
+                        </div>
+                        <div class="item-details">
+                            <h3 id="resultItemName">Item Name</h3>
+                            <p id="resultItemDesc">Item Description</p>
+                            <div class="selected-size">
+                                Selected Size: <span id="resultSelectedSize">M</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fit-visualization">
+                        <h3>Fit Visualization</h3>
+                        <div class="fit-indicators">
+                            <div class="fit-indicator" id="chestFit">
+                                <div class="indicator-icon">🟢</div>
+                                <div class="indicator-label">Chest</div>
+                                <div class="indicator-status">Comfortable</div>
+                            </div>
+                            <div class="fit-indicator" id="shoulderFit">
+                                <div class="indicator-icon">🟡</div>
+                                <div class="indicator-label">Shoulder</div>
+                                <div class="indicator-status">Slightly Tight</div>
+                            </div>
+                            <div class="fit-indicator" id="lengthFit">
+                                <div class="indicator-icon">🟢</div>
+                                <div class="indicator-label">Length</div>
+                                <div class="indicator-status">Perfect</div>
+                            </div>
+                            <div class="fit-indicator" id="overallFit">
+                                <div class="indicator-icon">🟢</div>
+                                <div class="indicator-label">Overall</div>
+                                <div class="indicator-status">Great Fit</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fit-recommendations">
+                        <h3>Fit Recommendations</h3>
+                        <div class="recommendations-grid" id="recommendationsGrid">
+                            <!-- Recommendations will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="alternative-sizes">
+                        <h3>Alternative Size Options</h3>
+                        <div class="size-alternatives" id="sizeAlternatives">
+                            <!-- Alternative sizes will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button id="startOver" class="start-over-btn">
+                        <i class="fas fa-redo"></i>
+                        Start Over
+                    </button>
+                    <button id="saveResults" class="save-btn">
+                        <i class="fas fa-download"></i>
+                        Save Results
+                    </button>
+                </div>
             </div>
         </main>
 
         <footer class="footer">
-            <p>&copy; 2024 Size Predictor. Powered by AI for accurate size predictions.</p>
+            <p>&copy; 2024 Interactive Size Predictor. Powered by AI for accurate size predictions.</p>
         </footer>
     </div>
 
     <div id="loadingOverlay" class="loading-overlay hidden">
         <div class="loading-spinner">
             <i class="fas fa-spinner fa-spin"></i>
-            <p>Analyzing your measurements...</p>
+            <p>Analyzing your fit...</p>
         </div>
     </div>
 

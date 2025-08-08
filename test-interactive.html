@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Size Predictor - Demo</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .demo-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .demo-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .demo-header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .demo-content {
+            padding: 40px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+        .feature-card h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-card h3 i {
+            color: #667eea;
+        }
+        .feature-card p {
+            color: #718096;
+            line-height: 1.6;
+        }
+        .demo-iframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .color-codes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .color-code {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: white;
+            border: 2px solid #e2e8f0;
+        }
+        .color-icon {
+            font-size: 2rem;
+        }
+        .color-info h4 {
+            margin: 0 0 5px 0;
+            color: #2d3748;
+        }
+        .color-info p {
+            margin: 0;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        .steps-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .step-demo {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 15px;
+        }
+        .step-demo h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .step-demo p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1><i class="fas fa-ruler-combined"></i> Interactive Size Predictor</h1>
+            <p>Experience the future of online sizing with our 3-step interactive system</p>
+        </div>
+        
+        <div class="demo-content">
+            <h2 style="text-align: center; color: #2d3748; margin-bottom: 30px;">
+                🎯 New Interactive Features
+            </h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-mouse-pointer"></i> Interactive Item Selection</h3>
+                    <p>Choose from 5 different garment types with visual cards, tags, and descriptions. Upload reference images for better recommendations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-chart-bar"></i> Visual Size Charts</h3>
+                    <p>Interactive size charts with detailed measurements. Click to select your preferred size with visual feedback.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-palette"></i> Color-Coded Feedback</h3>
+                    <p>Get instant visual feedback with our color-coded system: Green for comfortable, Yellow for slightly tight, Red for too tight.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><i class="fas fa-user-friends"></i> Body Type Specific</h3>
+                    <p>Specialized recommendations for athletic and plus-size builds. Precise fitting for different body types.</p>
+                </div>
+            </div>
+            
+            <h3 style="color: #2d3748; margin: 30px 0 20px 0;">🎨 Color-Coded Fit System</h3>
+            <div class="color-codes">
+                <div class="color-code">
+                    <div class="color-icon">🟢</div>
+                    <div class="color-info">
+                        <h4>Comfortable Fit</h4>
+                        <p>Perfect size for you</p>
+                    </div>
+                </div>
+                <div class="color-code">
+                    <div class="color-icon">🟡</div>
+                    <div class="color-info">
+                        <h4>Slightly Tight</h4>
+                        <p>Consider sizing up</p>
+                    </div>
+                </div>
+                <div class="color-code">
+                    <div class="color-icon">🔴</div>
+                    <div class="color-info">
+                        <h4>Too Tight</h4>
+                        <p>Definitely size up</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="color: #2d3748; margin: 30px 0 20px 0;">📋 3-Step Process</h3>
+            <div class="steps-demo">
+                <div class="step-demo">
+                    <div class="step-number">1</div>
+                    <h3>Select Item</h3>
+                    <p>Choose your garment and optionally upload a reference image</p>
+                </div>
+                <div class="step-demo">
+                    <div class="step-number">2</div>
+                    <h3>Choose Size</h3>
+                    <p>Review the size chart and select your preferred size</p>
+                </div>
+                <div class="step-demo">
+                    <div class="step-number">3</div>
+                    <h3>Get Fit</h3>
+                    <p>Enter measurements and receive personalized recommendations</p>
+                </div>
+            </div>
+            
+            <h3 style="color: #2d3748; margin: 30px 0 20px 0;">🚀 Try It Now</h3>
+            <p style="text-align: center; color: #718096; margin-bottom: 20px;">
+                Experience the interactive sizing system below:
+            </p>
+            
+            <iframe 
+                src="http://localhost:3000" 
+                class="demo-iframe"
+                title="Interactive Size Predictor">
+            </iframe>
+            
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f7fafc; border-radius: 10px;">
+                <h4 style="color: #2d3748; margin-bottom: 10px;">💡 Key Benefits</h4>
+                <p style="color: #718096; margin: 0;">
+                    • <strong>Reduced Returns:</strong> More accurate sizing leads to fewer returns<br>
+                    • <strong>Better UX:</strong> Interactive process keeps users engaged<br>
+                    • <strong>Higher Conversion:</strong> Confidence in sizing increases purchases<br>
+                    • <strong>Mobile Friendly:</strong> Works perfectly on all devices
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

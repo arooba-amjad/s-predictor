@@ -1,1088 +1,934 @@
+// Global state
+let currentStep = 1;
+let selectedItem = null;
+let selectedSize = null;
+let uploadedImage = null;
+
 // DOM elements
-const sizeForm = document.getElementById('sizeForm');
-const resultContainer = document.getElementById('resultContainer');
-const formContainer = document.querySelector('.form-container');
+const progressSteps = document.querySelectorAll('.step');
+const stepContainers = document.querySelectorAll('.step-container');
+const resultsSection = document.getElementById('resultsSection');
 const loadingOverlay = document.getElementById('loadingOverlay');
-const resetBtn = document.getElementById('resetBtn');
 
-// Garment type elements
-const garmentTypeSelect = document.getElementById('garmentType');
-const garmentInfo = document.getElementById('garmentInfo');
-const garmentName = document.getElementById('garmentName');
-const garmentReference = document.getElementById('garmentReference');
+// Step 1 elements
+const itemCards = document.querySelectorAll('.item-card');
+const nextToStep2Btn = document.getElementById('nextToStep2');
+const uploadArea = document.getElementById('uploadArea');
+const imageUpload = document.getElementById('imageUpload');
+const imagePreview = document.getElementById('imagePreview');
+const previewImg = document.getElementById('previewImg');
+const removeImageBtn = document.getElementById('removeImage');
 
-// Measurement sections
-const shirtMeasurements = document.getElementById('shirtMeasurements');
-const pantsMeasurements = document.getElementById('pantsMeasurements');
+// Step 2 elements
+const selectedItemIcon = document.getElementById('selectedItemIcon');
+const selectedItemName = document.getElementById('selectedItemName');
+const selectedItemDesc = document.getElementById('selectedItemDesc');
+const sizeChart = document.getElementById('sizeChart');
+const sizeOptions = document.getElementById('sizeOptions');
+const backToStep1Btn = document.getElementById('backToStep1');
+const nextToStep3Btn = document.getElementById('nextToStep3');
 
-// Result display elements
-const predictedSizeEl = document.getElementById('predictedSize');
-const confidencePercentEl = document.getElementById('confidencePercent');
-const confidenceFillEl = document.getElementById('confidenceFill');
-const displayHeightEl = document.getElementById('displayHeight');
-const displayWeightEl = document.getElementById('displayWeight');
-const displayChestHalfEl = document.getElementById('displayChestHalf');
-const displayWaistHalfEl = document.getElementById('displayWaistHalf');
-const displayBottomHalfEl = document.getElementById('displayBottomHalf');
-const displayShoulderLengthEl = document.getElementById('displayShoulderLength');
-const displayTotalLengthEl = document.getElementById('displayTotalLength');
-const recommendationsListEl = document.getElementById('recommendationsList');
+// Step 3 elements
+const selectedSizeText = document.getElementById('selectedSizeText');
+const displaySelectedSize = document.getElementById('displaySelectedSize');
+const measurementFields = document.getElementById('measurementFields');
+const analyzeFitBtn = document.getElementById('analyzeFit');
+const backToStep2Btn = document.getElementById('backToStep2');
 
-// Garment result elements
-const garmentIcon = document.getElementById('garmentIcon');
-const resultGarmentName = document.getElementById('resultGarmentName');
-const resultGarmentReference = document.getElementById('resultGarmentReference');
+// Results elements
+const resultItemIcon = document.getElementById('resultItemIcon');
+const resultItemName = document.getElementById('resultItemName');
+const resultItemDesc = document.getElementById('resultItemDesc');
+const resultSelectedSize = document.getElementById('resultSelectedSize');
+const recommendationsGrid = document.getElementById('recommendationsGrid');
+const sizeAlternatives = document.getElementById('sizeAlternatives');
+const startOverBtn = document.getElementById('startOver');
+const saveResultsBtn = document.getElementById('saveResults');
 
-// Garment type data
-const garmentTypes = {
+// Item data
+const itemData = {
     'jagvi-shirt': {
-        name: 'Jagvi Shirt (Long Sleeve)',
+        name: 'Jagvi Shirt',
+        description: 'Long Sleeve Premium Shirt',
+        icon: 'fas fa-tshirt',
         reference: 'For a man of 75 kgs and 1.83 cms height',
-        icon: 'fas fa-tshirt'
+        type: 'shirt',
+        sizeChart: {
+            'XS': { chestHalf: 51, shoulderWidth: 13.5, sleeveLength: 65, neckCircumference: 76, shirtLength: 73 },
+            'S': { chestHalf: 53, shoulderWidth: 14, sleeveLength: 65.5, neckCircumference: 78, shirtLength: 74 },
+            'M': { chestHalf: 55, shoulderWidth: 14.5, sleeveLength: 66, neckCircumference: 82, shirtLength: 75 },
+            'L': { chestHalf: 57, shoulderWidth: 15, sleeveLength: 66.5, neckCircumference: 86, shirtLength: 76 },
+            'XL': { chestHalf: 59, shoulderWidth: 15.5, sleeveLength: 67, neckCircumference: 90, shirtLength: 77 },
+            'XXL': { chestHalf: 61, shoulderWidth: 16, sleeveLength: 67.5, neckCircumference: 94, shirtLength: 78 }
+        }
     },
     'short-sleeves': {
         name: 'Short Sleeve Shirt',
+        description: 'Casual Comfortable Shirt',
+        icon: 'fas fa-tshirt',
         reference: 'For a man of 75 kgs and 1.83 cms height',
-        icon: 'fas fa-tshirt'
-    },
-    'pants': {
-        name: 'Pants',
-        reference: 'JAGVI.Rive Gauche SS2025',
-        icon: 'fas fa-socks'
+        type: 'shirt',
+        sizeChart: {
+            'XS': { chestHalf: 52, shoulderWidth: 12.5, sleeveLength: 23, neckCircumference: 37, shirtLength: 70 },
+            'S': { chestHalf: 54, shoulderWidth: 13.25, sleeveLength: 24, neckCircumference: 38, shirtLength: 71 },
+            'M': { chestHalf: 56, shoulderWidth: 14, sleeveLength: 25, neckCircumference: 39, shirtLength: 72 },
+            'L': { chestHalf: 58, shoulderWidth: 14.75, sleeveLength: 26, neckCircumference: 40, shirtLength: 73 },
+            'XL': { chestHalf: 60, shoulderWidth: 15.5, sleeveLength: 27, neckCircumference: 41, shirtLength: 74 },
+            'XXL': { chestHalf: 62, shoulderWidth: 16.25, sleeveLength: 28, neckCircumference: 42, shirtLength: 75 }
+        }
     },
     'hooded-jacket': {
         name: 'Hooded Jacket',
+        description: 'Summer 2025 Collection',
+        icon: 'fas fa-user-tie',
         reference: 'SUMMER 2025 Collection',
-        icon: 'fas fa-user-tie'
+        type: 'jacket',
+        sizeChart: {
+            'S': { chestHalf: 57, shoulderWidth: 14.5, sleeveLength: 66, neckCircumference: 46, shirtLength: 71 },
+            'M': { chestHalf: 59, shoulderWidth: 15, sleeveLength: 67, neckCircumference: 48, shirtLength: 72 },
+            'L': { chestHalf: 61, shoulderWidth: 15.5, sleeveLength: 68, neckCircumference: 50, shirtLength: 73 },
+            'XL': { chestHalf: 63, shoulderWidth: 16, sleeveLength: 69, neckCircumference: 52, shirtLength: 74 },
+            'XXL': { chestHalf: 65, shoulderWidth: 16.5, sleeveLength: 70, neckCircumference: 54, shirtLength: 75 }
+        }
     },
     'polar-overshirt': {
-        name: 'Polar Overshirt Jacket',
+        name: 'Polar Overshirt',
+        description: 'Layering Piece',
+        icon: 'fas fa-user-tie',
         reference: 'SUMMER 2025 Collection',
-        icon: 'fas fa-user-tie'
-    }
-};
-
-// Size chart data for short sleeve shirts
-const shortSleeveSizeChart = {
-    // Half-chest and Shoulder Width measurements (in cm)
-    chestShoulder: {
-        'XS': { chestHalf: 52, shoulderWidth: 12.5 },
-        'S': { chestHalf: 54, shoulderWidth: 13.25 },
-        'M': { chestHalf: 56, shoulderWidth: 14 },
-        'L': { chestHalf: 58, shoulderWidth: 14.75 },
-        'XL': { chestHalf: 60, shoulderWidth: 15.5 },
-        'XXL': { chestHalf: 62, shoulderWidth: 16.25 }
-    },
-    // Sleeve Length, Neck Circumference, and Shirt Length measurements (in cm)
-    sleeveNeckLength: {
-        'XS': { sleeveLength: 23, neckCircumference: 37, shirtLength: 70 }, // Neck width * 2 for circumference
-        'S': { sleeveLength: 24, neckCircumference: 38, shirtLength: 71 },
-        'M': { sleeveLength: 25, neckCircumference: 39, shirtLength: 72 },
-        'L': { sleeveLength: 26, neckCircumference: 40, shirtLength: 73 },
-        'XL': { sleeveLength: 27, neckCircumference: 41, shirtLength: 74 },
-        'XXL': { sleeveLength: 28, neckCircumference: 42, shirtLength: 75 }
-    }
-};
-
-// Size chart data for long sleeve shirts
-const longSleeveSizeChart = {
-    // Half-chest and Shoulder Width measurements (in cm)
-    chestShoulder: {
-        'XS': { chestHalf: 51, shoulderWidth: 13.5 },
-        'S': { chestHalf: 53, shoulderWidth: 14 },
-        'M': { chestHalf: 55, shoulderWidth: 14.5 },
-        'L': { chestHalf: 57, shoulderWidth: 15 },
-        'XL': { chestHalf: 59, shoulderWidth: 15.5 },
-        'XXL': { chestHalf: 61, shoulderWidth: 16 }
-    },
-    // Sleeve Length, Neck Circumference, and Shirt Length measurements (in cm)
-    sleeveNeckLength: {
-        'XS': { sleeveLength: 65, neckCircumference: 76, shirtLength: 73 }, // Neck width * 2 for circumference
-        'S': { sleeveLength: 65.5, neckCircumference: 78, shirtLength: 74 },
-        'M': { sleeveLength: 66, neckCircumference: 82, shirtLength: 75 },
-        'L': { sleeveLength: 66.5, neckCircumference: 86, shirtLength: 76 },
-        'XL': { sleeveLength: 67, neckCircumference: 90, shirtLength: 77 },
-        'XXL': { sleeveLength: 67.5, neckCircumference: 94, shirtLength: 78 }
-    }
-};
-
-// Size chart data for hooded jackets
-const hoodedJacketSizeChart = {
-    // Half-chest and Shoulder Width measurements (in cm)
-    chestShoulder: {
-        'S': { chestHalf: 57, shoulderWidth: 14.5 },
-        'M': { chestHalf: 59, shoulderWidth: 15 },
-        'L': { chestHalf: 61, shoulderWidth: 15.5 },
-        'XL': { chestHalf: 63, shoulderWidth: 16 },
-        'XXL': { chestHalf: 65, shoulderWidth: 16.5 }
-    },
-    // Sleeve Length, Neck Circumference, and Shirt Length measurements (in cm)
-    sleeveNeckLength: {
-        'S': { sleeveLength: 66, neckCircumference: 46, shirtLength: 71 }, // Neck width * 2 for circumference
-        'M': { sleeveLength: 67, neckCircumference: 48, shirtLength: 72 },
-        'L': { sleeveLength: 68, neckCircumference: 50, shirtLength: 73 },
-        'XL': { sleeveLength: 69, neckCircumference: 52, shirtLength: 74 },
-        'XXL': { sleeveLength: 70, neckCircumference: 54, shirtLength: 75 }
-    }
-};
-
-// Size chart data for polar overshirts
-const polarOvershirtSizeChart = {
-    // Half-chest and Shoulder Width measurements (in cm)
-    chestShoulder: {
-        'XS': { chestHalf: 54, shoulderWidth: 14 },
-        'S': { chestHalf: 56, shoulderWidth: 14.5 },
-        'M': { chestHalf: 58, shoulderWidth: 15 },
-        'L': { chestHalf: 60, shoulderWidth: 15.5 },
-        'XL': { chestHalf: 62, shoulderWidth: 16 },
-        'XXL': { chestHalf: 64, shoulderWidth: 16.5 }
-    },
-    // Sleeve Length, Neck Circumference, and Shirt Length measurements (in cm)
-    sleeveNeckLength: {
-        'XS': { sleeveLength: 65, neckCircumference: 34, shirtLength: 71 }, // Neck width * 2 for circumference
-        'S': { sleeveLength: 65.5, neckCircumference: 36, shirtLength: 72 },
-        'M': { sleeveLength: 66, neckCircumference: 38, shirtLength: 73 },
-        'L': { sleeveLength: 66.5, neckCircumference: 40, shirtLength: 74 },
-        'XL': { sleeveLength: 67, neckCircumference: 42, shirtLength: 75 },
-        'XXL': { sleeveLength: 67.5, neckCircumference: 44, shirtLength: 76 }
-    }
-};
-
-// Garment type change handler
-garmentTypeSelect.addEventListener('change', function() {
-    const selectedType = this.value;
-    
-    // Hide all measurement sections first
-    shirtMeasurements.classList.add('hidden');
-    pantsMeasurements.classList.add('hidden');
-    
-    if (selectedType && garmentTypes[selectedType]) {
-        const garment = garmentTypes[selectedType];
-        garmentName.textContent = garment.name;
-        garmentReference.textContent = garment.reference;
-        garmentInfo.classList.remove('hidden');
-        
-        // Show appropriate measurement section
-        if (selectedType === 'pants') {
-            pantsMeasurements.classList.remove('hidden');
-        } else {
-            shirtMeasurements.classList.remove('hidden');
+        type: 'jacket',
+        sizeChart: {
+            'XS': { chestHalf: 54, shoulderWidth: 14, sleeveLength: 65, neckCircumference: 34, shirtLength: 71 },
+            'S': { chestHalf: 56, shoulderWidth: 14.5, sleeveLength: 65.5, neckCircumference: 36, shirtLength: 72 },
+            'M': { chestHalf: 58, shoulderWidth: 15, sleeveLength: 66, neckCircumference: 38, shirtLength: 73 },
+            'L': { chestHalf: 60, shoulderWidth: 15.5, sleeveLength: 66.5, neckCircumference: 40, shirtLength: 74 },
+            'XL': { chestHalf: 62, shoulderWidth: 16, sleeveLength: 67, neckCircumference: 42, shirtLength: 75 },
+            'XXL': { chestHalf: 64, shoulderWidth: 16.5, sleeveLength: 67.5, neckCircumference: 44, shirtLength: 76 }
         }
-    } else {
-        garmentInfo.classList.add('hidden');
+    },
+    'pants': {
+        name: 'Pants',
+        description: 'JAGVI.Rive Gauche SS2025',
+        icon: 'fas fa-socks',
+        reference: 'JAGVI.Rive Gauche SS2025',
+        type: 'pants',
+        sizeChart: {
+            'S': { waist: 37, bottom: 15.5, length: 99 },
+            'M': { waist: 39, bottom: 16, length: 100.5 },
+            'L': { waist: 41, bottom: 16.5, length: 102 },
+            'XL': { waist: 43, bottom: 17, length: 103.5 },
+            'XXL': { waist: 45, bottom: 17.5, length: 105 }
+        }
     }
+};
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    initializeEventListeners();
+    updateProgressSteps();
 });
 
-// Form submission handler
-sizeForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+// Event listeners
+function initializeEventListeners() {
+    // Step 1: Item selection
+    itemCards.forEach(card => {
+        card.addEventListener('click', () => selectItem(card));
+    });
+
+    // Image upload
+    uploadArea.addEventListener('click', () => imageUpload.click());
+    uploadArea.addEventListener('dragover', handleDragOver);
+    uploadArea.addEventListener('drop', handleDrop);
+    imageUpload.addEventListener('change', handleImageUpload);
+    removeImageBtn.addEventListener('click', removeImage);
+
+    // Navigation buttons
+    nextToStep2Btn.addEventListener('click', goToStep2);
+    backToStep1Btn.addEventListener('click', goToStep1);
+    nextToStep3Btn.addEventListener('click', goToStep3);
+    backToStep2Btn.addEventListener('click', goToStep2);
+    analyzeFitBtn.addEventListener('click', analyzeFit);
+    startOverBtn.addEventListener('click', startOver);
+    saveResultsBtn.addEventListener('click', saveResults);
+}
+
+// Step 1: Item Selection
+function selectItem(card) {
+    // Remove previous selection
+    itemCards.forEach(c => c.classList.remove('selected'));
     
-    // Show loading overlay
+    // Add selection to clicked card
+    card.classList.add('selected');
+    
+    // Store selected item
+    selectedItem = card.dataset.item;
+    
+    // Enable next button
+    nextToStep2Btn.disabled = false;
+}
+
+// Image upload handling
+function handleDragOver(e) {
+    e.preventDefault();
+    uploadArea.style.borderColor = '#667eea';
+    uploadArea.style.background = '#f7fafc';
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    uploadArea.style.borderColor = '#cbd5e0';
+    uploadArea.style.background = 'white';
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        handleFile(files[0]);
+    }
+}
+
+function handleImageUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+        handleFile(file);
+    }
+}
+
+function handleFile(file) {
+    if (!file.type.startsWith('image/')) {
+        showError('Please select an image file');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        uploadedImage = e.target.result;
+        previewImg.src = uploadedImage;
+        imagePreview.classList.remove('hidden');
+        uploadArea.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+}
+
+function removeImage() {
+    uploadedImage = null;
+    imagePreview.classList.add('hidden');
+    uploadArea.style.display = 'block';
+    imageUpload.value = '';
+}
+
+// Navigation functions
+function goToStep2() {
+    if (!selectedItem) return;
+    
+    currentStep = 2;
+    updateProgressSteps();
+    showStep(2);
+    populateSizeChart();
+}
+
+function goToStep1() {
+    currentStep = 1;
+    updateProgressSteps();
+    showStep(1);
+}
+
+function goToStep3() {
+    if (!selectedSize) return;
+    
+    currentStep = 3;
+    updateProgressSteps();
+    showStep(3);
+    populateMeasurementFields();
+    updateSelectedSizeDisplay();
+}
+
+// Progress steps
+function updateProgressSteps() {
+    progressSteps.forEach((step, index) => {
+        const stepNumber = index + 1;
+        step.classList.remove('active', 'completed');
+        
+        if (stepNumber === currentStep) {
+            step.classList.add('active');
+        } else if (stepNumber < currentStep) {
+            step.classList.add('completed');
+        }
+    });
+}
+
+function showStep(stepNumber) {
+    stepContainers.forEach(container => {
+        container.classList.remove('active');
+    });
+    
+    const targetStep = document.getElementById(`step${stepNumber}`);
+    if (targetStep) {
+        targetStep.classList.add('active');
+    }
+    
+    // Hide results section
+    resultsSection.classList.add('hidden');
+}
+
+// Step 2: Size Chart
+function populateSizeChart() {
+    if (!selectedItem || !itemData[selectedItem]) return;
+    
+    const item = itemData[selectedItem];
+    
+    // Update selected item display
+    selectedItemIcon.className = item.icon;
+    selectedItemName.textContent = item.name;
+    selectedItemDesc.textContent = item.description;
+    
+    // Create size chart table
+    const chart = item.sizeChart;
+    const sizes = Object.keys(chart);
+    
+    let tableHTML = '<table><thead><tr><th>Size</th>';
+    
+    // Add headers based on item type
+    if (item.type === 'pants') {
+        tableHTML += '<th>Waist 1/2 (cm)</th><th>Bottom 1/2 (cm)</th><th>Length (cm)</th>';
+    } else {
+        tableHTML += '<th>Chest 1/2 (cm)</th><th>Shoulder (cm)</th><th>Sleeve (cm)</th><th>Neck (cm)</th><th>Length (cm)</th>';
+    }
+    
+    tableHTML += '</tr></thead><tbody>';
+    
+    sizes.forEach(size => {
+        const measurements = chart[size];
+        tableHTML += `<tr><td><strong>${size}</strong></td>`;
+        
+        if (item.type === 'pants') {
+            tableHTML += `<td>${measurements.waist}</td><td>${measurements.bottom}</td><td>${measurements.length}</td>`;
+            } else {
+            tableHTML += `<td>${measurements.chestHalf}</td><td>${measurements.shoulderWidth}</td><td>${measurements.sleeveLength}</td><td>${measurements.neckCircumference}</td><td>${measurements.shirtLength}</td>`;
+        }
+        
+        tableHTML += '</tr>';
+    });
+    
+    tableHTML += '</tbody></table>';
+    sizeChart.innerHTML = tableHTML;
+    
+    // Create size options
+    let optionsHTML = '';
+    sizes.forEach(size => {
+        optionsHTML += `<div class="size-option" data-size="${size}">${size}</div>`;
+    });
+    sizeOptions.innerHTML = optionsHTML;
+    
+    // Add click listeners to size options
+    const sizeOptionElements = document.querySelectorAll('.size-option');
+    sizeOptionElements.forEach(option => {
+        option.addEventListener('click', () => selectSize(option));
+    });
+}
+
+function selectSize(option) {
+    // Remove previous selection
+    document.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
+    
+    // Add selection to clicked option
+    option.classList.add('selected');
+    
+    // Store selected size
+    selectedSize = option.dataset.size;
+    
+    // Enable next button
+    nextToStep3Btn.disabled = false;
+}
+
+// Step 3: Measurements
+function populateMeasurementFields() {
+    if (!selectedItem || !itemData[selectedItem]) return;
+    
+    const item = itemData[selectedItem];
+    let fieldsHTML = '';
+    
+    if (item.type === 'pants') {
+        fieldsHTML = `
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pantsWaist">Waist 1/2 (cm)</label>
+                    <input type="number" id="pantsWaist" name="pantsWaist" min="30" max="60" step="0.1" placeholder="e.g., 41">
+                </div>
+                <div class="form-group">
+                    <label for="pantsBottom">Bottom 1/2 (cm)</label>
+                    <input type="number" id="pantsBottom" name="pantsBottom" min="10" max="25" step="0.1" placeholder="e.g., 16.5">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pantsLength">Length (cm)</label>
+                    <input type="number" id="pantsLength" name="pantsLength" min="80" max="120" step="0.1" placeholder="e.g., 105">
+                </div>
+            </div>
+        `;
+    } else {
+        fieldsHTML = `
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="chestHalf">Half-chest Circumference (cm)</label>
+                    <input type="number" id="chestHalf" name="chestHalf" min="40" max="80" step="0.5" placeholder="e.g., 56">
+                </div>
+                <div class="form-group">
+                    <label for="shoulderWidth">Shoulder Width (cm)</label>
+                    <input type="number" id="shoulderWidth" name="shoulderWidth" min="10" max="25" step="0.25" placeholder="e.g., 14">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sleeveLength">Sleeve Length (cm)</label>
+                    <input type="number" id="sleeveLength" name="sleeveLength" min="60" max="75" step="0.5" placeholder="e.g., 66">
+                </div>
+                <div class="form-group">
+                    <label for="neckCircumference">Neck Circumference (cm)</label>
+                    <input type="number" id="neckCircumference" name="neckCircumference" min="70" max="100" step="0.5" placeholder="e.g., 82">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="shirtLength">Shirt Length (cm)</label>
+                    <input type="number" id="shirtLength" name="shirtLength" min="60" max="90" step="0.5" placeholder="e.g., 72">
+                </div>
+            </div>
+        `;
+    }
+    
+    measurementFields.innerHTML = fieldsHTML;
+}
+
+function updateSelectedSizeDisplay() {
+    selectedSizeText.textContent = selectedSize;
+    displaySelectedSize.textContent = selectedSize;
+}
+
+// Fit Analysis
+function analyzeFit() {
+    // Show loading
     loadingOverlay.classList.remove('hidden');
     
-    try {
-        // Get form data
-        const formData = new FormData(sizeForm);
-        const garmentType = formData.get('garmentType');
-        
-        // Prepare measurements based on garment type
-        let measurements = {};
-        
-        if (garmentType === 'pants') {
-            // Pants-specific measurements (in cm)
-            measurements = {
-                waist: parseFloat(formData.get('pantsWaist')) || null,
-                bottom: parseFloat(formData.get('pantsBottom')) || null,
-                length: parseFloat(formData.get('pantsLength')) || null
-            };
-        } else {
-            // Shirt/Jacket measurements (in cm)
-            measurements = {
-                chestHalf: parseFloat(formData.get('chestHalf')) || null,
-                shoulderWidth: parseFloat(formData.get('shoulderWidth')) || null,
-                sleeveLength: parseFloat(formData.get('sleeveLength')) || null,
-                neckCircumference: parseFloat(formData.get('neckCircumference')) || null,
-                shirtLength: parseFloat(formData.get('shirtLength')) || null
-            };
-        }
-        
-        const data = {
-            garmentType: garmentType,
-            gender: formData.get('gender'),
-            age: parseInt(formData.get('age')),
-            height: parseInt(formData.get('height')),
-            weight: parseFloat(formData.get('weight')),
-            bodyType: formData.get('bodyType'),
-            measurements: measurements
-        };
-        
-        // Validate required fields
-        if (!data.garmentType || !data.gender || !data.age || !data.height || !data.weight || !data.bodyType) {
-            throw new Error('Please fill in all required fields');
-        }
-        
-        // Predict size based on garment type
-        let result;
-        
-        if (garmentType === 'short-sleeves') {
-            result = predictShortSleeveSize(data);
-        } else if (garmentType === 'jagvi-shirt') {
-            result = predictLongSleeveSize(data);
-        } else if (garmentType === 'hooded-jacket') {
-            result = predictHoodedJacketSize(data);
-        } else if (garmentType === 'polar-overshirt') {
-            result = predictPolarOvershirtSize(data);
-        } else if (garmentType === 'pants') {
-            result = predictPantsSize(data);
-        } else {
-            // For other garment types, use API call
-            const response = await fetch('/api/predict-size', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to predict size. Please try again.');
-            }
-            
-            result = await response.json();
-        }
-        
-        if (result.success) {
-            displayResults(result, data);
-        } else {
-            throw new Error(result.error || 'Prediction failed');
-        }
-        
-    } catch (error) {
-        console.error('Error:', error);
-        showError(error.message);
-    } finally {
-        // Hide loading overlay
+    // Simulate analysis delay
+    setTimeout(() => {
+        const formData = collectFormData();
+        const analysis = performFitAnalysis(formData);
+        displayResults(analysis);
         loadingOverlay.classList.add('hidden');
-    }
-});
+    }, 2000);
+}
 
-// Predict short sleeve size based on measurements
-function predictShortSleeveSize(data) {
-    const { measurements, height, weight, bodyType } = data;
+function collectFormData() {
+    const formData = {
+        gender: document.getElementById('gender').value,
+        age: parseInt(document.getElementById('age').value),
+        height: parseInt(document.getElementById('height').value),
+        weight: parseFloat(document.getElementById('weight').value),
+        bodyType: document.getElementById('bodyType').value,
+        measurements: {}
+    };
     
-    // Initialize result
-    let predictedSize = 'M'; // Default size
-    let confidence = 70; // Default confidence
-    let recommendations = [];
-    let estimatedMeasurements = false;
-    
-    // If measurements are provided, use them for prediction
-    if (measurements.chestHalf && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.shirtLength) {
-        // Find best matching size based on all 5 measurements
-        let bestMatch = null;
-        let minDifference = Infinity;
-        
-        for (const [size, chestShoulderData] of Object.entries(shortSleeveSizeChart.chestShoulder)) {
-            const sleeveNeckData = shortSleeveSizeChart.sleeveNeckLength[size];
-            
-            const chestDiff = Math.abs(measurements.chestHalf - chestShoulderData.chestHalf);
-            const shoulderDiff = Math.abs(measurements.shoulderWidth - chestShoulderData.shoulderWidth);
-            const sleeveDiff = Math.abs(measurements.sleeveLength - sleeveNeckData.sleeveLength);
-            const neckDiff = Math.abs(measurements.neckCircumference - sleeveNeckData.neckCircumference);
-            const lengthDiff = Math.abs(measurements.shirtLength - sleeveNeckData.shirtLength);
-            
-            // Weighted scoring: chest and shoulder are most important
-            const totalDiff = chestDiff * 0.3 + shoulderDiff * 0.3 + sleeveDiff * 0.2 + neckDiff * 0.1 + lengthDiff * 0.1;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                bestMatch = size;
-            }
-        }
-        
-        if (bestMatch) {
-            predictedSize = bestMatch;
-            confidence = Math.max(70, 100 - minDifference * 2); // Higher confidence for closer matches
-        }
-        
-        // Check if sleeve length and shirt length match
-        const sleeveNeckData = shortSleeveSizeChart.sleeveNeckLength[predictedSize];
-        if (sleeveNeckData) {
-            const sleeveMatch = Math.abs(measurements.sleeveLength - sleeveNeckData.sleeveLength) <= 1;
-            const lengthMatch = Math.abs(measurements.shirtLength - sleeveNeckData.shirtLength) <= 2;
-            const neckMatch = Math.abs(measurements.neckCircumference - sleeveNeckData.neckCircumference) <= 1;
-            
-            if (sleeveMatch && lengthMatch && neckMatch) {
-                confidence += 15; // Bonus confidence for good match
-                recommendations.push(`All measurements match well with size ${predictedSize}`);
-            } else if (sleeveMatch || lengthMatch) {
-                confidence += 5; // Small bonus for partial match
-                recommendations.push('Some measurements match well');
-            } else {
-                recommendations.push('Consider adjustments for better fit');
-            }
-        }
-        
-        recommendations.push('Measurements provided - high accuracy prediction');
-        
+    // Collect measurements based on item type
+    const item = itemData[selectedItem];
+    if (item.type === 'pants') {
+        formData.measurements.waist = parseFloat(document.getElementById('pantsWaist')?.value) || null;
+        formData.measurements.bottom = parseFloat(document.getElementById('pantsBottom')?.value) || null;
+        formData.measurements.length = parseFloat(document.getElementById('pantsLength')?.value) || null;
     } else {
-        // Estimate measurements based on height, weight, and body type
-        estimatedMeasurements = true;
-        
-        // Simple estimation based on height and weight
-        let estimatedChestHalf = 56 + (height - 170) * 0.2 + (weight - 70) * 0.1;
-        let estimatedShoulderWidth = 14 + (height - 170) * 0.02 + (weight - 70) * 0.01;
-        let estimatedSleeveLength = 25 + (height - 170) * 0.1;
-        let estimatedNeckCircumference = 39 + (height - 170) * 0.05 + (weight - 70) * 0.02;
-        let estimatedShirtLength = 72 + (height - 170) * 0.1;
-        
-        // Adjust based on body type
-        switch (bodyType) {
-            case 'slim':
-                estimatedChestHalf -= 2;
-                estimatedShoulderWidth -= 0.5;
-                estimatedNeckCircumference -= 1;
-                estimatedSleeveLength -= 1;
-                break;
-            case 'athletic':
-                estimatedChestHalf += 2;
-                estimatedShoulderWidth += 0.5;
-                estimatedNeckCircumference += 1;
-                estimatedSleeveLength += 1;
-                break;
-            case 'plus':
-                estimatedChestHalf += 4;
-                estimatedShoulderWidth += 1;
-                estimatedNeckCircumference += 2;
-                estimatedSleeveLength += 2;
-                break;
-        }
-        
-        // Find best match for estimated measurements
-        let minDifference = Infinity;
-        for (const [size, chestShoulderData] of Object.entries(shortSleeveSizeChart.chestShoulder)) {
-            const sleeveNeckData = shortSleeveSizeChart.sleeveNeckLength[size];
-            
-            const chestDiff = Math.abs(estimatedChestHalf - chestShoulderData.chestHalf);
-            const shoulderDiff = Math.abs(estimatedShoulderWidth - chestShoulderData.shoulderWidth);
-            const sleeveDiff = Math.abs(estimatedSleeveLength - sleeveNeckData.sleeveLength);
-            const neckDiff = Math.abs(estimatedNeckCircumference - sleeveNeckData.neckCircumference);
-            const lengthDiff = Math.abs(estimatedShirtLength - sleeveNeckData.shirtLength);
-            
-            // Weighted scoring: chest and shoulder are most important
-            const totalDiff = chestDiff * 0.3 + shoulderDiff * 0.3 + sleeveDiff * 0.2 + neckDiff * 0.1 + lengthDiff * 0.1;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                predictedSize = size;
+        formData.measurements.chestHalf = parseFloat(document.getElementById('chestHalf')?.value) || null;
+        formData.measurements.shoulderWidth = parseFloat(document.getElementById('shoulderWidth')?.value) || null;
+        formData.measurements.sleeveLength = parseFloat(document.getElementById('sleeveLength')?.value) || null;
+        formData.measurements.neckCircumference = parseFloat(document.getElementById('neckCircumference')?.value) || null;
+        formData.measurements.shirtLength = parseFloat(document.getElementById('shirtLength')?.value) || null;
+    }
+    
+    return formData;
+}
+
+function adjustMeasurementForBodyType(measurement, bodyType, measurementType) {
+    // Adjust measurements based on body type
+    let adjustment = 1;
+    
+    switch (bodyType) {
+        case 'athletic':
+            if (measurementType === 'chest' || measurementType === 'shoulder') {
+                adjustment = 1.1; // Allow 10% more room for athletic builds in chest/shoulders
             }
+            break;
+        case 'plus':
+            adjustment = 1.15; // Allow 15% more room overall for plus size
+            break;
+        case 'slim':
+            adjustment = 0.95; // Reduce tolerance by 5% for slim builds
+            break;
+    }
+    
+    return measurement * adjustment;
+}
+
+function performFitAnalysis(formData) {
+    const item = itemData[selectedItem];
+    const selectedSizeData = item.sizeChart[selectedSize];
+    const measurements = formData.measurements;
+    
+    // Calculate fit scores for each measurement
+    const fitScores = {};
+    const weights = {
+        chest: 0.3,
+        shoulder: 0.2,
+        sleeve: 0.15,
+        neck: 0.15,
+        length: 0.2,
+        waist: 0.4,
+        bottom: 0.3,
+        pantsLength: 0.3
+    };
+    
+    let weightedScore = 0;
+    let totalWeight = 0;
+    
+    if (item.type === 'pants') {
+        // Pants measurements
+        if (measurements.waist) {
+            const adjustedWaist = adjustMeasurementForBodyType(measurements.waist, formData.bodyType, 'waist');
+            const waistDiff = Math.abs(adjustedWaist - selectedSizeData.waist);
+            fitScores.waist = calculateFitScore(waistDiff, 1.5);
+            weightedScore += fitScores.waist * weights.waist;
+            totalWeight += weights.waist;
         }
         
-        confidence = Math.max(50, 80 - minDifference * 3);
-        recommendations.push('Size prediction based on estimated measurements');
-        recommendations.push('For more accurate results, please provide your detailed measurements');
+        if (measurements.bottom) {
+            const adjustedBottom = adjustMeasurementForBodyType(measurements.bottom, formData.bodyType, 'bottom');
+            const bottomDiff = Math.abs(adjustedBottom - selectedSizeData.bottom);
+            fitScores.bottom = calculateFitScore(bottomDiff, 0.75);
+            weightedScore += fitScores.bottom * weights.bottom;
+            totalWeight += weights.bottom;
+        }
+        
+        if (measurements.length) {
+            const lengthDiff = Math.abs(measurements.length - selectedSizeData.length);
+            fitScores.length = calculateFitScore(lengthDiff, 2);
+            weightedScore += fitScores.length * weights.pantsLength;
+            totalWeight += weights.pantsLength;
+        }
+        
+        // If no measurements provided, set default good scores
+        if (Object.keys(fitScores).length === 0) {
+            fitScores.waist = 0.8;
+            fitScores.bottom = 0.8;
+            fitScores.length = 0.8;
+            weightedScore = 0.8;
+            totalWeight = 1.0;
+        }
+    } else {
+        // Shirt/Jacket measurements
+        if (measurements.chestHalf) {
+            const adjustedChest = adjustMeasurementForBodyType(measurements.chestHalf, formData.bodyType, 'chest');
+            const chestDiff = Math.abs(adjustedChest - selectedSizeData.chestHalf);
+            fitScores.chest = calculateFitScore(chestDiff, 1.5);
+            weightedScore += fitScores.chest * weights.chest;
+            totalWeight += weights.chest;
+        }
+        
+        if (measurements.shoulderWidth) {
+            const adjustedShoulder = adjustMeasurementForBodyType(measurements.shoulderWidth, formData.bodyType, 'shoulder');
+            const shoulderDiff = Math.abs(adjustedShoulder - selectedSizeData.shoulderWidth);
+            fitScores.shoulder = calculateFitScore(shoulderDiff, 0.75);
+            weightedScore += fitScores.shoulder * weights.shoulder;
+            totalWeight += weights.shoulder;
+        }
+        
+        if (measurements.sleeveLength) {
+            const sleeveDiff = Math.abs(measurements.sleeveLength - selectedSizeData.sleeveLength);
+            fitScores.sleeve = calculateFitScore(sleeveDiff, 1);
+            weightedScore += fitScores.sleeve * weights.sleeve;
+            totalWeight += weights.sleeve;
+        }
+        
+        if (measurements.neckCircumference) {
+            const neckDiff = Math.abs(measurements.neckCircumference - selectedSizeData.neckCircumference);
+            fitScores.neck = calculateFitScore(neckDiff, 2);
+            weightedScore += fitScores.neck * weights.neck;
+            totalWeight += weights.neck;
+        }
+        
+        if (measurements.shirtLength) {
+            const lengthDiff = Math.abs(measurements.shirtLength - selectedSizeData.shirtLength);
+            fitScores.length = calculateFitScore(lengthDiff, 1.5);
+            weightedScore += fitScores.length * weights.length;
+            totalWeight += weights.length;
+        }
+        
+        // If no measurements provided, set default good scores
+        if (Object.keys(fitScores).length === 0) {
+            fitScores.chest = 0.8;
+            fitScores.shoulder = 0.8;
+            fitScores.sleeve = 0.8;
+            fitScores.neck = 0.8;
+            fitScores.length = 0.8;
+            weightedScore = 0.8;
+            totalWeight = 1.0;
+        }
     }
     
-    // Add general recommendations
-    if (confidence < 80) {
-        recommendations.push('Consider trying on multiple sizes for the best fit');
+    // Calculate weighted average score
+    const averageScore = totalWeight > 0 ? weightedScore / totalWeight : 0;
+    
+    // Adjust overall score based on body type
+    let adjustedScore = averageScore;
+    if (formData.bodyType === 'athletic' || formData.bodyType === 'plus') {
+        // Be more lenient with athletic and plus sizes
+        adjustedScore = Math.min(1, averageScore * 1.1);
     }
     
-    recommendations.push('Short sleeve shirts typically fit more relaxed than long sleeve shirts');
+    // Ensure we have a valid score
+    if (isNaN(adjustedScore) || adjustedScore === 0) {
+        adjustedScore = 0.8; // Default to good fit if no measurements provided
+    }
+    
+
+    
+    const overallFit = getFitStatus(adjustedScore);
+    
+    // Generate recommendations
+    const recommendations = generateRecommendations(fitScores, formData, item);
+    
+    // Find alternative sizes
+    const alternatives = findAlternativeSizes(formData, item, fitScores);
     
     return {
-        success: true,
-        predictedSize: {
-            size: predictedSize,
-            confidence: Math.round(confidence),
-            measurements: measurements,
-            estimatedMeasurements: estimatedMeasurements,
-            recommendations: recommendations
-        }
+        item: item,
+        selectedSize: selectedSize,
+        fitScores: fitScores,
+        overallFit: overallFit,
+        recommendations: recommendations,
+        alternatives: alternatives,
+        formData: formData
     };
 }
 
-// Predict long sleeve size based on measurements
-function predictLongSleeveSize(data) {
-    const { measurements, height, weight, bodyType } = data;
-    
-    // Initialize result
-    let predictedSize = 'M'; // Default size
-    let confidence = 70; // Default confidence
-    let recommendations = [];
-    let estimatedMeasurements = false;
-    
-    // If measurements are provided, use them for prediction
-    if (measurements.chestHalf && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.shirtLength) {
-        // Find best matching size based on all 5 measurements
-        let bestMatch = null;
-        let minDifference = Infinity;
-        
-        for (const [size, chestShoulderData] of Object.entries(longSleeveSizeChart.chestShoulder)) {
-            const sleeveNeckData = longSleeveSizeChart.sleeveNeckLength[size];
-            
-            const chestDiff = Math.abs(measurements.chestHalf - chestShoulderData.chestHalf);
-            const shoulderDiff = Math.abs(measurements.shoulderWidth - chestShoulderData.shoulderWidth);
-            const sleeveDiff = Math.abs(measurements.sleeveLength - sleeveNeckData.sleeveLength);
-            const neckDiff = Math.abs(measurements.neckCircumference - sleeveNeckData.neckCircumference);
-            const lengthDiff = Math.abs(measurements.shirtLength - sleeveNeckData.shirtLength);
-            
-            // Weighted scoring: chest and shoulder are most important
-            const totalDiff = chestDiff * 0.3 + shoulderDiff * 0.3 + sleeveDiff * 0.2 + neckDiff * 0.1 + lengthDiff * 0.1;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                bestMatch = size;
-            }
-        }
-        
-        if (bestMatch) {
-            predictedSize = bestMatch;
-            confidence = Math.max(70, 100 - minDifference * 2); // Higher confidence for closer matches
-        }
-        
-        // Check if sleeve length and shirt length match
-        const sleeveNeckData = longSleeveSizeChart.sleeveNeckLength[predictedSize];
-        if (sleeveNeckData) {
-            const sleeveMatch = Math.abs(measurements.sleeveLength - sleeveNeckData.sleeveLength) <= 1;
-            const lengthMatch = Math.abs(measurements.shirtLength - sleeveNeckData.shirtLength) <= 2;
-            const neckMatch = Math.abs(measurements.neckCircumference - sleeveNeckData.neckCircumference) <= 2;
-            
-            if (sleeveMatch && lengthMatch && neckMatch) {
-                confidence += 15; // Bonus confidence for good match
-                recommendations.push(`All measurements match well with size ${predictedSize}`);
-            } else if (sleeveMatch || lengthMatch) {
-                confidence += 5; // Small bonus for partial match
-                recommendations.push('Some measurements match well');
-            } else {
-                recommendations.push('Consider adjustments for better fit');
-            }
-        }
-        
-        recommendations.push('Measurements provided - high accuracy prediction');
-        
-    } else {
-        // Estimate measurements based on height, weight, and body type
-        estimatedMeasurements = true;
-        
-        // Simple estimation based on height and weight
-        let estimatedChestHalf = 55 + (height - 170) * 0.2 + (weight - 70) * 0.1;
-        let estimatedShoulderWidth = 14.5 + (height - 170) * 0.02 + (weight - 70) * 0.01;
-        let estimatedSleeveLength = 66 + (height - 170) * 0.1;
-        let estimatedNeckCircumference = 82 + (height - 170) * 0.05 + (weight - 70) * 0.02;
-        let estimatedShirtLength = 75 + (height - 170) * 0.1;
-        
-        // Adjust based on body type
-        switch (bodyType) {
-            case 'slim':
-                estimatedChestHalf -= 2;
-                estimatedShoulderWidth -= 0.5;
-                estimatedNeckCircumference -= 2;
-                estimatedSleeveLength -= 1;
-                break;
-            case 'athletic':
-                estimatedChestHalf += 2;
-                estimatedShoulderWidth += 0.5;
-                estimatedNeckCircumference += 2;
-                estimatedSleeveLength += 1;
-                break;
-            case 'plus':
-                estimatedChestHalf += 4;
-                estimatedShoulderWidth += 1;
-                estimatedNeckCircumference += 4;
-                estimatedSleeveLength += 2;
-                break;
-        }
-        
-        // Find best match for estimated measurements
-        let minDifference = Infinity;
-        for (const [size, chestShoulderData] of Object.entries(longSleeveSizeChart.chestShoulder)) {
-            const sleeveNeckData = longSleeveSizeChart.sleeveNeckLength[size];
-            
-            const chestDiff = Math.abs(estimatedChestHalf - chestShoulderData.chestHalf);
-            const shoulderDiff = Math.abs(estimatedShoulderWidth - chestShoulderData.shoulderWidth);
-            const sleeveDiff = Math.abs(estimatedSleeveLength - sleeveNeckData.sleeveLength);
-            const neckDiff = Math.abs(estimatedNeckCircumference - sleeveNeckData.neckCircumference);
-            const lengthDiff = Math.abs(estimatedShirtLength - sleeveNeckData.shirtLength);
-            
-            // Weighted scoring: chest and shoulder are most important
-            const totalDiff = chestDiff * 0.3 + shoulderDiff * 0.3 + sleeveDiff * 0.2 + neckDiff * 0.1 + lengthDiff * 0.1;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                predictedSize = size;
-            }
-        }
-        
-        confidence = Math.max(50, 80 - minDifference * 3);
-        recommendations.push('Size prediction based on estimated measurements');
-        recommendations.push('For more accurate results, please provide your detailed measurements');
-    }
-    
-    // Add general recommendations
-    if (confidence < 80) {
-        recommendations.push('Consider trying on multiple sizes for the best fit');
-    }
-    
-    recommendations.push('Long sleeve shirts should have comfortable arm movement');
-    
-    return {
-        success: true,
-        predictedSize: {
-            size: predictedSize,
-            confidence: Math.round(confidence),
-            measurements: measurements,
-            estimatedMeasurements: estimatedMeasurements,
-            recommendations: recommendations
-        }
-    };
+function calculateFitScore(difference, tolerance) {
+    // More granular fit scoring based on the difference relative to tolerance
+    if (difference <= tolerance * 0.5) return 1;      // Perfect fit (within half tolerance)
+    if (difference <= tolerance) return 0.9;          // Very good fit
+    if (difference <= tolerance * 1.5) return 0.8;    // Good fit
+    if (difference <= tolerance * 2) return 0.7;      // Slightly tight/loose
+    if (difference <= tolerance * 2.5) return 0.6;    // Noticeably tight/loose
+    if (difference <= tolerance * 3) return 0.4;      // Very tight/loose
+    return 0.2;                                      // Too tight/loose
 }
 
-// Predict hooded jacket size based on measurements
-function predictHoodedJacketSize(data) {
-    const { measurements, height, weight, bodyType } = data;
+function getFitStatus(score) {
+    // More granular fit status with clearer messages
+    if (score >= 0.9) return { status: 'comfortable', icon: '🟢', text: 'Perfect Fit' };
+    if (score >= 0.8) return { status: 'comfortable', icon: '🟢', text: 'Comfortable Fit' };
+    if (score >= 0.7) return { status: 'comfortable', icon: '🟢', text: 'Good Fit' };
+    if (score >= 0.6) return { status: 'slightly-tight', icon: '🟡', text: 'Slightly Tight' };
+    if (score >= 0.4) return { status: 'slightly-tight', icon: '🟡', text: 'Consider Sizing Up' };
+    return { status: 'too-tight', icon: '🔴', text: 'Size Up Recommended' };
+}
+
+function generateRecommendations(fitScores, formData, item) {
+    const recommendations = [];
     
-    // Initialize result
-    let predictedSize = 'M'; // Default size
-    let confidence = 70; // Default confidence
-    let recommendations = [];
-    let estimatedMeasurements = false;
-    
-    // If measurements are provided, use them for prediction
-    if (measurements.chestHalf && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.shirtLength) {
-        // Find best matching size based on all 5 measurements
-        let bestMatch = null;
-        let minDifference = Infinity;
-        
-        for (const [size, chestShoulderData] of Object.entries(hoodedJacketSizeChart.chestShoulder)) {
-            const sleeveNeckData = hoodedJacketSizeChart.sleeveNeckLength[size];
+    // Analyze each measurement
+    Object.entries(fitScores).forEach(([measurement, score]) => {
+        if (score < 0.7) {
+            const status = getFitStatus(score);
+            let message = `${measurement.charAt(0).toUpperCase() + measurement.slice(1)}: ${status.text}`;
             
-            const chestDiff = Math.abs(measurements.chestHalf - chestShoulderData.chestHalf);
-            const shoulderDiff = Math.abs(measurements.shoulderWidth - chestShoulderData.shoulderWidth);
-            const sleeveDiff = Math.abs(measurements.sleeveLength - sleeveNeckData.sleeveLength);
-            const neckDiff = Math.abs(measurements.neckCircumference - sleeveNeckData.neckCircumference);
-            const lengthDiff = Math.abs(measurements.shirtLength - sleeveNeckData.shirtLength);
-            
-            // Weighted scoring: chest and shoulder are most important
-            const totalDiff = chestDiff * 0.3 + shoulderDiff * 0.3 + sleeveDiff * 0.2 + neckDiff * 0.1 + lengthDiff * 0.1;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                bestMatch = size;
+            // Add specific advice based on measurement and body type
+            if (measurement === 'chest' && formData.bodyType === 'athletic') {
+                message += ' (common for athletic builds)';
+            } else if (measurement === 'waist' && formData.bodyType === 'plus') {
+                message += ' (consider comfort stretch options)';
             }
+            
+            recommendations.push({
+                measurement: measurement,
+                status: status.status,
+                message: message,
+                icon: status.icon
+            });
         }
-        
-        if (bestMatch) {
-            predictedSize = bestMatch;
-            confidence = Math.max(70, 100 - minDifference * 2); // Higher confidence for closer matches
+    });
+    
+    // Add body type specific recommendations
+    if (formData.bodyType === 'athletic') {
+        if (!recommendations.find(r => r.measurement === 'chest')) {
+            recommendations.push({
+                measurement: 'body-type',
+                status: 'comfortable',
+                message: 'Athletic build: This size should accommodate your muscular frame',
+                icon: '🟢'
+            });
         }
-        
-        // Check if shoulder length and total length match
-        const lengthMatch = Object.entries(hoodedJacketSizeChart.lengthShoulder).find(([key, data]) => {
-            return Math.abs(measurements.totalLength - data.totalLength) <= 2 &&
-                   Math.abs(measurements.shoulderLength - data.shoulderLength) <= 1;
-        });
-        
-        if (lengthMatch) {
-            confidence += 10; // Bonus confidence for length match
-            recommendations.push(`Length measurements match well with size ${predictedSize}`);
+    } else if (formData.bodyType === 'plus') {
+        if (Object.values(fitScores).some(score => score < 0.7)) {
+            recommendations.push({
+                measurement: 'body-type',
+                status: 'slightly-tight',
+                message: 'Plus size: Consider trying our comfort fit options for more room',
+                icon: '🟡'
+            });
         } else {
-            recommendations.push('Consider length adjustments for better fit');
+            recommendations.push({
+                measurement: 'body-type',
+                status: 'comfortable',
+                message: 'Plus size: This size provides good comfort and movement',
+                icon: '🟢'
+            });
         }
-        
-        recommendations.push('Measurements provided - high accuracy prediction');
-        
-    } else {
-        // Estimate measurements based on height, weight, and body type
-        estimatedMeasurements = true;
-        
-        // Simple estimation based on height and weight
-        let estimatedChestHalf = 59 + (height - 170) * 0.1 + (weight - 70) * 0.05;
-        let estimatedShoulderWidth = 15 + (height - 170) * 0.02 + (weight - 70) * 0.01;
-        let estimatedSleeveLength = 67 + (height - 170) * 0.1;
-        let estimatedNeckCircumference = 48 + (height - 170) * 0.05 + (weight - 70) * 0.02;
-        let estimatedShirtLength = 72 + (height - 170) * 0.1;
-        
-        // Adjust based on body type
-        switch (bodyType) {
-            case 'slim':
-                estimatedChestHalf -= 2;
-                estimatedShoulderWidth -= 0.5;
-                estimatedNeckCircumference -= 2;
-                estimatedSleeveLength -= 1;
-                break;
-            case 'athletic':
-                estimatedChestHalf += 2;
-                estimatedShoulderWidth += 0.5;
-                estimatedNeckCircumference += 2;
-                estimatedSleeveLength += 1;
-                break;
-            case 'plus':
-                estimatedChestHalf += 4;
-                estimatedShoulderWidth += 1;
-                estimatedNeckCircumference += 4;
-                estimatedSleeveLength += 2;
-                break;
-        }
-        
-        // Find best match for estimated measurements
-        let minDifference = Infinity;
-        for (const [size, chestShoulderData] of Object.entries(hoodedJacketSizeChart.chestShoulder)) {
-            const sleeveNeckData = hoodedJacketSizeChart.sleeveNeckLength[size];
-            
-            const chestDiff = Math.abs(estimatedChestHalf - chestShoulderData.chestHalf);
-            const shoulderDiff = Math.abs(estimatedShoulderWidth - chestShoulderData.shoulderWidth);
-            const sleeveDiff = Math.abs(estimatedSleeveLength - sleeveNeckData.sleeveLength);
-            const neckDiff = Math.abs(estimatedNeckCircumference - sleeveNeckData.neckCircumference);
-            const lengthDiff = Math.abs(estimatedShirtLength - sleeveNeckData.shirtLength);
-            
-            // Weighted scoring: chest and shoulder are most important
-            const totalDiff = chestDiff * 0.3 + shoulderDiff * 0.3 + sleeveDiff * 0.2 + neckDiff * 0.1 + lengthDiff * 0.1;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                predictedSize = size;
-            }
-        }
-        
-        confidence = Math.max(50, 80 - minDifference * 3);
-        recommendations.push('Size prediction based on estimated measurements');
-        recommendations.push('For more accurate results, please provide your detailed measurements');
     }
     
     // Add general recommendations
-    if (confidence < 80) {
-        recommendations.push('Consider trying on multiple sizes for the best fit');
+    if (recommendations.length === 0) {
+        recommendations.push({
+            measurement: 'overall',
+            status: 'comfortable',
+            message: 'Perfect fit! All measurements are within ideal range',
+            icon: '🟢'
+        });
     }
     
-    recommendations.push('Hooded jackets should have room for layering underneath');
-    
-    return {
-        success: true,
-        predictedSize: {
-            size: predictedSize,
-            confidence: Math.round(confidence),
-            measurements: measurements,
-            estimatedMeasurements: estimatedMeasurements,
-            recommendations: recommendations
-        }
-    };
+    return recommendations;
 }
 
-// Predict polar overshirt size based on measurements
-function predictPolarOvershirtSize(data) {
-    const { measurements, height, weight, bodyType } = data;
+function findAlternativeSizes(formData, item, fitScores) {
+    const alternatives = [];
+    const sizes = Object.keys(item.sizeChart);
+    const currentIndex = sizes.indexOf(selectedSize);
     
-    // Initialize result
-    let predictedSize = 'M'; // Default size
-    let confidence = 70; // Default confidence
-    let recommendations = [];
-    let estimatedMeasurements = false;
+    // Calculate average fit score (only for measurements that were provided)
+    const validScores = Object.values(fitScores).filter(score => score !== undefined && score !== null);
+    const avgScore = validScores.length > 0 ? validScores.reduce((sum, score) => sum + score, 0) / validScores.length : 0.8;
     
-    // If measurements are provided, use them for prediction
-    if (measurements.chestHalf && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.shirtLength) {
-        // Find best matching size based on all 5 measurements
-        let bestMatch = null;
-        let minDifference = Infinity;
-        
-        for (const [size, chestShoulderData] of Object.entries(polarOvershirtSizeChart.chestShoulder)) {
-            const sleeveNeckData = polarOvershirtSizeChart.sleeveNeckLength[size];
-            
-            const chestDiff = Math.abs(measurements.chestHalf - chestShoulderData.chestHalf);
-            const shoulderDiff = Math.abs(measurements.shoulderWidth - chestShoulderData.shoulderWidth);
-            const sleeveDiff = Math.abs(measurements.sleeveLength - sleeveNeckData.sleeveLength);
-            const neckDiff = Math.abs(measurements.neckCircumference - sleeveNeckData.neckCircumference);
-            const lengthDiff = Math.abs(measurements.shirtLength - sleeveNeckData.shirtLength);
-            
-            // Weighted scoring: chest and shoulder are most important
-            const totalDiff = chestDiff * 0.3 + shoulderDiff * 0.3 + sleeveDiff * 0.2 + neckDiff * 0.1 + lengthDiff * 0.1;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                bestMatch = size;
-            }
+    if (avgScore < 0.7) {
+        // If current size is too tight, recommend sizing up
+        if (currentIndex < sizes.length - 1) {
+            alternatives.push({
+                size: sizes[currentIndex + 1],
+                reason: 'Recommended: Better overall fit',
+                recommended: true
+            });
         }
-        
-        if (bestMatch) {
-            predictedSize = bestMatch;
-            // Calculate confidence based on how well measurements match
-            confidence = Math.max(70, Math.min(95, 70 + bestScore * 2));
+        if (currentIndex < sizes.length - 2) {
+            alternatives.push({
+                size: sizes[currentIndex + 2],
+                reason: 'Alternative: Most relaxed fit',
+                recommended: false
+            });
         }
-        
-        // Check if measurements are very close to the predicted size
-        const predictedChestData = polarOvershirtSizeChart.chestShoulder[predictedSize];
-        const predictedSleeveData = polarOvershirtSizeChart.sleeveNeckLength[predictedSize];
-        
-        if (predictedChestData && predictedSleeveData) {
-            const chestMatch = Math.abs(measurements.chestHalf - predictedChestData.chestHalf) <= 1;
-            const shoulderMatch = Math.abs(measurements.shoulderWidth - predictedChestData.shoulderWidth) <= 0.5;
-            const sleeveMatch = Math.abs(measurements.sleeveLength - predictedSleeveData.sleeveLength) <= 1;
-            const neckMatch = Math.abs(measurements.neckCircumference - predictedSleeveData.neckCircumference) <= 2;
-            const lengthMatch = Math.abs(measurements.shirtLength - predictedSleeveData.shirtLength) <= 1;
-            
-            const matchCount = [chestMatch, shoulderMatch, sleeveMatch, neckMatch, lengthMatch].filter(Boolean).length;
-            
-            if (matchCount >= 4) {
-                confidence = 95;
-                recommendations.push('Excellent measurement match with predicted size');
-            } else if (matchCount >= 3) {
-                confidence = 85;
-                recommendations.push('Good measurement match with predicted size');
-            } else {
-                recommendations.push('Consider adjustments for better fit');
-            }
+    } else if (avgScore > 0.9 && formData.bodyType !== 'plus') {
+        // If current size is very loose, suggest sizing down (except for plus size)
+        if (currentIndex > 0) {
+            alternatives.push({
+                size: sizes[currentIndex - 1],
+                reason: 'Alternative: For a closer fit',
+                recommended: false
+            });
         }
-        
-        recommendations.push('Measurements provided - high accuracy prediction');
-        
     } else {
-        // Estimate measurements based on height, weight, and body type
-        estimatedMeasurements = true;
-        
-        // Improved estimation based on height and weight
-        let estimatedChestHalf = 58 + (height - 170) * 0.1 + (weight - 70) * 0.05;
-        let estimatedShoulderWidth = 15 + (height - 170) * 0.02 + (weight - 70) * 0.01;
-        let estimatedSleeveLength = 66 + (height - 170) * 0.1;
-        let estimatedNeckCircumference = 38 + (height - 170) * 0.05 + (weight - 70) * 0.02;
-        let estimatedShirtLength = 73 + (height - 170) * 0.1;
-        
-        // Adjust based on body type
-        switch (bodyType) {
-            case 'slim':
-                estimatedChestHalf -= 2;
-                estimatedShoulderWidth -= 0.5;
-                estimatedNeckCircumference -= 2;
-                estimatedSleeveLength -= 1;
-                break;
-            case 'athletic':
-                estimatedChestHalf += 2;
-                estimatedShoulderWidth += 0.5;
-                estimatedNeckCircumference += 2;
-                estimatedSleeveLength += 1;
-                break;
-            case 'plus':
-                estimatedChestHalf += 4;
-                estimatedShoulderWidth += 1;
-                estimatedNeckCircumference += 4;
-                estimatedSleeveLength += 2;
-                break;
+        // Current size is good, offer alternatives
+        if (currentIndex > 0) {
+            alternatives.push({
+                size: sizes[currentIndex - 1],
+                reason: 'For a closer fit',
+                recommended: false
+            });
         }
-        
-        // Find best match for estimated measurements
-        let minDifference = Infinity;
-        for (const [size, chestShoulderData] of Object.entries(polarOvershirtSizeChart.chestShoulder)) {
-            const sleeveNeckData = polarOvershirtSizeChart.sleeveNeckLength[size];
-            
-            const chestDiff = Math.abs(estimatedChestHalf - chestShoulderData.chestHalf);
-            const shoulderDiff = Math.abs(estimatedShoulderWidth - chestShoulderData.shoulderWidth);
-            const sleeveDiff = Math.abs(estimatedSleeveLength - sleeveNeckData.sleeveLength);
-            const neckDiff = Math.abs(estimatedNeckCircumference - sleeveNeckData.neckCircumference);
-            const lengthDiff = Math.abs(estimatedShirtLength - sleeveNeckData.shirtLength);
-            
-            // Weighted scoring: chest and shoulder are most important
-            const totalDiff = chestDiff * 0.3 + shoulderDiff * 0.3 + sleeveDiff * 0.2 + neckDiff * 0.1 + lengthDiff * 0.1;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                predictedSize = size;
-            }
+        if (currentIndex < sizes.length - 1) {
+            alternatives.push({
+                size: sizes[currentIndex + 1],
+                reason: 'For a looser fit',
+                recommended: false
+            });
         }
-        
-        confidence = Math.max(50, Math.min(75, 50 + bestScore * 3));
-        recommendations.push('Size prediction based on estimated measurements');
-        recommendations.push('For more accurate results, please provide your detailed measurements');
     }
     
-    // Add general recommendations
-    if (confidence < 80) {
-        recommendations.push('Consider trying on multiple sizes for the best fit');
-    }
-    
-    recommendations.push('Polar overshirts work well as layering pieces');
-    
-    return {
-        success: true,
-        predictedSize: {
-            size: predictedSize,
-            confidence: Math.round(confidence),
-            measurements: measurements,
-            estimatedMeasurements: estimatedMeasurements,
-            recommendations: recommendations
-        }
-    };
+    return alternatives;
 }
 
-// Predict pants size based on measurements
-function predictPantsSize(data) {
-    const { measurements, height, weight, bodyType } = data;
+// Display Results
+function displayResults(analysis) {
+    // Update item information
+    resultItemIcon.className = analysis.item.icon;
+    resultItemName.textContent = analysis.item.name;
+    resultItemDesc.textContent = analysis.item.description;
+    resultSelectedSize.textContent = analysis.selectedSize;
     
-    // Initialize result
-    let predictedSize = 'M'; // Default size
-    let confidence = 70; // Default confidence
-    let recommendations = [];
-    let estimatedMeasurements = false;
+    // Update fit indicators
+    updateFitIndicators(analysis);
     
-    // Pants size chart data
-    const pantsSizeChart = {
-        'S': { waist: 37, bottom: 15.5, length: 99 }, // Size 36
-        'M': { waist: 39, bottom: 16, length: 100.5 }, // Size 38
-        'L': { waist: 41, bottom: 16.5, length: 102 }, // Size 40
-        'XL': { waist: 43, bottom: 17, length: 103.5 }, // Size 42
-        'XXL': { waist: 45, bottom: 17.5, length: 105 } // Size 44
-    };
+    // Update recommendations
+    updateRecommendations(analysis.recommendations);
     
-    // If measurements are provided, use them for prediction
-    if (measurements.waist || measurements.bottom || measurements.length) {
-        // Find best matching size based on available measurements
-        let bestMatch = null;
-        let minDifference = Infinity;
-        
-        for (const [size, sizeData] of Object.entries(pantsSizeChart)) {
-            let totalDiff = 0;
-            let measurementCount = 0;
-            let weightedDiff = 0;
+    // Update alternative sizes
+    updateAlternativeSizes(analysis.alternatives);
+    
+    // Show results
+    stepContainers.forEach(container => container.classList.remove('active'));
+    resultsSection.classList.remove('hidden');
+    
+    // Scroll to results
+    resultsSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+function updateFitIndicators(analysis) {
+    const indicators = ['chestFit', 'shoulderFit', 'lengthFit', 'overallFit'];
+    
+    indicators.forEach(indicatorId => {
+        const indicator = document.getElementById(indicatorId);
+        if (indicator) {
+            const fitData = getFitIndicatorData(indicatorId, analysis);
+            indicator.className = `fit-indicator ${fitData.status}`;
+            indicator.querySelector('.indicator-icon').textContent = fitData.icon;
+            indicator.querySelector('.indicator-status').textContent = fitData.text;
             
-            // Compare measurements with different weights for accuracy
-            if (measurements.length && sizeData.length) {
-                const lengthDiff = Math.abs(sizeData.length - measurements.length);
-                totalDiff += lengthDiff;
-                weightedDiff += lengthDiff * 0.3; // Length has 30% weight
-                measurementCount++;
-            }
-            
-            if (measurements.waist && sizeData.waist) {
-                const waistDiff = Math.abs(sizeData.waist - measurements.waist);
-                totalDiff += waistDiff;
-                weightedDiff += waistDiff * 0.4; // Waist has 40% weight (most important)
-                measurementCount++;
-            }
-            
-            if (measurements.bottom && sizeData.bottom) {
-                const bottomDiff = Math.abs(sizeData.bottom - measurements.bottom);
-                totalDiff += bottomDiff;
-                weightedDiff += bottomDiff * 0.3; // Bottom has 30% weight
-                measurementCount++;
-            }
-            
-            // Use weighted average for better accuracy
-            if (measurementCount > 0) {
-                const avgDiff = weightedDiff / measurementCount;
-                if (avgDiff < minDifference) {
-                    minDifference = avgDiff;
-                    bestMatch = size;
+            // Update labels based on item type
+            const labelElement = indicator.querySelector('.indicator-label');
+            if (labelElement) {
+                if (analysis.item.type === 'pants') {
+                    switch (indicatorId) {
+                        case 'chestFit':
+                            labelElement.textContent = 'Waist';
+                            break;
+                        case 'shoulderFit':
+                            labelElement.textContent = 'Bottom';
+                            break;
+                        case 'lengthFit':
+                            labelElement.textContent = 'Length';
+                            break;
+                        case 'overallFit':
+                            labelElement.textContent = 'Overall';
+                            break;
+                    }
+                } else {
+                    // Reset to default labels for shirts/jackets
+                    switch (indicatorId) {
+                        case 'chestFit':
+                            labelElement.textContent = 'Chest';
+                            break;
+                        case 'shoulderFit':
+                            labelElement.textContent = 'Shoulder';
+                            break;
+                        case 'lengthFit':
+                            labelElement.textContent = 'Length';
+                            break;
+                        case 'overallFit':
+                            labelElement.textContent = 'Overall';
+                            break;
+                    }
                 }
             }
         }
-        
-        if (bestMatch) {
-            predictedSize = bestMatch;
-            confidence = Math.max(70, 100 - minDifference * 2); // Higher confidence for closer matches
-        }
-        
-        // Adjust for body type
-        if (bodyType === 'slim') {
-            if (predictedSize === 'M') predictedSize = 'S';
-            else if (predictedSize === 'L') predictedSize = 'M';
-            else if (predictedSize === 'XL') predictedSize = 'L';
-            else if (predictedSize === 'XXL') predictedSize = 'XL';
-        } else if (bodyType === 'athletic') {
-            if (predictedSize === 'S') predictedSize = 'M';
-            else if (predictedSize === 'M') predictedSize = 'L';
-            else if (predictedSize === 'L') predictedSize = 'XL';
-            else if (predictedSize === 'XL') predictedSize = 'XXL';
-        } else if (bodyType === 'plus') {
-            if (predictedSize === 'S') predictedSize = 'M';
-            else if (predictedSize === 'M') predictedSize = 'L';
-            else if (predictedSize === 'L') predictedSize = 'XL';
-            else if (predictedSize === 'XL') predictedSize = 'XXL';
-        }
-        
-        recommendations.push('Measurements provided - high accuracy prediction');
-        
-    } else {
-        // Estimate measurements based on height, weight, and body type
-        estimatedMeasurements = true;
-        
-        // Simple estimation based on height and weight
-        let estimatedWaist = 41 + (height - 170) * 0.1 + (weight - 70) * 0.05; // Waist 1/2 in cm
-        let estimatedBottom = 16 + (height - 170) * 0.1 + (weight - 70) * 0.05; // Bottom 1/2 in cm
-        let estimatedLength = 100.5 + (height - 170) * 0.1;
-        
-        // Adjust based on body type
-        switch (bodyType) {
-            case 'slim':
-                estimatedWaist -= 2;
-                estimatedBottom -= 1;
-                break;
-            case 'athletic':
-                estimatedWaist -= 1;
-                estimatedBottom += 0.5;
-                break;
-            case 'plus':
-                estimatedWaist += 4;
-                estimatedBottom += 2;
-                break;
-        }
-        
-        // Find best match for estimated measurements
-        let minDifference = Infinity;
-        for (const [size, sizeData] of Object.entries(pantsSizeChart)) {
-            const waistDiff = Math.abs(estimatedWaist - sizeData.waist);
-            const bottomDiff = Math.abs(estimatedBottom - sizeData.bottom);
-            const lengthDiff = Math.abs(estimatedLength - sizeData.length);
-            const totalDiff = waistDiff * 0.4 + bottomDiff * 0.3 + lengthDiff * 0.3;
-            
-            if (totalDiff < minDifference) {
-                minDifference = totalDiff;
-                predictedSize = size;
-            }
-        }
-        
-        confidence = Math.max(50, 80 - minDifference * 3);
-        recommendations.push('Size prediction based on estimated measurements');
-        recommendations.push('For more accurate results, please provide your detailed measurements');
+    });
+}
+
+function getFitIndicatorData(indicatorId, analysis) {
+    switch (indicatorId) {
+        case 'chestFit':
+            // For pants, use waist score; for shirts/jackets, use chest score
+            const chestScore = analysis.item.type === 'pants' 
+                ? (analysis.fitScores.waist || 0.8)
+                : (analysis.fitScores.chest || 0.8);
+            return getFitStatus(chestScore);
+        case 'shoulderFit':
+            // For pants, use bottom score; for shirts/jackets, use shoulder score
+            const shoulderScore = analysis.item.type === 'pants'
+                ? (analysis.fitScores.bottom || 0.8)
+                : (analysis.fitScores.shoulder || 0.8);
+            return getFitStatus(shoulderScore);
+        case 'lengthFit':
+            const lengthScore = analysis.fitScores.length || 0.8;
+            return getFitStatus(lengthScore);
+        case 'overallFit':
+            return analysis.overallFit;
+        default:
+            return { status: 'comfortable', icon: '🟢', text: 'Good Fit' };
     }
+}
+
+function updateRecommendations(recommendations) {
+    let html = '';
+    recommendations.forEach(rec => {
+        html += `
+            <div class="recommendation-item ${rec.status}">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">${rec.icon}</span>
+                    <span>${rec.message}</span>
+                </div>
+            </div>
+        `;
+    });
+    recommendationsGrid.innerHTML = html;
+}
+
+function updateAlternativeSizes(alternatives) {
+    let html = '';
+    alternatives.forEach(alt => {
+        html += `
+            <div class="alternative-size ${alt.recommended ? 'recommended' : ''}">
+                <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 5px;">${alt.size}</div>
+                <div style="font-size: 0.9rem; color: #718096;">${alt.reason}</div>
+            </div>
+        `;
+    });
+    sizeAlternatives.innerHTML = html;
+}
+
+// Utility functions
+function startOver() {
+    // Reset state
+    currentStep = 1;
+    selectedItem = null;
+    selectedSize = null;
+    uploadedImage = null;
     
-    // Add general recommendations
-    if (confidence < 80) {
-        recommendations.push('Consider trying on multiple sizes for the best fit');
-    }
+    // Reset UI
+    itemCards.forEach(card => card.classList.remove('selected'));
+    document.querySelectorAll('.size-option').forEach(option => option.classList.remove('selected'));
+    removeImage();
     
-    recommendations.push('Pants should fit comfortably at the waist without being too tight');
+    // Reset form
+    document.getElementById('gender').value = '';
+    document.getElementById('age').value = '';
+    document.getElementById('height').value = '';
+    document.getElementById('weight').value = '';
+    document.getElementById('bodyType').value = '';
     
-    return {
-        success: true,
-        predictedSize: {
-            size: predictedSize,
-            confidence: Math.round(confidence),
-            measurements: measurements,
-            estimatedMeasurements: estimatedMeasurements,
-            recommendations: recommendations
-        }
+    // Show step 1
+    updateProgressSteps();
+    showStep(1);
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function saveResults() {
+    // Create a summary of the results
+    const results = {
+        item: selectedItem,
+        size: selectedSize,
+        timestamp: new Date().toISOString(),
+        recommendations: document.querySelectorAll('.recommendation-item').length
     };
+    
+    // Create downloadable content
+    const content = `Size Predictor Results\n\nItem: ${itemData[selectedItem].name}\nSelected Size: ${selectedSize}\nDate: ${new Date().toLocaleDateString()}\n\nRecommendations:\n${Array.from(document.querySelectorAll('.recommendation-item')).map(item => item.textContent.trim()).join('\n')}`;
+    
+    // Create and download file
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `size-prediction-${selectedItem}-${selectedSize}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
-// Display results
-function displayResults(result, formData) {
-    // Update garment display
-    const selectedGarment = garmentTypes[formData.garmentType];
-    if (selectedGarment) {
-        garmentIcon.className = selectedGarment.icon;
-        resultGarmentName.textContent = selectedGarment.name;
-        resultGarmentReference.textContent = selectedGarment.reference;
-    }
-    
-    // Update result display
-    predictedSizeEl.textContent = result.predictedSize.size;
-    confidencePercentEl.textContent = `${result.predictedSize.confidence}%`;
-    confidenceFillEl.style.width = `${result.predictedSize.confidence}%`;
-    
-    // Update measurements display based on garment type
-    displayHeightEl.textContent = `${formData.height} cm`;
-    displayWeightEl.textContent = `${formData.weight} kg`;
-    
-    // Update measurement labels based on garment type
-    const chestLabel = document.getElementById('chestLabel');
-    const waistLabel = document.getElementById('waistLabel');
-    const bottomLabel = document.getElementById('bottomLabel');
-    const shoulderLabel = document.getElementById('shoulderLabel');
-    const lengthLabel = document.getElementById('lengthLabel');
-    
-    if (formData.garmentType === 'pants') {
-        chestLabel.textContent = 'Waist 1/2';
-        waistLabel.textContent = 'Bottom 1/2';
-        bottomLabel.textContent = 'N/A';
-        shoulderLabel.textContent = 'N/A';
-        lengthLabel.textContent = 'Length';
-    } else {
-        chestLabel.textContent = 'Half-chest';
-        waistLabel.textContent = 'Shoulder Width';
-        bottomLabel.textContent = 'Sleeve Length';
-        shoulderLabel.textContent = 'Neck Circumference';
-        lengthLabel.textContent = 'Shirt Length';
-    }
-    
-    if (formData.garmentType === 'pants') {
-        displayChestHalfEl.textContent = result.predictedSize.measurements.waist ? `${result.predictedSize.measurements.waist} cm` : 'Not provided';
-        displayWaistHalfEl.textContent = result.predictedSize.measurements.bottom ? `${result.predictedSize.measurements.bottom} cm` : 'Not provided';
-        displayBottomHalfEl.textContent = 'N/A';
-        displayShoulderLengthEl.textContent = 'N/A';
-        displayTotalLengthEl.textContent = result.predictedSize.measurements.length ? `${result.predictedSize.measurements.length} cm` : 'Not provided';
-    } else if (formData.garmentType === 'short-sleeves') {
-        displayChestHalfEl.textContent = result.predictedSize.measurements.chestHalf ? `${result.predictedSize.measurements.chestHalf} cm` : 'Not provided';
-        displayWaistHalfEl.textContent = result.predictedSize.measurements.shoulderWidth ? `${result.predictedSize.measurements.shoulderWidth} cm` : 'Not provided';
-        displayBottomHalfEl.textContent = result.predictedSize.measurements.sleeveLength ? `${result.predictedSize.measurements.sleeveLength} cm` : 'Not provided';
-        displayShoulderLengthEl.textContent = result.predictedSize.measurements.neckCircumference ? `${result.predictedSize.measurements.neckCircumference} cm` : 'Not provided';
-        displayTotalLengthEl.textContent = result.predictedSize.measurements.shirtLength ? `${result.predictedSize.measurements.shirtLength} cm` : 'Not provided';
-    } else if (formData.garmentType === 'jagvi-shirt') {
-        displayChestHalfEl.textContent = result.predictedSize.measurements.chestHalf ? `${result.predictedSize.measurements.chestHalf} cm` : 'Not provided';
-        displayWaistHalfEl.textContent = result.predictedSize.measurements.shoulderWidth ? `${result.predictedSize.measurements.shoulderWidth} cm` : 'Not provided';
-        displayBottomHalfEl.textContent = result.predictedSize.measurements.sleeveLength ? `${result.predictedSize.measurements.sleeveLength} cm` : 'Not provided';
-        displayShoulderLengthEl.textContent = result.predictedSize.measurements.neckCircumference ? `${result.predictedSize.measurements.neckCircumference} cm` : 'Not provided';
-        displayTotalLengthEl.textContent = result.predictedSize.measurements.shirtLength ? `${result.predictedSize.measurements.shirtLength} cm` : 'Not provided';
-    } else if (formData.garmentType === 'hooded-jacket') {
-        displayChestHalfEl.textContent = result.predictedSize.measurements.chestHalf ? `${result.predictedSize.measurements.chestHalf} cm` : 'Not provided';
-        displayWaistHalfEl.textContent = result.predictedSize.measurements.shoulderWidth ? `${result.predictedSize.measurements.shoulderWidth} cm` : 'Not provided';
-        displayBottomHalfEl.textContent = result.predictedSize.measurements.sleeveLength ? `${result.predictedSize.measurements.sleeveLength} cm` : 'Not provided';
-        displayShoulderLengthEl.textContent = result.predictedSize.measurements.neckCircumference ? `${result.predictedSize.measurements.neckCircumference} cm` : 'Not provided';
-        displayTotalLengthEl.textContent = result.predictedSize.measurements.shirtLength ? `${result.predictedSize.measurements.shirtLength} cm` : 'Not provided';
-    } else if (formData.garmentType === 'polar-overshirt') {
-        displayChestHalfEl.textContent = result.predictedSize.measurements.chestHalf ? `${result.predictedSize.measurements.chestHalf} cm` : 'Not provided';
-        displayWaistHalfEl.textContent = result.predictedSize.measurements.shoulderWidth ? `${result.predictedSize.measurements.shoulderWidth} cm` : 'Not provided';
-        displayBottomHalfEl.textContent = result.predictedSize.measurements.sleeveLength ? `${result.predictedSize.measurements.sleeveLength} cm` : 'Not provided';
-        displayShoulderLengthEl.textContent = result.predictedSize.measurements.neckCircumference ? `${result.predictedSize.measurements.neckCircumference} cm` : 'Not provided';
-        displayTotalLengthEl.textContent = result.predictedSize.measurements.shirtLength ? `${result.predictedSize.measurements.shirtLength} cm` : 'Not provided';
-    } else {
-        displayChestHalfEl.textContent = result.predictedSize.measurements.chest ? `${result.predictedSize.measurements.chest}"` : 'Not provided';
-        displayWaistHalfEl.textContent = result.predictedSize.measurements.waist ? `${result.predictedSize.measurements.waist}"` : 'Not provided';
-        displayShoulderLengthEl.textContent = 'N/A';
-        displayTotalLengthEl.textContent = 'N/A';
-    }
-    
-    // Update recommendations
-    updateRecommendations(result.predictedSize.recommendations, result.predictedSize.estimatedMeasurements);
-    
-    // Show results and hide form
-    formContainer.classList.add('hidden');
-    resultContainer.classList.remove('hidden');
-    
-    // Smooth scroll to results
-    resultContainer.scrollIntoView({ behavior: 'smooth' });
-    
-    // Animate confidence bar
-    setTimeout(() => {
-        confidenceFillEl.style.transition = 'width 1s ease-out';
-    }, 100);
-}
-
-// Update recommendations list
-function updateRecommendations(recommendations, estimatedMeasurements) {
-    recommendationsListEl.innerHTML = '';
-    
-    // Add estimated measurements notice if applicable
-    if (estimatedMeasurements) {
-        const estimatedLi = document.createElement('li');
-        estimatedLi.innerHTML = '<strong>📏 Estimated Measurements:</strong> Size prediction based on your basic information. For more accurate results, please provide your detailed measurements.';
-        estimatedLi.style.background = '#e6f3ff';
-        estimatedLi.style.borderLeftColor = '#0066cc';
-        estimatedLi.style.color = '#003366';
-        recommendationsListEl.appendChild(estimatedLi);
-    }
-    
-    if (recommendations && recommendations.length > 0) {
-        recommendations.forEach(recommendation => {
-            const li = document.createElement('li');
-            li.textContent = recommendation;
-            recommendationsListEl.appendChild(li);
-        });
-    } else {
-        const li = document.createElement('li');
-        li.textContent = 'Consider trying on multiple sizes for the best fit';
-        recommendationsListEl.appendChild(li);
-    }
-}
-
-// Show error message
 function showError(message) {
     // Create error notification
     const errorDiv = document.createElement('div');
@@ -1159,30 +1005,14 @@ function showError(message) {
     });
 }
 
-// Reset button handler
-resetBtn.addEventListener('click', () => {
-    // Reset form
-    sizeForm.reset();
-    
-    // Hide garment info and measurement sections
-    garmentInfo.classList.add('hidden');
-    shirtMeasurements.classList.add('hidden');
-    pantsMeasurements.classList.add('hidden');
-    
-    // Hide results and show form
-    resultContainer.classList.add('hidden');
-    formContainer.classList.remove('hidden');
-    
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Form validation and real-time feedback
-const formInputs = sizeForm.querySelectorAll('input, select');
+// Form validation
+document.addEventListener('DOMContentLoaded', function() {
+    const formInputs = document.querySelectorAll('input, select');
 
 formInputs.forEach(input => {
     input.addEventListener('blur', validateField);
     input.addEventListener('input', clearFieldError);
+    });
 });
 
 function validateField(e) {
@@ -1235,61 +1065,4 @@ errorStyles.textContent = `
 `;
 document.head.appendChild(errorStyles);
 
-// Auto-resize iframe for better integration
-function resizeIframe() {
-    if (window.parent && window.parent !== window) {
-        const height = document.documentElement.scrollHeight;
-        window.parent.postMessage({
-            type: 'resize',
-            height: height
-        }, '*');
-    }
-}
 
-// Call resize on load and after content changes
-window.addEventListener('load', resizeIframe);
-window.addEventListener('resize', resizeIframe);
-
-// Resize after form submission
-const originalDisplayResults = displayResults;
-displayResults = function(result, formData) {
-    originalDisplayResults(result, formData);
-    setTimeout(resizeIframe, 500); // Wait for animations
-};
-
-// Add some interactive features
-document.addEventListener('DOMContentLoaded', () => {
-    // Add hover effects to form sections
-    const formSections = document.querySelectorAll('.form-section');
-    formSections.forEach(section => {
-        section.addEventListener('mouseenter', () => {
-            section.style.transform = 'translateY(-2px)';
-            section.style.transition = 'transform 0.2s ease';
-        });
-        
-        section.addEventListener('mouseleave', () => {
-            section.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Add focus indicators for accessibility
-    const focusableElements = document.querySelectorAll('input, select, button');
-    focusableElements.forEach(element => {
-        element.addEventListener('focus', () => {
-            element.style.outline = '2px solid #667eea';
-            element.style.outlineOffset = '2px';
-        });
-        
-        element.addEventListener('blur', () => {
-            element.style.outline = '';
-            element.style.outlineOffset = '';
-        });
-    });
-});
-
-// Performance optimization: Debounce resize events
-let resizeTimeout;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(resizeIframe, 250);
-}); 

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pants Fit Analysis Test</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .test-results {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .fit-indicators {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .fit-indicator {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+        .indicator-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        .indicator-label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        .indicator-status {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 10px;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .success {
+            color: #38a169;
+            font-weight: 600;
+        }
+        .error {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1><i class="fas fa-socks"></i> Pants Fit Analysis Test</h1>
+            <p>Testing that pants show Waist, Bottom, Length instead of Chest, Shoulder</p>
+        </div>
+
+        <div class="test-controls">
+            <button class="test-button" onclick="testPantsFit()">
+                <i class="fas fa-play"></i> Test Pants Fit Analysis
+            </button>
+            <button class="test-button" onclick="testShirtFit()">
+                <i class="fas fa-tshirt"></i> Test Shirt Fit Analysis (for comparison)
+            </button>
+        </div>
+
+        <div class="test-results" id="testResults">
+            <h3>Test Results</h3>
+            <div id="fitIndicators" class="fit-indicators">
+                <!-- Fit indicators will be populated here -->
+            </div>
+            <div id="testStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mock item data for testing
+        const itemData = {
+            'pants': {
+                name: 'Pants',
+                description: 'JAGVI.Rive Gauche SS2025',
+                icon: 'fas fa-socks',
+                type: 'pants',
+                sizeChart: {
+                    'S': { waist: 37, bottom: 15.5, length: 99 },
+                    'M': { waist: 39, bottom: 16, length: 100.5 },
+                    'L': { waist: 41, bottom: 16.5, length: 102 }
+                }
+            },
+            'jagvi-shirt': {
+                name: 'Jagvi Shirt',
+                description: 'Long Sleeve Premium Shirt',
+                icon: 'fas fa-tshirt',
+                type: 'shirt',
+                sizeChart: {
+                    'S': { chestHalf: 53, shoulderWidth: 14, sleeveLength: 65.5, neckCircumference: 78, shirtLength: 74 },
+                    'M': { chestHalf: 55, shoulderWidth: 14.5, sleeveLength: 66, neckCircumference: 82, shirtLength: 75 },
+                    'L': { chestHalf: 57, shoulderWidth: 15, sleeveLength: 66.5, neckCircumference: 86, shirtLength: 76 }
+                }
+            }
+        };
+
+                 function testPantsFit() {
+             const analysis = {
+                 item: itemData['pants'],
+                 selectedSize: 'M',
+                 fitScores: {
+                     waist: 0.95,
+                     bottom: 0.92,
+                     length: 0.88
+                 },
+                 overallFit: { status: 'comfortable', icon: '🟢', text: 'Comfortable Fit' }
+             };
+             
+             displayFitAnalysis(analysis, 'pants');
+         }
+
+        function testShirtFit() {
+            const analysis = {
+                item: itemData['jagvi-shirt'],
+                selectedSize: 'M',
+                fitScores: {
+                    chest: 0.88,
+                    shoulder: 0.85,
+                    sleeve: 0.92,
+                    neck: 0.78,
+                    length: 0.90
+                },
+                overallFit: { status: 'comfortable', icon: '🟢', text: 'Good Fit' }
+            };
+            
+            displayFitAnalysis(analysis, 'shirt');
+        }
+
+        function displayFitAnalysis(analysis, itemType) {
+            const indicators = ['chestFit', 'shoulderFit', 'lengthFit', 'overallFit'];
+            let html = '';
+            
+            indicators.forEach(indicatorId => {
+                const fitData = getFitIndicatorData(indicatorId, analysis);
+                const label = getLabelForIndicator(indicatorId, analysis.item.type);
+                
+                html += `
+                    <div class="fit-indicator">
+                        <div class="indicator-icon">${fitData.icon}</div>
+                        <div class="indicator-label">${label}</div>
+                        <div class="indicator-status">${fitData.text}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('fitIndicators').innerHTML = html;
+            
+            // Test validation
+            const labels = Array.from(document.querySelectorAll('.indicator-label')).map(el => el.textContent);
+            const status = document.getElementById('testStatus');
+            
+            if (itemType === 'pants') {
+                const expectedLabels = ['Waist', 'Bottom', 'Length', 'Overall'];
+                const isCorrect = expectedLabels.every((label, index) => labels[index] === label);
+                
+                if (isCorrect) {
+                    status.innerHTML = '<p class="success">✅ PASS: Pants correctly show Waist, Bottom, Length, Overall</p>';
+                } else {
+                    status.innerHTML = '<p class="error">❌ FAIL: Pants should show Waist, Bottom, Length, Overall but got: ' + labels.join(', ') + '</p>';
+                }
+            } else {
+                const expectedLabels = ['Chest', 'Shoulder', 'Length', 'Overall'];
+                const isCorrect = expectedLabels.every((label, index) => labels[index] === label);
+                
+                if (isCorrect) {
+                    status.innerHTML = '<p class="success">✅ PASS: Shirt correctly show Chest, Shoulder, Length, Overall</p>';
+                } else {
+                    status.innerHTML = '<p class="error">❌ FAIL: Shirt should show Chest, Shoulder, Length, Overall but got: ' + labels.join(', ') + '</p>';
+                }
+            }
+        }
+
+        function getFitIndicatorData(indicatorId, analysis) {
+            switch (indicatorId) {
+                case 'chestFit':
+                    // For pants, use waist score; for shirts/jackets, use chest score
+                    const chestScore = analysis.item.type === 'pants' 
+                        ? (analysis.fitScores.waist || 0.8)
+                        : (analysis.fitScores.chest || 0.8);
+                    return getFitStatus(chestScore);
+                case 'shoulderFit':
+                    // For pants, use bottom score; for shirts/jackets, use shoulder score
+                    const shoulderScore = analysis.item.type === 'pants'
+                        ? (analysis.fitScores.bottom || 0.8)
+                        : (analysis.fitScores.shoulder || 0.8);
+                    return getFitStatus(shoulderScore);
+                case 'lengthFit':
+                    const lengthScore = analysis.fitScores.length || 0.8;
+                    return getFitStatus(lengthScore);
+                case 'overallFit':
+                    return analysis.overallFit;
+                default:
+                    return { status: 'comfortable', icon: '🟢', text: 'Good Fit' };
+            }
+        }
+
+        function getLabelForIndicator(indicatorId, itemType) {
+            if (itemType === 'pants') {
+                switch (indicatorId) {
+                    case 'chestFit': return 'Waist';
+                    case 'shoulderFit': return 'Bottom';
+                    case 'lengthFit': return 'Length';
+                    case 'overallFit': return 'Overall';
+                }
+            } else {
+                switch (indicatorId) {
+                    case 'chestFit': return 'Chest';
+                    case 'shoulderFit': return 'Shoulder';
+                    case 'lengthFit': return 'Length';
+                    case 'overallFit': return 'Overall';
+                }
+            }
+        }
+
+        function getFitStatus(score) {
+            if (score >= 0.9) return { status: 'comfortable', icon: '🟢', text: 'Perfect Fit' };
+            if (score >= 0.8) return { status: 'comfortable', icon: '🟢', text: 'Comfortable Fit' };
+            if (score >= 0.7) return { status: 'comfortable', icon: '🟢', text: 'Good Fit' };
+            if (score >= 0.6) return { status: 'slightly-tight', icon: '🟡', text: 'Slightly Tight' };
+            if (score >= 0.4) return { status: 'slightly-tight', icon: '🟡', text: 'Consider Sizing Up' };
+            return { status: 'too-tight', icon: '🔴', text: 'Size Up Recommended' };
+        }
+
+        // Auto-run pants test on page load
+        window.addEventListener('load', () => {
+            setTimeout(testPantsFit, 500);
+        });
+    </script>
+</body>
+</html>

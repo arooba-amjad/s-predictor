@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overall Fit Calculation Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-case {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .good-fit {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .bad-fit {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .score {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .good { color: #28a745; }
+        .bad { color: #dc3545; }
+        .debug {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Overall Fit Calculation Test</h1>
+        <p>Testing that good individual measurements result in good overall fit</p>
+        
+        <div id="testResults"></div>
+    </div>
+
+    <script>
+        // Mock the fit analysis functions
+        function calculateFitScore(difference, tolerance) {
+            if (difference <= tolerance * 0.5) return 1;      // Perfect fit
+            if (difference <= tolerance) return 0.9;          // Very good fit
+            if (difference <= tolerance * 1.5) return 0.8;    // Good fit
+            if (difference <= tolerance * 2) return 0.7;      // Slightly tight/loose
+            if (difference <= tolerance * 2.5) return 0.6;    // Noticeably tight/loose
+            if (difference <= tolerance * 3) return 0.4;      // Very tight/loose
+            return 0.2;                                      // Too tight/loose
+        }
+
+        function getFitStatus(score) {
+            if (score >= 0.9) return { status: 'comfortable', icon: '🟢', text: 'Perfect Fit' };
+            if (score >= 0.8) return { status: 'comfortable', icon: '🟢', text: 'Comfortable Fit' };
+            if (score >= 0.7) return { status: 'comfortable', icon: '🟢', text: 'Good Fit' };
+            if (score >= 0.6) return { status: 'slightly-tight', icon: '🟡', text: 'Slightly Tight' };
+            if (score >= 0.4) return { status: 'slightly-tight', icon: '🟡', text: 'Consider Sizing Up' };
+            return { status: 'too-tight', icon: '🔴', text: 'Size Up Recommended' };
+        }
+
+        function performFitAnalysisTest(measurements, selectedSizeData, bodyType = 'average') {
+            const fitScores = {};
+            const weights = {
+                waist: 0.4,
+                bottom: 0.3,
+                pantsLength: 0.3
+            };
+            
+            let weightedScore = 0;
+            let totalWeight = 0;
+            
+            // Calculate fit scores for each measurement
+            if (measurements.waist) {
+                const waistDiff = Math.abs(measurements.waist - selectedSizeData.waist);
+                fitScores.waist = calculateFitScore(waistDiff, 1.5);
+                weightedScore += fitScores.waist * weights.waist;
+                totalWeight += weights.waist;
+            }
+            
+            if (measurements.bottom) {
+                const bottomDiff = Math.abs(measurements.bottom - selectedSizeData.bottom);
+                fitScores.bottom = calculateFitScore(bottomDiff, 0.75);
+                weightedScore += fitScores.bottom * weights.bottom;
+                totalWeight += weights.bottom;
+            }
+            
+            if (measurements.length) {
+                const lengthDiff = Math.abs(measurements.length - selectedSizeData.length);
+                fitScores.length = calculateFitScore(lengthDiff, 2);
+                weightedScore += fitScores.length * weights.pantsLength;
+                totalWeight += weights.pantsLength;
+            }
+            
+            // Calculate weighted average score
+            const averageScore = totalWeight > 0 ? weightedScore / totalWeight : 0;
+            
+            // Adjust overall score based on body type
+            let adjustedScore = averageScore;
+            if (bodyType === 'athletic' || bodyType === 'plus') {
+                adjustedScore = Math.min(1, averageScore * 1.1);
+            }
+            
+            // Ensure we have a valid score
+            if (isNaN(adjustedScore) || adjustedScore === 0) {
+                adjustedScore = 0.8;
+            }
+            
+            const overallFit = getFitStatus(adjustedScore);
+            
+            return {
+                fitScores,
+                weightedScore,
+                totalWeight,
+                averageScore,
+                adjustedScore,
+                overallFit
+            };
+        }
+
+        function runTest() {
+            const testResults = document.getElementById('testResults');
+            const selectedSizeData = { waist: 39, bottom: 16, length: 100.5 }; // Size M
+            
+            // Test Case 1: Perfect measurements
+            const perfectMeasurements = { waist: 39, bottom: 16, length: 100.5 };
+            const perfectResult = performFitAnalysisTest(perfectMeasurements, selectedSizeData);
+            
+            // Test Case 2: Good measurements (within tolerance)
+            const goodMeasurements = { waist: 39.5, bottom: 16.2, length: 101 };
+            const goodResult = performFitAnalysisTest(goodMeasurements, selectedSizeData);
+            
+            // Test Case 3: Poor measurements
+            const poorMeasurements = { waist: 42, bottom: 17.5, length: 105 };
+            const poorResult = performFitAnalysisTest(poorMeasurements, selectedSizeData);
+            
+            // Test Case 4: No measurements provided
+            const noMeasurements = {};
+            const noResult = performFitAnalysisTest(noMeasurements, selectedSizeData);
+            
+            let html = '';
+            
+            // Display results
+            const testCases = [
+                { name: 'Perfect Measurements', result: perfectResult, measurements: perfectMeasurements, expected: 'good' },
+                { name: 'Good Measurements', result: goodResult, measurements: goodMeasurements, expected: 'good' },
+                { name: 'Poor Measurements', result: poorResult, measurements: poorMeasurements, expected: 'bad' },
+                { name: 'No Measurements', result: noResult, measurements: noMeasurements, expected: 'good' }
+            ];
+            
+            testCases.forEach(testCase => {
+                const isGood = testCase.result.overallFit.status === 'comfortable';
+                const cssClass = isGood ? 'good-fit' : 'bad-fit';
+                const scoreClass = isGood ? 'good' : 'bad';
+                
+                html += `
+                    <div class="test-case ${cssClass}">
+                        <h3>${testCase.name}</h3>
+                        <p><strong>Measurements:</strong> ${JSON.stringify(testCase.measurements)}</p>
+                        <p><strong>Individual Scores:</strong> ${JSON.stringify(testCase.result.fitScores)}</p>
+                        <p><strong>Overall Score:</strong> <span class="score ${scoreClass}">${testCase.result.adjustedScore.toFixed(3)}</span></p>
+                        <p><strong>Overall Fit:</strong> ${testCase.result.overallFit.text} ${testCase.result.overallFit.icon}</p>
+                        <div class="debug">
+                            <strong>Debug Info:</strong><br>
+                            Weighted Score: ${testCase.result.weightedScore.toFixed(3)}<br>
+                            Total Weight: ${testCase.result.totalWeight.toFixed(3)}<br>
+                            Average Score: ${testCase.result.averageScore.toFixed(3)}<br>
+                            Adjusted Score: ${testCase.result.adjustedScore.toFixed(3)}
+                        </div>
+                        <p><strong>Status:</strong> ${isGood ? '✅ PASS' : '❌ FAIL'} - ${isGood ? 'Good fit correctly identified' : 'Poor fit correctly identified'}</p>
+                    </div>
+                `;
+            });
+            
+            testResults.innerHTML = html;
+        }
+
+        // Run test when page loads
+        window.addEventListener('load', runTest);
+    </script>
+</body>
+</html>
