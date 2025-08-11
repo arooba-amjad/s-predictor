@@ -43,21 +43,131 @@ const sizeCharts = {
         name: 'Jagvi Shirt (Long Sleeve)',
         reference: 'For a man of 75 kgs and 1.83 cms height',
         measurements: {
+            // Chest circumference (full, not half)
+            'chestCircumference': { XS: 102, S: 106, M: 110, L: 114, XL: 118, XXL: 122 },
+            // Shoulder width (shoulder length from chart)
+            'shoulderWidth': { XS: 13.5, S: 14, M: 14.5, L: 15, XL: 15.5, XXL: 16 },
+            // Sleeve length (sleeve total length with cuff)
+            'sleeveLength': { XS: 65, S: 65.5, M: 66, L: 66.5, XL: 67, XXL: 67.5 },
+            // Neck circumference (neck width from chart - needs to be converted to full circumference)
+            'neckCircumference': { XS: 76, S: 78, M: 82, L: 86, XL: 90, XXL: 94 },
+            // Arm circumference (armhole from chart)
+            'armCircumference': { XS: 24, S: 25, M: 26, L: 27, XL: 28, XXL: 29 },
+            // Additional measurements for compatibility
             'chestHalf': { XS: 51, S: 53, M: 55, L: 57, XL: 59, XXL: 61 },
             'waistHalf': { XS: 47, S: 49, M: 51, L: 53, XL: 55, XXL: 57 },
             'bottomHalf': { XS: 50, S: 52, M: 54, L: 56, XL: 58, XXL: 60 },
-            'totalLength': { XS: 73, S: 74, M: 75, L: 76, XL: 77, XXL: 78 },
-            'shoulderLength': { XS: 13.5, S: 14, M: 14.5, L: 15, XL: 15.5, XXL: 16 }
+            'totalLength': { XS: 73, S: 74, M: 75, L: 76, XL: 77, XXL: 78 }
+        },
+        // Size ranges and tolerances for better prediction
+        sizeRanges: {
+            'XS': {
+                chestCircumference: { min: 98, max: 105, tolerance: 3.5 },
+                shoulderWidth: { min: 13, max: 14, tolerance: 0.5 },
+                sleeveLength: { min: 64, max: 66, tolerance: 1.0 },
+                neckCircumference: { min: 73, max: 79, tolerance: 3.0 },
+                armCircumference: { min: 23, max: 25, tolerance: 1.0 }
+            },
+            'S': {
+                chestCircumference: { min: 102, max: 109, tolerance: 3.5 },
+                shoulderWidth: { min: 13.5, max: 14.5, tolerance: 0.5 },
+                sleeveLength: { min: 65, max: 66.5, tolerance: 1.0 },
+                neckCircumference: { min: 75, max: 81, tolerance: 3.0 },
+                armCircumference: { min: 24, max: 26, tolerance: 1.0 }
+            },
+            'M': {
+                chestCircumference: { min: 106, max: 113, tolerance: 3.5 },
+                shoulderWidth: { min: 14, max: 15, tolerance: 0.5 },
+                sleeveLength: { min: 65.5, max: 66.5, tolerance: 1.0 },
+                neckCircumference: { min: 79, max: 85, tolerance: 3.0 },
+                armCircumference: { min: 25, max: 27, tolerance: 1.0 }
+            },
+            'L': {
+                chestCircumference: { min: 110, max: 117, tolerance: 3.5 },
+                shoulderWidth: { min: 14.5, max: 15.5, tolerance: 0.5 },
+                sleeveLength: { min: 66, max: 67, tolerance: 1.0 },
+                neckCircumference: { min: 83, max: 89, tolerance: 3.0 },
+                armCircumference: { min: 26, max: 28, tolerance: 1.0 }
+            },
+            'XL': {
+                chestCircumference: { min: 114, max: 121, tolerance: 3.5 },
+                shoulderWidth: { min: 15, max: 16, tolerance: 0.5 },
+                sleeveLength: { min: 66.5, max: 67.5, tolerance: 1.0 },
+                neckCircumference: { min: 87, max: 93, tolerance: 3.0 },
+                armCircumference: { min: 27, max: 29, tolerance: 1.0 }
+            },
+            'XXL': {
+                chestCircumference: { min: 118, max: 125, tolerance: 3.5 },
+                shoulderWidth: { min: 15.5, max: 16.5, tolerance: 0.5 },
+                sleeveLength: { min: 67, max: 68, tolerance: 1.0 },
+                neckCircumference: { min: 91, max: 97, tolerance: 3.0 },
+                armCircumference: { min: 28, max: 30, tolerance: 1.0 }
+            }
         }
     },
     'short-sleeves': {
         name: 'Short Sleeve Shirt',
         reference: 'For a man of 75 kgs and 1.83 cms height',
         measurements: {
+            // Chest circumference (full, not half) - converted from chestHalf * 2
+            'chestCircumference': { XS: 104, S: 108, M: 112, L: 116, XL: 120, XXL: 124 },
+            // Shoulder width (shoulder length from chart)
+            'shoulderWidth': { XS: 12.5, S: 13.25, M: 14, L: 14.75, XL: 15.5, XXL: 16.25 },
+            // Sleeve length (sleeve total length)
+            'sleeveLength': { XS: 23, S: 24, M: 25, L: 26, XL: 27, XXL: 28 },
+            // Neck circumference (neck width from chart - needs to be converted to full circumference)
+            'neckCircumference': { XS: 37, S: 38, M: 39, L: 40, XL: 41, XXL: 42 },
+            // Arm circumference (armhole from chart)
+            'armCircumference': { XS: 22.5, S: 23, M: 25, L: 24, XL: 24.5, XXL: 25 },
+            // Additional measurements for compatibility
             'chestHalf': { XS: 52, S: 54, M: 56, L: 58, XL: 60, XXL: 62 },
             'waistHalf': { XS: 49, S: 51, M: 53, L: 55, XL: 57, XXL: 59 },
-            'totalLength': { '70': 70, '71': 71, '72': 72, '73': 73, '74': 74, '75': 75 },
-            'shoulderLength': { '70': 12.5, '71': 13.25, '72': 14, '73': 14.75, '74': 15.5, '75': 16.25 }
+            'bottomHalf': { XS: 50, S: 52, M: 54, L: 56, XL: 58, XXL: 60 },
+            'totalLength': { XS: 70, S: 71, M: 72, L: 73, XL: 74, XXL: 75 }
+        },
+        sizeRanges: {
+            'XS': {
+                chestCircumference: { min: 100, max: 107, tolerance: 3.5 },
+                shoulderWidth: { min: 12, max: 13, tolerance: 0.5 },
+                sleeveLength: { min: 22, max: 24, tolerance: 1.0 },
+                neckCircumference: { min: 36, max: 38, tolerance: 1.0 },
+                armCircumference: { min: 22, max: 23, tolerance: 0.5 }
+            },
+            'S': {
+                chestCircumference: { min: 104, max: 111, tolerance: 3.5 },
+                shoulderWidth: { min: 12.5, max: 13.5, tolerance: 0.5 },
+                sleeveLength: { min: 23, max: 25, tolerance: 1.0 },
+                neckCircumference: { min: 37, max: 39, tolerance: 1.0 },
+                armCircumference: { min: 22.5, max: 23.5, tolerance: 0.5 }
+            },
+            'M': {
+                chestCircumference: { min: 108, max: 115, tolerance: 3.5 },
+                shoulderWidth: { min: 13.5, max: 14.5, tolerance: 0.5 },
+                sleeveLength: { min: 24, max: 26, tolerance: 1.0 },
+                neckCircumference: { min: 38, max: 40, tolerance: 1.0 },
+                armCircumference: { min: 24, max: 26, tolerance: 1.0 }
+            },
+            'L': {
+                chestCircumference: { min: 112, max: 119, tolerance: 3.5 },
+                shoulderWidth: { min: 14.5, max: 15.5, tolerance: 0.5 },
+                sleeveLength: { min: 25, max: 27, tolerance: 1.0 },
+                neckCircumference: { min: 39, max: 41, tolerance: 1.0 },
+                armCircumference: { min: 23.5, max: 24.5, tolerance: 0.5 }
+            },
+            'XL': {
+                chestCircumference: { min: 116, max: 123, tolerance: 3.5 },
+                shoulderWidth: { min: 15, max: 16, tolerance: 0.5 },
+                sleeveLength: { min: 26, max: 28, tolerance: 1.0 },
+                neckCircumference: { min: 40, max: 42, tolerance: 1.0 },
+                armCircumference: { min: 24, max: 25, tolerance: 0.5 }
+            },
+            'XXL': {
+                chestCircumference: { min: 120, max: 127, tolerance: 3.5 },
+                shoulderWidth: { min: 15.5, max: 16.5, tolerance: 0.5 },
+                sleeveLength: { min: 27, max: 29, tolerance: 1.0 },
+                neckCircumference: { min: 41, max: 43, tolerance: 1.0 },
+                armCircumference: { min: 24.5, max: 25.5, tolerance: 0.5 }
+            }
         }
     },
     'pants': {
@@ -84,11 +194,66 @@ const sizeCharts = {
         name: 'Polar Overshirt Jacket',
         reference: 'SUMMER 2025 Collection',
         measurements: {
+            // Chest circumference (full, not half) - converted from chestHalf * 2
+            'chestCircumference': { XS: 108, S: 112, M: 116, L: 120, XL: 124, XXL: 128 },
+            // Shoulder width (shoulder length from chart)
+            'shoulderWidth': { XS: 14, S: 14.5, M: 15, L: 15.5, XL: 16, XXL: 16.5 },
+            // Sleeve length (sleeve total length from chart)
+            'sleeveLength': { XS: 65, S: 65.5, M: 66, L: 66.5, XL: 67, XXL: 67.5 },
+            // Neck circumference (neck width from chart - needs to be converted to full circumference)
+            'neckCircumference': { XS: 34, S: 36, M: 38, L: 40, XL: 42, XXL: 44 },
+            // Arm circumference (armhole from chart)
+            'armCircumference': { XS: 27, S: 28, M: 29, L: 30, XL: 31, XXL: 32 },
+            // Additional measurements for compatibility (kept for now, but not primary)
             'chestHalf': { XS: 54, S: 56, M: 58, L: 60, XL: 62, XXL: 64 },
             'waistHalf': { XS: 52, S: 54, M: 56, L: 58, XL: 60, XXL: 62 },
             'bottomHalf': { XS: 53, S: 55, M: 57, L: 59, XL: 61, XXL: 63 },
             'totalLength': { XS: 71, S: 72, M: 73, L: 74, XL: 75, XXL: 76 },
             'shoulderLength': { XS: 14, S: 14.5, M: 15, L: 15.5, XL: 16, XXL: 16.5 }
+        },
+        sizeRanges: {
+            'XS': {
+                chestCircumference: { min: 104, max: 111, tolerance: 3.5 },
+                shoulderWidth: { min: 13.5, max: 14.5, tolerance: 0.5 },
+                sleeveLength: { min: 64, max: 66, tolerance: 1.0 },
+                neckCircumference: { min: 33, max: 35, tolerance: 1.0 },
+                armCircumference: { min: 26.5, max: 27.5, tolerance: 0.5 }
+            },
+            'S': {
+                chestCircumference: { min: 108, max: 115, tolerance: 3.5 },
+                shoulderWidth: { min: 14, max: 15, tolerance: 0.5 },
+                sleeveLength: { min: 65, max: 66, tolerance: 1.0 },
+                neckCircumference: { min: 35, max: 37, tolerance: 1.0 },
+                armCircumference: { min: 27.5, max: 28.5, tolerance: 0.5 }
+            },
+            'M': {
+                chestCircumference: { min: 112, max: 119, tolerance: 3.5 },
+                shoulderWidth: { min: 14.5, max: 15.5, tolerance: 0.5 },
+                sleeveLength: { min: 65.5, max: 66.5, tolerance: 1.0 },
+                neckCircumference: { min: 37, max: 39, tolerance: 1.0 },
+                armCircumference: { min: 28.5, max: 29.5, tolerance: 0.5 }
+            },
+            'L': {
+                chestCircumference: { min: 116, max: 123, tolerance: 3.5 },
+                shoulderWidth: { min: 15, max: 16, tolerance: 0.5 },
+                sleeveLength: { min: 66, max: 67, tolerance: 1.0 },
+                neckCircumference: { min: 39, max: 41, tolerance: 1.0 },
+                armCircumference: { min: 29.5, max: 30.5, tolerance: 0.5 }
+            },
+            'XL': {
+                chestCircumference: { min: 120, max: 127, tolerance: 3.5 },
+                shoulderWidth: { min: 15.5, max: 16.5, tolerance: 0.5 },
+                sleeveLength: { min: 66.5, max: 67.5, tolerance: 1.0 },
+                neckCircumference: { min: 41, max: 43, tolerance: 1.0 },
+                armCircumference: { min: 30.5, max: 31.5, tolerance: 0.5 }
+            },
+            'XXL': {
+                chestCircumference: { min: 124, max: 131, tolerance: 3.5 },
+                shoulderWidth: { min: 16, max: 17, tolerance: 0.5 },
+                sleeveLength: { min: 67, max: 68, tolerance: 1.0 },
+                neckCircumference: { min: 43, max: 45, tolerance: 1.0 },
+                armCircumference: { min: 31.5, max: 32.5, tolerance: 0.5 }
+            }
         }
     }
 };
@@ -120,23 +285,40 @@ function estimateMeasurements(height, weight, age, gender, bodyType, garmentType
         const hipsInches = chestInches + 1; // Hips are typically 1 inch larger than chest
         
         // Convert to cm for shirt measurements
-        const chestHalfCm = (chestInches * 2.54) / 2; // Convert to cm and divide by 2
+        const chestCircumferenceCm = chestInches * 2.54; // Full chest circumference in cm
+        const chestHalfCm = chestCircumferenceCm / 2; // Half chest for compatibility
         const waistHalfCm = (waistInches * 2.54) / 2; // Convert to cm and divide by 2
         const bottomHalfCm = (chestInches * 2.54) / 2 + 1; // Bottom is typically 1cm larger than chest
         const totalLengthCm = height * 0.42; // Total length is typically 42% of height
-        const shoulderLengthCm = 12 + (height - 160) * 0.05; // Shoulder length based on height
+        const shoulderWidthCm = 12 + (height - 160) * 0.05; // Shoulder width based on height
+        const sleeveLengthCm = height * 0.38; // Sleeve length is typically 38% of height
+        const neckCircumferenceCm = chestCircumferenceCm * 0.75; // Neck is typically 75% of chest
+        const armCircumferenceCm = chestCircumferenceCm * 0.25; // Arm is typically 25% of chest
         
         estimatedMeasurements = {
             chest: chestInches,
             waist: waistInches,
             hips: hipsInches,
             inseam: height * 0.45, // Inseam is typically 45% of height
-            // Shirt specific measurements
+            // New measurement names for Jagvi shirt
+            chestCircumference: chestCircumferenceCm,
+            shoulderWidth: shoulderWidthCm,
+            sleeveLength: sleeveLengthCm,
+            neckCircumference: neckCircumferenceCm,
+            armCircumference: armCircumferenceCm,
+            // New measurement names for short sleeve shirt
+            chestHalfCm: chestHalfCm,
+            waistHalfCm: waistHalfCm,
+            shoulderWidthCm: shoulderWidthCm,
+            sleeveLengthCm: sleeveLengthCm,
+            neckCircumferenceCm: neckCircumferenceCm,
+            totalLengthCm: totalLengthCm,
+            // Legacy measurements for compatibility
             chestHalf: chestHalfCm,
             waistHalf: waistHalfCm,
             bottomHalf: bottomHalfCm,
             totalLength: totalLengthCm,
-            shoulderLength: shoulderLengthCm
+            shoulderLength: shoulderWidthCm
         };
     }
     
@@ -241,20 +423,33 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     const hasDetailedMeasurements = garmentType === 'pants' 
         ? (measurements.waist || measurements.hip || measurements.length)
         : garmentType === 'short-sleeves'
-        ? (measurements.chestHalf || measurements.waistHalf || measurements.shoulderLength || measurements.totalLength)
+        ? (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength)
         : garmentType === 'jagvi-shirt'
-        ? (measurements.chestHalf || measurements.waistHalf || measurements.bottomHalf || measurements.shoulderLength || measurements.totalLength)
+        ? (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength)
         : garmentType === 'hooded-jacket'
         ? (measurements.chestHalf || measurements.waistHalf || measurements.bottomHalf || measurements.shoulderLength || measurements.totalLength)
         : garmentType === 'polar-overshirt'
-        ? (measurements.chestHalf || measurements.waistHalf || measurements.bottomHalf || measurements.shoulderLength || measurements.totalLength)
+        ? (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength)
         : (measurements.chest || measurements.waist);
     
     let finalMeasurements = measurements;
     let confidence = 85; // Base confidence
     
+    // For jagvi-shirt and short-sleeves, measurements are compulsory - reject if missing
+    if (garmentType === 'jagvi-shirt' && !hasDetailedMeasurements) {
+        throw new Error('All measurements are required for Jagvi shirt size prediction. Please provide: chestCircumference, shoulderWidth, sleeveLength, neckCircumference, armCircumference, and totalLength.');
+    }
+    
+    if (garmentType === 'short-sleeves' && !hasDetailedMeasurements) {
+        throw new Error('All measurements are required for short sleeve shirt size prediction. Please provide: chestCircumference, shoulderWidth, sleeveLength, neckCircumference, armCircumference, and totalLength.');
+    }
+    
+    if (garmentType === 'polar-overshirt' && !hasDetailedMeasurements) {
+        throw new Error('All measurements are required for polar overshirt size prediction. Please provide: chestCircumference, shoulderWidth, sleeveLength, neckCircumference, armCircumference, and totalLength.');
+    }
+    
     if (!hasDetailedMeasurements) {
-        // Estimate measurements from basic info
+        // Estimate measurements from basic info (for other garment types)
         finalMeasurements = estimateMeasurements(height, weight, age, gender, bodyType, garmentType);
         confidence = 75; // Lower confidence for estimated measurements
     }
@@ -267,10 +462,22 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
         predictedSize = predictPantsSize(finalMeasurements, chartMeasurements, gender, bodyType);
     } else if (garmentType === 'short-sleeves') {
         // Short sleeve sizing logic (uses letter sizes)
+        console.log('=== SHORT SLEEVE SHIRT PREDICTION ===');
+        console.log('Input measurements:', finalMeasurements);
+        console.log('Chart measurements:', chartMeasurements);
+        console.log('Gender:', gender, 'Body type:', bodyType);
         predictedSize = predictShortSleeveSize(finalMeasurements, chartMeasurements, gender, bodyType);
+        console.log('Predicted size:', predictedSize);
+        console.log('=== END SHORT SLEEVE SHIRT PREDICTION ===');
     } else if (garmentType === 'jagvi-shirt') {
         // Long sleeve sizing logic (uses letter sizes)
+        console.log('=== JAGVI SHIRT PREDICTION ===');
+        console.log('Input measurements:', finalMeasurements);
+        console.log('Chart measurements:', chartMeasurements);
+        console.log('Gender:', gender, 'Body type:', bodyType);
         predictedSize = predictLongSleeveSize(finalMeasurements, chartMeasurements, gender, bodyType);
+        console.log('Predicted size:', predictedSize);
+        console.log('=== END JAGVI SHIRT PREDICTION ===');
     } else if (garmentType === 'hooded-jacket') {
         // Hooded jacket sizing logic (uses letter sizes)
         predictedSize = predictHoodedJacketSize(finalMeasurements, chartMeasurements, gender, bodyType);
@@ -302,50 +509,20 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
             confidence += 5;
         }
     } else if (garmentType === 'short-sleeves') {
-        if (measurements.chestHalf && measurements.waistHalf && measurements.shoulderLength && measurements.totalLength) {
-            confidence += 25; // Maximum confidence for all four measurements
-        } else if (measurements.chestHalf && measurements.waistHalf) {
-            confidence += 20;
-        } else if (measurements.chestHalf && measurements.shoulderLength) {
-            confidence += 18;
-        } else if (measurements.chestHalf && measurements.totalLength) {
-            confidence += 18;
-        } else if (measurements.chestHalf) {
-            confidence += 15;
-        } else if (measurements.waistHalf) {
-            confidence += 15;
-        } else if (measurements.shoulderLength) {
-            confidence += 10;
-        } else if (measurements.totalLength) {
-            confidence += 10;
-        } else if (hasDetailedMeasurements) {
-            confidence += 5;
+        // For short-sleeves, all measurements are required, so we always have maximum confidence
+        if (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength) {
+            confidence += 30; // Maximum confidence for all six measurements
+        } else {
+            // This should never happen due to validation above, but just in case
+            confidence = 0; // No confidence if measurements are missing
         }
     } else if (garmentType === 'jagvi-shirt') {
-        if (measurements.chestHalf && measurements.waistHalf && measurements.bottomHalf && measurements.shoulderLength && measurements.totalLength) {
-            confidence += 30; // Maximum confidence for all five measurements
-        } else if (measurements.chestHalf && measurements.waistHalf && measurements.bottomHalf) {
-            confidence += 25;
-        } else if (measurements.chestHalf && measurements.waistHalf) {
-            confidence += 20;
-        } else if (measurements.chestHalf && measurements.bottomHalf) {
-            confidence += 20;
-        } else if (measurements.chestHalf && measurements.shoulderLength) {
-            confidence += 18;
-        } else if (measurements.chestHalf && measurements.totalLength) {
-            confidence += 18;
-        } else if (measurements.chestHalf) {
-            confidence += 15;
-        } else if (measurements.waistHalf) {
-            confidence += 15;
-        } else if (measurements.bottomHalf) {
-            confidence += 15;
-        } else if (measurements.shoulderLength) {
-            confidence += 10;
-        } else if (measurements.totalLength) {
-            confidence += 10;
-        } else if (hasDetailedMeasurements) {
-            confidence += 5;
+        // For jagvi-shirt, all measurements are required, so we always have maximum confidence
+        if (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength) {
+            confidence += 30; // Maximum confidence for all six measurements
+        } else {
+            // This should never happen due to validation above, but just in case
+            confidence = 0; // No confidence if measurements are missing
         }
     } else if (garmentType === 'hooded-jacket') {
         if (measurements.chestHalf && measurements.waistHalf && measurements.bottomHalf && measurements.shoulderLength && measurements.totalLength) {
@@ -374,30 +551,12 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
             confidence += 5;
         }
     } else if (garmentType === 'polar-overshirt') {
-        if (measurements.chestHalf && measurements.waistHalf && measurements.bottomHalf && measurements.shoulderLength && measurements.totalLength) {
-            confidence += 30; // Maximum confidence for all five measurements
-        } else if (measurements.chestHalf && measurements.waistHalf && measurements.bottomHalf) {
-            confidence += 25;
-        } else if (measurements.chestHalf && measurements.waistHalf) {
-            confidence += 20;
-        } else if (measurements.chestHalf && measurements.bottomHalf) {
-            confidence += 20;
-        } else if (measurements.chestHalf && measurements.shoulderLength) {
-            confidence += 18;
-        } else if (measurements.chestHalf && measurements.totalLength) {
-            confidence += 18;
-        } else if (measurements.chestHalf) {
-            confidence += 15;
-        } else if (measurements.waistHalf) {
-            confidence += 15;
-        } else if (measurements.bottomHalf) {
-            confidence += 15;
-        } else if (measurements.shoulderLength) {
-            confidence += 10;
-        } else if (measurements.totalLength) {
-            confidence += 10;
-        } else if (hasDetailedMeasurements) {
-            confidence += 5;
+        // For polar-overshirt, all measurements are required, so we always have maximum confidence
+        if (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength) {
+            confidence += 30; // Maximum confidence for all six measurements
+        } else {
+            // This should never happen due to validation above, but just in case
+            confidence = 0; // No confidence if measurements are missing
         }
     } else {
         if (measurements.chest && measurements.waist) {
@@ -547,73 +706,100 @@ function predictPantsSize(measurements, chartMeasurements, gender, bodyType) {
 
 // Predict short sleeve size based on new measurements
 function predictShortSleeveSize(measurements, chartMeasurements, gender, bodyType) {
-    const chestHalf = measurements.chestHalf;
-    const waistHalf = measurements.waistHalf;
-    const shoulderLength = measurements.shoulderLength;
+    const chestCircumference = measurements.chestCircumference;
+    const shoulderWidth = measurements.shoulderWidth;
+    const sleeveLength = measurements.sleeveLength;
+    const neckCircumference = measurements.neckCircumference;
+    const armCircumference = measurements.armCircumference;
     const totalLength = measurements.totalLength;
     
-    if (!chestHalf && !waistHalf && !shoulderLength && !totalLength) {
+    console.log('predictShortSleeveSize called with measurements:', measurements);
+    console.log('Chart measurements:', chartMeasurements);
+    
+    if (!chestCircumference && !shoulderWidth && !sleeveLength && !neckCircumference && !armCircumference && !totalLength) {
         return 'M'; // Default size
     }
     
-    // Find the best matching size based on chest and waist measurements
-    const sizes = Object.keys(chartMeasurements.chestHalf);
+    // Find the best matching size based on all measurements
+    const sizes = Object.keys(chartMeasurements.chestCircumference);
     let bestSize = 'M';
     let smallestDiff = Infinity;
+    
+    console.log('Available sizes:', sizes);
+    console.log('Starting size analysis...');
     
     for (const size of sizes) {
         let totalDiff = 0;
         let measurementCount = 0;
         let weightedDiff = 0;
         
-        // Compare chest and waist measurements (primary measurements)
-        if (chestHalf && chartMeasurements.chestHalf[size]) {
-            const chestDiff = Math.abs(chartMeasurements.chestHalf[size] - chestHalf);
+        // Compare chest circumference (primary measurement - 25% weight)
+        if (chestCircumference && chartMeasurements.chestCircumference[size]) {
+            const chestDiff = Math.abs(chartMeasurements.chestCircumference[size] - chestCircumference);
             totalDiff += chestDiff;
-            weightedDiff += chestDiff * 0.4; // Chest has 40% weight
+            weightedDiff += chestDiff * 0.25;
             measurementCount++;
+            console.log(`  Chest: user=${chestCircumference}, chart=${chartMeasurements.chestCircumference[size]}, diff=${chestDiff.toFixed(2)}`);
         }
         
-        if (waistHalf && chartMeasurements.waistHalf[size]) {
-            const waistDiff = Math.abs(chartMeasurements.waistHalf[size] - waistHalf);
-            totalDiff += waistDiff;
-            weightedDiff += waistDiff * 0.4; // Waist has 40% weight
+        // Compare shoulder width (25% weight)
+        if (shoulderWidth && chartMeasurements.shoulderWidth[size]) {
+            const shoulderDiff = Math.abs(chartMeasurements.shoulderWidth[size] - shoulderWidth);
+            totalDiff += shoulderDiff;
+            weightedDiff += shoulderDiff * 0.25;
             measurementCount++;
+            console.log(`  Shoulder: user=${shoulderWidth}, chart=${chartMeasurements.shoulderWidth[size]}, diff=${shoulderDiff.toFixed(2)}`);
         }
         
-        // Compare length measurements if available
-        if (totalLength && shoulderLength) {
-            // Find the best matching length size
-            const lengthSizes = Object.keys(chartMeasurements.totalLength);
-            let bestLengthMatch = null;
-            let smallestLengthDiff = Infinity;
-            
-            for (const lengthSize of lengthSizes) {
-                const lengthDiff = Math.abs(chartMeasurements.totalLength[lengthSize] - totalLength);
-                const shoulderDiff = Math.abs(chartMeasurements.shoulderLength[lengthSize] - shoulderLength);
-                const combinedDiff = lengthDiff + shoulderDiff;
-                
-                if (combinedDiff < smallestLengthDiff) {
-                    smallestLengthDiff = combinedDiff;
-                    bestLengthMatch = lengthSize;
-                }
-            }
-            
-            if (bestLengthMatch) {
-                weightedDiff += smallestLengthDiff * 0.2; // Length measurements have 20% weight
-                measurementCount++;
-            }
+        // Compare sleeve length (20% weight)
+        if (sleeveLength && chartMeasurements.sleeveLength[size]) {
+            const sleeveDiff = Math.abs(chartMeasurements.sleeveLength[size] - sleeveLength);
+            totalDiff += sleeveDiff;
+            weightedDiff += sleeveDiff * 0.20;
+            measurementCount++;
+            console.log(`  Sleeve: user=${sleeveLength}, chart=${chartMeasurements.sleeveLength[size]}, diff=${sleeveDiff.toFixed(2)}`);
         }
         
-        // Use weighted average for better accuracy
+        // Compare neck circumference (15% weight)
+        if (neckCircumference && chartMeasurements.neckCircumference[size]) {
+            const neckDiff = Math.abs(chartMeasurements.neckCircumference[size] - neckCircumference);
+            totalDiff += neckDiff;
+            weightedDiff += neckDiff * 0.15;
+            measurementCount++;
+            console.log(`  Neck: user=${neckCircumference}, chart=${chartMeasurements.neckCircumference[size]}, diff=${neckDiff.toFixed(2)}`);
+        }
+        
+        // Compare arm circumference (10% weight)
+        if (armCircumference && chartMeasurements.armCircumference[size]) {
+            const armDiff = Math.abs(chartMeasurements.armCircumference[size] - armCircumference);
+            totalDiff += armDiff;
+            weightedDiff += armDiff * 0.10;
+            measurementCount++;
+            console.log(`  Arm: user=${armCircumference}, chart=${chartMeasurements.armCircumference[size]}, diff=${armDiff.toFixed(2)}`);
+        }
+        
+        // Compare total length (10% weight)
+        if (totalLength && chartMeasurements.totalLength[size]) {
+            const lengthDiff = Math.abs(chartMeasurements.totalLength[size] - totalLength);
+            totalDiff += lengthDiff;
+            weightedDiff += lengthDiff * 0.10;
+            measurementCount++;
+            console.log(`  Length: user=${totalLength}, chart=${chartMeasurements.totalLength[size]}, diff=${lengthDiff.toFixed(2)}`);
+        }
+        
+        console.log(`  Size ${size}: weightedDiff=${weightedDiff.toFixed(2)}, measurementCount=${measurementCount}`);
+        
+        // Use weighted difference directly (FIXED: no division by measurementCount)
         if (measurementCount > 0) {
-            const avgDiff = weightedDiff / measurementCount;
-            if (avgDiff < smallestDiff) {
-                smallestDiff = avgDiff;
+            if (weightedDiff < smallestDiff) {
+                smallestDiff = weightedDiff;
                 bestSize = size;
+                console.log(`  -> New best size: ${size} (weightedDiff: ${weightedDiff.toFixed(2)})`);
             }
         }
     }
+    
+    console.log(`Final best size: ${bestSize} (smallestDiff: ${smallestDiff.toFixed(2)})`);
     
     // Adjust for body type
     if (bodyType === 'slim') {
@@ -633,105 +819,139 @@ function predictShortSleeveSize(measurements, chartMeasurements, gender, bodyTyp
         else if (bestSize === 'XL') bestSize = 'XXL';
     }
     
+    console.log(`Final size after body type adjustment: ${bestSize}`);
     return bestSize;
 }
 
 // Predict long sleeve size based on new measurements
 function predictLongSleeveSize(measurements, chartMeasurements, gender, bodyType) {
-    const chestHalf = measurements.chestHalf;
-    const waistHalf = measurements.waistHalf;
-    const bottomHalf = measurements.bottomHalf;
-    const shoulderLength = measurements.shoulderLength;
+    const chestCircumference = measurements.chestCircumference;
+    const shoulderWidth = measurements.shoulderWidth;
+    const sleeveLength = measurements.sleeveLength;
+    const neckCircumference = measurements.neckCircumference;
+    const armCircumference = measurements.armCircumference;
     const totalLength = measurements.totalLength;
     
-    if (!chestHalf && !waistHalf && !bottomHalf && !shoulderLength && !totalLength) {
+    console.log('predictLongSleeveSize called with measurements:', measurements);
+    console.log('Chart measurements:', chartMeasurements);
+    
+    if (!chestCircumference && !shoulderWidth && !sleeveLength && !neckCircumference && !armCircumference && !totalLength) {
         return 'M'; // Default size
     }
     
-    // Find the best matching size based on chest, waist, and bottom measurements
-    const sizes = Object.keys(chartMeasurements.chestHalf);
+    // Find the best matching size based on all measurements
+    const sizes = Object.keys(chartMeasurements.chestCircumference);
     let bestSize = 'M';
     let smallestDiff = Infinity;
+    
+    console.log('Available sizes:', sizes);
+    console.log('Starting size analysis...');
     
     for (const size of sizes) {
         let totalDiff = 0;
         let measurementCount = 0;
         let weightedDiff = 0;
         
-        // Compare chest, waist, and bottom measurements (primary measurements)
-        if (chestHalf && chartMeasurements.chestHalf[size]) {
-            const chestDiff = Math.abs(chartMeasurements.chestHalf[size] - chestHalf);
+        // Compare chest circumference (primary measurement - 25% weight)
+        if (chestCircumference && chartMeasurements.chestCircumference[size]) {
+            const chestDiff = Math.abs(chartMeasurements.chestCircumference[size] - chestCircumference);
             totalDiff += chestDiff;
-            weightedDiff += chestDiff * 0.35; // Chest has 35% weight
+            weightedDiff += chestDiff * 0.25;
             measurementCount++;
+            console.log(`  Chest: user=${chestCircumference}, chart=${chartMeasurements.chestCircumference[size]}, diff=${chestDiff.toFixed(2)}`);
         }
         
-        if (waistHalf && chartMeasurements.waistHalf[size]) {
-            const waistDiff = Math.abs(chartMeasurements.waistHalf[size] - waistHalf);
-            totalDiff += waistDiff;
-            weightedDiff += waistDiff * 0.35; // Waist has 35% weight
+        // Compare shoulder width (25% weight)
+        if (shoulderWidth && chartMeasurements.shoulderWidth[size]) {
+            const shoulderDiff = Math.abs(chartMeasurements.shoulderWidth[size] - shoulderWidth);
+            totalDiff += shoulderDiff;
+            weightedDiff += shoulderDiff * 0.25;
             measurementCount++;
+            console.log(`  Shoulder: user=${shoulderWidth}, chart=${chartMeasurements.shoulderWidth[size]}, diff=${shoulderDiff.toFixed(2)}`);
         }
         
-        if (bottomHalf && chartMeasurements.bottomHalf[size]) {
-            const bottomDiff = Math.abs(chartMeasurements.bottomHalf[size] - bottomHalf);
-            totalDiff += bottomDiff;
-            weightedDiff += bottomDiff * 0.3; // Bottom has 30% weight
+        // Compare sleeve length (20% weight)
+        if (sleeveLength && chartMeasurements.sleeveLength[size]) {
+            const sleeveDiff = Math.abs(chartMeasurements.sleeveLength[size] - sleeveLength);
+            totalDiff += sleeveDiff;
+            weightedDiff += sleeveDiff * 0.20;
             measurementCount++;
+            console.log(`  Sleeve: user=${sleeveLength}, chart=${chartMeasurements.sleeveLength[size]}, diff=${sleeveDiff.toFixed(2)}`);
         }
         
-        // Compare length measurements if available
-        if (totalLength && shoulderLength) {
-            // Find the best matching length size
-            const lengthSizes = Object.keys(chartMeasurements.totalLength);
-            let bestLengthMatch = null;
-            let smallestLengthDiff = Infinity;
-            
-            for (const lengthSize of lengthSizes) {
-                const lengthDiff = Math.abs(chartMeasurements.totalLength[lengthSize] - totalLength);
-                const shoulderDiff = Math.abs(chartMeasurements.shoulderLength[lengthSize] - shoulderLength);
-                const combinedDiff = lengthDiff + shoulderDiff;
-                
-                if (combinedDiff < smallestLengthDiff) {
-                    smallestLengthDiff = combinedDiff;
-                    bestLengthMatch = lengthSize;
-                }
-            }
-            
-            if (bestLengthMatch) {
-                weightedDiff += smallestLengthDiff * 0.2; // Length measurements have 20% weight
-                measurementCount++;
-            }
+        // Compare neck circumference (15% weight)
+        if (neckCircumference && chartMeasurements.neckCircumference[size]) {
+            const neckDiff = Math.abs(chartMeasurements.neckCircumference[size] - neckCircumference);
+            totalDiff += neckDiff;
+            weightedDiff += neckDiff * 0.15;
+            measurementCount++;
+            console.log(`  Neck: user=${neckCircumference}, chart=${chartMeasurements.neckCircumference[size]}, diff=${neckDiff.toFixed(2)}`);
+        }
+        
+        // Compare arm circumference (10% weight)
+        if (armCircumference && chartMeasurements.armCircumference[size]) {
+            const armDiff = Math.abs(chartMeasurements.armCircumference[size] - armCircumference);
+            totalDiff += armDiff;
+            weightedDiff += armDiff * 0.10;
+            measurementCount++;
+            console.log(`  Arm: user=${armCircumference}, chart=${chartMeasurements.armCircumference[size]}, diff=${armDiff.toFixed(2)}`);
+        }
+        
+        // Compare total length (10% weight)
+        if (totalLength && chartMeasurements.totalLength[size]) {
+            const lengthDiff = Math.abs(chartMeasurements.totalLength[size] - totalLength);
+            totalDiff += lengthDiff;
+            weightedDiff += lengthDiff * 0.10;
+            measurementCount++;
+            console.log(`  Length: user=${totalLength}, chart=${chartMeasurements.totalLength[size]}, diff=${lengthDiff.toFixed(2)}`);
         }
         
         // Use weighted average for better accuracy
         if (measurementCount > 0) {
-            const avgDiff = weightedDiff / measurementCount;
-            if (avgDiff < smallestDiff) {
-                smallestDiff = avgDiff;
+            // Don't divide by measurementCount - use weightedDiff directly
+            // This ensures the weights are properly applied
+            console.log(`  Size ${size} summary: totalDiff=${totalDiff.toFixed(2)}, weightedDiff=${weightedDiff.toFixed(2)}, measurementCount=${measurementCount}`);
+            if (weightedDiff < smallestDiff) {
+                console.log(`    -> NEW BEST SIZE: ${size} (previous: ${bestSize}, diff: ${smallestDiff.toFixed(2)} -> ${weightedDiff.toFixed(2)})`);
+                smallestDiff = weightedDiff;
                 bestSize = size;
+            } else {
+                console.log(`    -> Keeping current best: ${bestSize} (diff: ${smallestDiff.toFixed(2)})`);
             }
         }
     }
     
+    console.log(`\n=== FINAL ANALYSIS ===`);
+    console.log(`Best size: ${bestSize}`);
+    console.log(`Smallest weighted difference: ${smallestDiff.toFixed(2)}`);
+    console.log(`This means the measurements best match size ${bestSize}`);
+    console.log(`=== END ANALYSIS ===\n`);
+    
     // Adjust for body type
+    console.log(`Body type adjustment: ${bodyType}`);
     if (bodyType === 'slim') {
         if (bestSize === 'M') bestSize = 'S';
         else if (bestSize === 'L') bestSize = 'M';
         else if (bestSize === 'XL') bestSize = 'L';
         else if (bestSize === 'XXL') bestSize = 'XL';
+        console.log(`  Slim adjustment: ${bestSize}`);
     } else if (bodyType === 'athletic') {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
         else if (bestSize === 'XL') bestSize = 'XXL';
+        console.log(`  Athletic adjustment: ${bestSize}`);
     } else if (bodyType === 'plus') {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
         else if (bestSize === 'XL') bestSize = 'XXL';
+        console.log(`  Plus adjustment: ${bestSize}`);
+    } else {
+        console.log(`  No body type adjustment needed`);
     }
     
+    console.log(`Final best size after body type adjustment: ${bestSize}`);
     return bestSize;
 }
 
@@ -836,18 +1056,19 @@ function predictHoodedJacketSize(measurements, chartMeasurements, gender, bodyTy
 
 // Predict polar overshirt size based on new measurements
 function predictPolarOvershirtSize(measurements, chartMeasurements, gender, bodyType) {
-    const chestHalf = measurements.chestHalf;
-    const waistHalf = measurements.waistHalf;
-    const bottomHalf = measurements.bottomHalf;
-    const shoulderLength = measurements.shoulderLength;
+    const chestCircumference = measurements.chestCircumference;
+    const shoulderWidth = measurements.shoulderWidth;
+    const sleeveLength = measurements.sleeveLength;
+    const neckCircumference = measurements.neckCircumference;
+    const armCircumference = measurements.armCircumference;
     const totalLength = measurements.totalLength;
     
-    if (!chestHalf && !waistHalf && !bottomHalf && !shoulderLength && !totalLength) {
+    if (!chestCircumference && !shoulderWidth && !sleeveLength && !neckCircumference && !armCircumference && !totalLength) {
         return 'M'; // Default size
     }
     
-    // Find the best matching size based on chest, waist, and bottom measurements
-    const sizes = Object.keys(chartMeasurements.chestHalf);
+    // Find the best matching size based on all measurements
+    const sizes = Object.keys(chartMeasurements.chestCircumference);
     let bestSize = 'M';
     let smallestDiff = Infinity;
     
@@ -856,50 +1077,58 @@ function predictPolarOvershirtSize(measurements, chartMeasurements, gender, body
         let measurementCount = 0;
         let weightedDiff = 0;
         
-        // Compare chest, waist, and bottom measurements (primary measurements)
-        if (chestHalf && chartMeasurements.chestHalf[size]) {
-            const chestDiff = Math.abs(chartMeasurements.chestHalf[size] - chestHalf);
+        // Compare chest circumference (primary measurement - 25% weight)
+        if (chestCircumference && chartMeasurements.chestCircumference[size]) {
+            const chestDiff = Math.abs(chartMeasurements.chestCircumference[size] - chestCircumference);
             totalDiff += chestDiff;
-            weightedDiff += chestDiff * 0.35; // Chest has 35% weight
+            weightedDiff += chestDiff * 0.25;
             measurementCount++;
+            console.log(`  Chest: user=${chestCircumference}, chart=${chartMeasurements.chestCircumference[size]}, diff=${chestDiff.toFixed(2)}`);
         }
         
-        if (waistHalf && chartMeasurements.waistHalf[size]) {
-            const waistDiff = Math.abs(chartMeasurements.waistHalf[size] - waistHalf);
-            totalDiff += waistDiff;
-            weightedDiff += waistDiff * 0.35; // Waist has 35% weight
+        // Compare shoulder width (25% weight)
+        if (shoulderWidth && chartMeasurements.shoulderWidth[size]) {
+            const shoulderDiff = Math.abs(chartMeasurements.shoulderWidth[size] - shoulderWidth);
+            totalDiff += shoulderDiff;
+            weightedDiff += shoulderDiff * 0.25;
             measurementCount++;
+            console.log(`  Shoulder: user=${shoulderWidth}, chart=${chartMeasurements.shoulderWidth[size]}, diff=${shoulderDiff.toFixed(2)}`);
         }
         
-        if (bottomHalf && chartMeasurements.bottomHalf[size]) {
-            const bottomDiff = Math.abs(chartMeasurements.bottomHalf[size] - bottomHalf);
-            totalDiff += bottomDiff;
-            weightedDiff += bottomDiff * 0.3; // Bottom has 30% weight
+        // Compare sleeve length (20% weight)
+        if (sleeveLength && chartMeasurements.sleeveLength[size]) {
+            const sleeveDiff = Math.abs(chartMeasurements.sleeveLength[size] - sleeveLength);
+            totalDiff += sleeveDiff;
+            weightedDiff += sleeveDiff * 0.20;
             measurementCount++;
+            console.log(`  Sleeve: user=${sleeveLength}, chart=${chartMeasurements.sleeveLength[size]}, diff=${sleeveDiff.toFixed(2)}`);
         }
         
-        // Compare length measurements if available
-        if (totalLength && shoulderLength) {
-            // Find the best matching length size
-            const lengthSizes = Object.keys(chartMeasurements.totalLength);
-            let bestLengthMatch = null;
-            let smallestLengthDiff = Infinity;
-            
-            for (const lengthSize of lengthSizes) {
-                const lengthDiff = Math.abs(chartMeasurements.totalLength[lengthSize] - totalLength);
-                const shoulderDiff = Math.abs(chartMeasurements.shoulderLength[lengthSize] - shoulderLength);
-                const combinedDiff = lengthDiff + shoulderDiff;
-                
-                if (combinedDiff < smallestLengthDiff) {
-                    smallestLengthDiff = combinedDiff;
-                    bestLengthMatch = lengthSize;
-                }
-            }
-            
-            if (bestLengthMatch) {
-                weightedDiff += smallestLengthDiff * 0.2; // Length measurements have 20% weight
-                measurementCount++;
-            }
+        // Compare neck circumference (15% weight)
+        if (neckCircumference && chartMeasurements.neckCircumference[size]) {
+            const neckDiff = Math.abs(chartMeasurements.neckCircumference[size] - neckCircumference);
+            totalDiff += neckDiff;
+            weightedDiff += neckDiff * 0.15;
+            measurementCount++;
+            console.log(`  Neck: user=${neckCircumference}, chart=${chartMeasurements.neckCircumference[size]}, diff=${neckDiff.toFixed(2)}`);
+        }
+        
+        // Compare arm circumference (10% weight)
+        if (armCircumference && chartMeasurements.armCircumference[size]) {
+            const armDiff = Math.abs(chartMeasurements.armCircumference[size] - armCircumference);
+            totalDiff += armDiff;
+            weightedDiff += armDiff * 0.10;
+            measurementCount++;
+            console.log(`  Arm: user=${armCircumference}, chart=${chartMeasurements.armCircumference[size]}, diff=${armDiff.toFixed(2)}`);
+        }
+        
+        // Compare total length (5% weight)
+        if (totalLength && chartMeasurements.totalLength[size]) {
+            const lengthDiff = Math.abs(chartMeasurements.totalLength[size] - totalLength);
+            totalDiff += lengthDiff;
+            weightedDiff += lengthDiff * 0.05;
+            measurementCount++;
+            console.log(`  Length: user=${totalLength}, chart=${chartMeasurements.totalLength[size]}, diff=${lengthDiff.toFixed(2)}`);
         }
         
         // Use weighted average for better accuracy
