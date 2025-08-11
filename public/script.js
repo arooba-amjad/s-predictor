@@ -281,14 +281,15 @@ const itemData = {
         name: 'Pants',
         description: 'JAGVI.Rive Gauche SS2025',
         icon: 'fas fa-socks',
-        reference: 'JAGVI.Rive Gauche SS2025',
+        reference: 'Accurate Size Chart (cm) - Based on PPsample measurements',
         type: 'pants',
         sizeChart: {
-            'S': { waist: 37, bottom: 15.5, length: 99 },
-            'M': { waist: 39, bottom: 16, length: 100.5 },
-            'L': { waist: 41, bottom: 16.5, length: 102 },
-            'XL': { waist: 43, bottom: 17, length: 103.5 },
-            'XXL': { waist: 45, bottom: 17.5, length: 105 }
+            '36': { waist: 37, seat: 47, thigh: 29.1, knee: 18.7, bottom: 15.5, frontcross: 18.5, backcross: 31.2, sleevelength: 104.6, pocketOpening: 17 },
+            '38': { waist: 39, seat: 49, thigh: 30.1, knee: 19.4, bottom: 16, frontcross: 19, backcross: 31.9, sleevelength: 105.2, pocketOpening: 17.25 },
+            '40': { waist: 41, seat: 51, thigh: 31.1, knee: 20.1, bottom: 16.5, frontcross: 19.5, backcross: 32.6, sleevelength: 105.8, pocketOpening: 17.5 },
+            '42': { waist: 43, seat: 53, thigh: 32.3, knee: 20.8, bottom: 17, frontcross: 20, backcross: 33.3, sleevelength: 106.4, pocketOpening: 17.75 },
+            '44': { waist: 45, seat: 55, thigh: 33.5, knee: 21.5, bottom: 17.5, frontcross: 20.5, backcross: 34, sleevelength: 107, pocketOpening: 18 },
+            '46': { waist: 47, seat: 57, thigh: 34.3, knee: 22.2, bottom: 18, frontcross: 21, backcross: 34.7, sleevelength: 107.6, pocketOpening: 18.25 }
         }
     }
 };
@@ -526,7 +527,7 @@ function populateMeasurementFields() {
     // Update the measurement note based on item type
     const measurementNote = document.getElementById('measurementNote');
     if (measurementNote) {
-        if (selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 'polar-overshirt') {
+        if (selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 'polar-overshirt' || selectedItem === 'pants') {
             measurementNote.textContent = 'All measurements are required for accurate size prediction';
         } else {
             measurementNote.textContent = 'Provide measurements for more accurate fit analysis (optional but recommended)';
@@ -536,19 +537,28 @@ function populateMeasurementFields() {
     if (item.type === 'pants') {
         fieldsHTML = `
             <div class="form-row">
-                <div class="form-group">
-                    <label for="pantsWaist">Waist 1/2 (cm)</label>
-                    <input type="number" id="pantsWaist" name="pantsWaist" min="30" max="60" step="0.1" placeholder="e.g., 41">
-                </div>
-                <div class="form-group">
-                    <label for="pantsBottom">Bottom 1/2 (cm)</label>
-                    <input type="number" id="pantsBottom" name="pantsBottom" min="10" max="25" step="0.1" placeholder="e.g., 16.5">
+                <div class="form-group full-width">
+                    <p class="required-note">* All measurements are required for accurate pants size prediction</p>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="pantsLength">Length (cm)</label>
-                    <input type="number" id="pantsLength" name="pantsLength" min="80" max="120" step="0.1" placeholder="e.g., 105">
+                    <label for="pantsWaist">Waist 1/2 (cm) *</label>
+                    <input type="number" id="pantsWaist" name="pantsWaist" min="30" max="60" step="0.1" placeholder="e.g., 41" required>
+                </div>
+                <div class="form-group">
+                    <label for="pantsThigh">Thigh 1/2 (cm) *</label>
+                    <input type="number" id="pantsThigh" name="pantsThigh" min="25" max="40" step="0.1" placeholder="e.g., 31.1" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pantsBottom">Bottom 1/2 (cm) *</label>
+                    <input type="number" id="pantsBottom" name="pantsBottom" min="10" max="25" step="0.1" placeholder="e.g., 16.5" required>
+                </div>
+                <div class="form-group">
+                    <label for="pantsLength">Length (cm) *</label>
+                    <input type="number" id="pantsLength" name="pantsLength" min="100" max="110" step="0.1" placeholder="e.g., 105.8" required>
                 </div>
             </div>
         `;
@@ -740,6 +750,15 @@ function populateMeasurementFields() {
                 field.addEventListener('blur', validateMeasurementField);
             }
         });
+    } else if (selectedItem === 'pants') {
+        const requiredFields = ['pantsWaist', 'pantsThigh', 'pantsBottom', 'pantsLength'];
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('input', validateMeasurementField);
+                field.addEventListener('blur', validateMeasurementField);
+            }
+        });
     }
 }
 
@@ -757,8 +776,8 @@ function analyzeFit() {
     // Show loading
     loadingOverlay.classList.remove('hidden');
     
-        if (selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves') {
-            // For Jagvi shirts and short sleeve shirts, call the backend API to get optimal size prediction
+        if (selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 'polar-overshirt' || selectedItem === 'pants') {
+            // For Jagvi shirts, short sleeve shirts, polar overshirt, and pants, call the backend API to get optimal size prediction
             fetch('/api/predict-size', {
                 method: 'POST',
                 headers: {
@@ -820,6 +839,12 @@ function isFormValid() {
         });
     } else if (selectedItem === 'polar-overshirt') {
         const requiredFields = ['chestCircumference', 'shoulderWidth', 'sleeveLength', 'neckCircumference', 'armCircumference', 'totalLength'];
+        return requiredFields.every(field => {
+            const value = document.getElementById(field)?.value;
+            return value && value.trim() !== '' && !isNaN(parseFloat(value));
+        });
+    } else if (selectedItem === 'pants') {
+        const requiredFields = ['pantsWaist', 'pantsThigh', 'pantsBottom', 'pantsLength'];
         return requiredFields.every(field => {
             const value = document.getElementById(field)?.value;
             return value && value.trim() !== '' && !isNaN(parseFloat(value));
@@ -905,8 +930,20 @@ function collectFormData() {
     const item = itemData[selectedItem];
     if (item.type === 'pants') {
         formData.measurements.waist = parseFloat(document.getElementById('pantsWaist')?.value) || null;
+        formData.measurements.thigh = parseFloat(document.getElementById('pantsThigh')?.value) || null;
         formData.measurements.bottom = parseFloat(document.getElementById('pantsBottom')?.value) || null;
         formData.measurements.length = parseFloat(document.getElementById('pantsLength')?.value) || null;
+        
+        // Validate that all required measurements are present for pants
+        const requiredMeasurements = ['waist', 'thigh', 'bottom', 'length'];
+        
+        const missingMeasurements = requiredMeasurements.filter(measurement => 
+            !formData.measurements[measurement] || isNaN(formData.measurements[measurement])
+        );
+        
+        if (missingMeasurements.length > 0) {
+            throw new Error(`Please fill in all required pants measurements: ${missingMeasurements.join(', ')}`);
+        }
     } else {
         // Handle different measurement types for different shirt types
         if (selectedItem === 'jagvi-shirt') {
@@ -1021,22 +1058,32 @@ function performFitAnalysis(formData) {
         neck: 0.15,
         arm: 0.1,
         length: 0.05,
-        waist: 0.4,
-        bottom: 0.3,
-        pantsLength: 0.3
+        waist: 0.35,
+        thigh: 0.30,
+        bottom: 0.20,
+        pantsLength: 0.15
     };
     
     let weightedScore = 0;
     let totalWeight = 0;
     
     if (item.type === 'pants') {
-        // Pants measurements
+
+        // Pants measurements - all are required
         if (measurements.waist) {
             const adjustedWaist = adjustMeasurementForBodyType(measurements.waist, formData.bodyType, 'waist');
             const waistDiff = Math.abs(adjustedWaist - selectedSizeData.waist);
             fitScores.waist = calculateFitScore(waistDiff, 1.5);
             weightedScore += fitScores.waist * weights.waist;
             totalWeight += weights.waist;
+        }
+        
+        if (measurements.thigh) {
+            const adjustedThigh = adjustMeasurementForBodyType(measurements.thigh, formData.bodyType, 'thigh');
+            const thighDiff = Math.abs(adjustedThigh - selectedSizeData.thigh);
+            fitScores.thigh = calculateFitScore(thighDiff, 1.0);
+            weightedScore += fitScores.thigh * weights.thigh;
+            totalWeight += weights.thigh;
         }
         
         if (measurements.bottom) {
@@ -1048,19 +1095,15 @@ function performFitAnalysis(formData) {
         }
         
         if (measurements.length) {
-            const lengthDiff = Math.abs(measurements.length - selectedSizeData.length);
+            const lengthDiff = Math.abs(measurements.length - selectedSizeData.sleevelength);
             fitScores.length = calculateFitScore(lengthDiff, 2);
             weightedScore += fitScores.length * weights.pantsLength;
             totalWeight += weights.pantsLength;
         }
         
-        // If no measurements provided, set default good scores
+        // For pants, all measurements are required, so we should always have scores
         if (Object.keys(fitScores).length === 0) {
-            fitScores.waist = 0.8;
-            fitScores.bottom = 0.8;
-            fitScores.length = 0.8;
-            weightedScore = 0.8;
-            totalWeight = 1.0;
+            throw new Error('All pants measurements are required for accurate fit analysis');
         }
     } else {
         // Shirt/Jacket measurements

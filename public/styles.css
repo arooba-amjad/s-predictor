@@ -572,6 +572,18 @@ body {
     font-style: italic;
 }
 
+.required-note {
+    color: #e53e3e;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+    background: #fed7d7;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #feb2b2;
+}
+
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -583,6 +595,10 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
 }
 
 .form-group label {

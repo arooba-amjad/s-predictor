@@ -172,11 +172,62 @@ const sizeCharts = {
     },
     'pants': {
         name: 'Pants',
-        reference: 'Accurate Size Chart (cm)',
+        reference: 'Accurate Size Chart (cm) - Based on PPsample measurements',
         measurements: {
-            'length': { S: 97.5, M: 99, L: 100.5, XL: 102, XXL: 103.5 },
-            'waist': { S: 37, M: 39, L: 41, XL: 43, XXL: 45 },
-            'bottom': { S: 15.5, M: 16, L: 16.5, XL: 17, XXL: 17.5 }
+            'waist': { '36': 37, '38': 39, '40': 41, '42': 43, '44': 45, '46': 47, 'PPsample': 45 },
+            'seat': { '36': 47, '38': 49, '40': 51, '42': 53, '44': 55, '46': 57, 'PPsample': 55 },
+            'thigh': { '36': 29.1, '38': 30.1, '40': 31.1, '42': 32.3, '44': 33.5, '46': 34.3, 'PPsample': 34 },
+            'knee': { '36': 18.7, '38': 19.4, '40': 20.1, '42': 20.8, '44': 21.5, '46': 22.2, 'PPsample': 22.5 },
+            'bottom': { '36': 15.5, '38': 16, '40': 16.5, '42': 17, '44': 17.5, '46': 18, 'PPsample': 18.5 },
+            'frontcross': { '36': 18.5, '38': 19, '40': 19.5, '42': 20, '44': 20.5, '46': 21, 'PPsample': 20.5 },
+            'backcross': { '36': 31.2, '38': 31.9, '40': 32.6, '42': 33.3, '44': 34, '46': 34.7, 'PPsample': 35 },
+            'sleevelength': { '36': 104.6, '38': 105.2, '40': 105.8, '42': 106.4, '44': 107, '46': 107.6, 'PPsample': 107 },
+            'pocketOpening': { '36': 17, '38': 17.25, '40': 17.5, '42': 17.75, '44': 18, '46': 18.25, 'PPsample': 18 }
+        },
+        // Size ranges and tolerances for better prediction
+        sizeRanges: {
+            '36': {
+                waist: { min: 35, max: 39, tolerance: 2.0 },
+                seat: { min: 45, max: 49, tolerance: 2.0 },
+                thigh: { min: 28, max: 30, tolerance: 1.0 },
+                knee: { min: 18, max: 19.5, tolerance: 0.8 },
+                bottom: { min: 15, max: 16, tolerance: 0.5 }
+            },
+            '38': {
+                waist: { min: 37, max: 41, tolerance: 2.0 },
+                seat: { min: 47, max: 51, tolerance: 2.0 },
+                thigh: { min: 29.5, max: 30.5, tolerance: 1.0 },
+                knee: { min: 19, max: 19.8, tolerance: 0.8 },
+                bottom: { min: 15.5, max: 16.5, tolerance: 0.5 }
+            },
+            '40': {
+                waist: { min: 39, max: 43, tolerance: 2.0 },
+                seat: { min: 49, max: 53, tolerance: 2.0 },
+                thigh: { min: 30.5, max: 31.5, tolerance: 1.0 },
+                knee: { min: 19.5, max: 20.5, tolerance: 0.8 },
+                bottom: { min: 16, max: 17, tolerance: 0.5 }
+            },
+            '42': {
+                waist: { min: 41, max: 45, tolerance: 2.0 },
+                seat: { min: 51, max: 55, tolerance: 2.0 },
+                thigh: { min: 31.8, max: 32.8, tolerance: 1.0 },
+                knee: { min: 20.3, max: 21.3, tolerance: 0.8 },
+                bottom: { min: 16.5, max: 17.5, tolerance: 0.5 }
+            },
+            '44': {
+                waist: { min: 43, max: 47, tolerance: 2.0 },
+                seat: { min: 53, max: 57, tolerance: 2.0 },
+                thigh: { min: 33, max: 34, tolerance: 1.0 },
+                knee: { min: 21, max: 22, tolerance: 0.8 },
+                bottom: { min: 17, max: 18, tolerance: 0.5 }
+            },
+            '46': {
+                waist: { min: 45, max: 49, tolerance: 2.0 },
+                seat: { min: 55, max: 59, tolerance: 2.0 },
+                thigh: { min: 33.8, max: 34.8, tolerance: 1.0 },
+                knee: { min: 21.7, max: 22.7, tolerance: 0.8 },
+                bottom: { min: 17.5, max: 18.5, tolerance: 0.5 }
+            }
         }
     },
     'hooded-jacket': {
@@ -421,7 +472,7 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     
     // Check if we have detailed measurements, if not estimate them
     const hasDetailedMeasurements = garmentType === 'pants' 
-        ? (measurements.waist || measurements.hip || measurements.length)
+        ? (measurements.waist && measurements.thigh && measurements.bottom && measurements.length)
         : garmentType === 'short-sleeves'
         ? (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength)
         : garmentType === 'jagvi-shirt'
@@ -435,7 +486,7 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     let finalMeasurements = measurements;
     let confidence = 85; // Base confidence
     
-    // For jagvi-shirt and short-sleeves, measurements are compulsory - reject if missing
+    // For jagvi-shirt, short-sleeves, polar-overshirt, and pants, measurements are compulsory - reject if missing
     if (garmentType === 'jagvi-shirt' && !hasDetailedMeasurements) {
         throw new Error('All measurements are required for Jagvi shirt size prediction. Please provide: chestCircumference, shoulderWidth, sleeveLength, neckCircumference, armCircumference, and totalLength.');
     }
@@ -446,6 +497,10 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     
     if (garmentType === 'polar-overshirt' && !hasDetailedMeasurements) {
         throw new Error('All measurements are required for polar overshirt size prediction. Please provide: chestCircumference, shoulderWidth, sleeveLength, neckCircumference, armCircumference, and totalLength.');
+    }
+    
+    if (garmentType === 'pants' && !hasDetailedMeasurements) {
+        throw new Error('All measurements are required for pants size prediction. Please provide: waist, thigh, bottom, and length measurements.');
     }
     
     if (!hasDetailedMeasurements) {
@@ -491,22 +546,12 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     
     // Adjust confidence based on data quality
     if (garmentType === 'pants') {
-        if (measurements.waist && measurements.hip && measurements.length) {
-            confidence += 25; // Maximum confidence for all three measurements
-        } else if (measurements.waist && measurements.hip) {
-            confidence += 20;
-        } else if (measurements.waist && measurements.length) {
-            confidence += 18;
-        } else if (measurements.hip && measurements.length) {
-            confidence += 18;
-        } else if (measurements.waist) {
-            confidence += 15;
-        } else if (measurements.hip) {
-            confidence += 15;
-        } else if (measurements.length) {
-            confidence += 15;
-        } else if (hasDetailedMeasurements) {
-            confidence += 5;
+        // For pants, all measurements are required, so we always have maximum confidence
+        if (measurements.waist && measurements.thigh && measurements.bottom && measurements.length) {
+            confidence += 30; // Maximum confidence for all four measurements
+        } else {
+            // This should never happen due to validation above, but just in case
+            confidence = 0; // No confidence if measurements are missing
         }
     } else if (garmentType === 'short-sleeves') {
         // For short-sleeves, all measurements are required, so we always have maximum confidence
@@ -591,13 +636,12 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     
     // Garment-specific recommendations
     if (garmentType === 'pants') {
-        recommendations.push('For pants, focus on length, waist, and bottom measurements for best fit');
-        if (finalMeasurements.length) {
-            recommendations.push('Length measurement helps ensure proper fit for your height');
+        recommendations.push('For pants, all measurements (waist, thigh, bottom, length) are required for accurate size prediction');
+        if (finalMeasurements.waist && finalMeasurements.thigh && finalMeasurements.bottom && finalMeasurements.length) {
+            recommendations.push('All four measurements ensure the perfect fit for your body proportions');
         }
-        if (finalMeasurements.waist && finalMeasurements.bottom) {
-            recommendations.push('Waist and bottom measurements ensure comfortable fit around the waist and bottom');
-        }
+        recommendations.push('Thigh measurement is crucial for comfortable fit around the legs');
+        recommendations.push('Length measurement ensures proper fit for your height');
     } else if (garmentType === 'hooded-jacket') {
         recommendations.push('Hooded jackets should have room for layering underneath');
     } else if (garmentType === 'short-sleeves') {
@@ -621,6 +665,7 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
             // Include pants-specific measurements if available
             length: finalMeasurements.length,
             bottom: finalMeasurements.bottom,
+            thigh: finalMeasurements.thigh,
             // Include shirt specific measurements if available
             chestHalf: finalMeasurements.chestHalf,
             waistHalf: finalMeasurements.waistHalf,
@@ -631,19 +676,21 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     };
 }
 
-// Predict pants size (letter sizing) - Accurate algorithm
+// Predict pants size (numeric sizing) - Updated algorithm based on new chart
 function predictPantsSize(measurements, chartMeasurements, gender, bodyType) {
     const waist = measurements.waist;
+    const thigh = measurements.thigh;
     const bottom = measurements.bottom;
     const length = measurements.length;
     
-    if (!waist && !bottom && !length) {
-        return 'M'; // Default size
+    // For pants, all measurements are required for accurate prediction
+    if (!waist || !thigh || !bottom || !length) {
+        throw new Error('All measurements are required for pants size prediction. Please provide: waist, thigh, bottom, and length measurements.');
     }
     
-    // Find the best matching size based on available measurements
-    const sizes = Object.keys(chartMeasurements.waist);
-    let bestSize = 'M';
+    // Find the best matching size based on all measurements
+    const sizes = Object.keys(chartMeasurements.waist).filter(size => size !== 'PPsample'); // Exclude PPsample
+    let bestSize = '40'; // Default size
     let smallestDiff = Infinity;
     
     for (const size of sizes) {
@@ -651,33 +698,42 @@ function predictPantsSize(measurements, chartMeasurements, gender, bodyType) {
         let measurementCount = 0;
         let weightedDiff = 0;
         
-        // Compare measurements with different weights for accuracy
-        if (length && chartMeasurements.length[size]) {
-            const lengthDiff = Math.abs(chartMeasurements.length[size] - length);
-            totalDiff += lengthDiff;
-            weightedDiff += lengthDiff * 0.3; // Length has 30% weight
-            measurementCount++;
-        }
-        
+        // Compare waist measurement (35% weight - most important)
         if (waist && chartMeasurements.waist[size]) {
             const waistDiff = Math.abs(chartMeasurements.waist[size] - waist);
             totalDiff += waistDiff;
-            weightedDiff += waistDiff * 0.4; // Waist has 40% weight (most important)
+            weightedDiff += waistDiff * 0.35;
             measurementCount++;
         }
         
+        // Compare thigh measurement (30% weight - second most important)
+        if (thigh && chartMeasurements.thigh[size]) {
+            const thighDiff = Math.abs(chartMeasurements.thigh[size] - thigh);
+            totalDiff += thighDiff;
+            weightedDiff += thighDiff * 0.30;
+            measurementCount++;
+        }
+        
+        // Compare bottom measurement (20% weight)
         if (bottom && chartMeasurements.bottom[size]) {
             const bottomDiff = Math.abs(chartMeasurements.bottom[size] - bottom);
             totalDiff += bottomDiff;
-            weightedDiff += bottomDiff * 0.3; // Bottom has 30% weight
+            weightedDiff += bottomDiff * 0.20;
             measurementCount++;
         }
         
-        // Use weighted average for better accuracy
+        // Compare length measurement (15% weight)
+        if (length && chartMeasurements.sleevelength[size]) {
+            const lengthDiff = Math.abs(chartMeasurements.sleevelength[size] - length);
+            totalDiff += lengthDiff;
+            weightedDiff += lengthDiff * 0.15;
+            measurementCount++;
+        }
+        
+        // Use weighted difference for better accuracy
         if (measurementCount > 0) {
-            const avgDiff = weightedDiff / measurementCount;
-            if (avgDiff < smallestDiff) {
-                smallestDiff = avgDiff;
+            if (weightedDiff < smallestDiff) {
+                smallestDiff = weightedDiff;
                 bestSize = size;
             }
         }
@@ -685,20 +741,26 @@ function predictPantsSize(measurements, chartMeasurements, gender, bodyType) {
     
     // Adjust for body type with more precise logic
     if (bodyType === 'slim') {
-        if (bestSize === 'M') bestSize = 'S';
-        else if (bestSize === 'L') bestSize = 'M';
-        else if (bestSize === 'XL') bestSize = 'L';
-        else if (bestSize === 'XXL') bestSize = 'XL';
+        // For slim body type, go down one size
+        const sizeOrder = ['36', '38', '40', '42', '44', '46'];
+        const currentIndex = sizeOrder.indexOf(bestSize);
+        if (currentIndex > 0) {
+            bestSize = sizeOrder[currentIndex - 1];
+        }
     } else if (bodyType === 'athletic') {
-        if (bestSize === 'S') bestSize = 'M';
-        else if (bestSize === 'M') bestSize = 'L';
-        else if (bestSize === 'L') bestSize = 'XL';
-        else if (bestSize === 'XL') bestSize = 'XXL';
+        // For athletic body type, go up one size (especially for thighs)
+        const sizeOrder = ['36', '38', '40', '42', '44', '46'];
+        const currentIndex = sizeOrder.indexOf(bestSize);
+        if (currentIndex < sizeOrder.length - 1) {
+            bestSize = sizeOrder[currentIndex + 1];
+        }
     } else if (bodyType === 'plus') {
-        if (bestSize === 'S') bestSize = 'M';
-        else if (bestSize === 'M') bestSize = 'L';
-        else if (bestSize === 'L') bestSize = 'XL';
-        else if (bestSize === 'XL') bestSize = 'XXL';
+        // For plus body type, go up one size
+        const sizeOrder = ['36', '38', '40', '42', '44', '46'];
+        const currentIndex = sizeOrder.indexOf(bestSize);
+        if (currentIndex < sizeOrder.length - 1) {
+            bestSize = sizeOrder[currentIndex + 1];
+        }
     }
     
     return bestSize;
