@@ -41,67 +41,76 @@ app.post('/api/predict-size', (req, res) => {
 const sizeCharts = {
     'jagvi-shirt': {
         name: 'Jagvi Shirt (Long Sleeve)',
-        reference: 'For a man of 75 kgs and 1.83 cms height',
+        reference: 'Updated Long Sleeve Size Chart (cm)',
         measurements: {
-            // Chest circumference (full, not half)
+            // Chest circumference (full, not half) - from size chart
             'chestCircumference': { XS: 102, S: 106, M: 110, L: 114, XL: 118, XXL: 122 },
             // Shoulder width (shoulder length from chart)
-            'shoulderWidth': { XS: 13.5, S: 14, M: 14.5, L: 15, XL: 15.5, XXL: 16 },
+            'shoulderWidth': { XS: 40, S: 42, M: 44, L: 46, XL: 47, XXL: 48 },
             // Sleeve length (sleeve total length with cuff)
             'sleeveLength': { XS: 65, S: 65.5, M: 66, L: 66.5, XL: 67, XXL: 67.5 },
-            // Neck circumference (neck width from chart - needs to be converted to full circumference)
-            'neckCircumference': { XS: 76, S: 78, M: 82, L: 86, XL: 90, XXL: 94 },
-            // Arm circumference (armhole from chart)
-            'armCircumference': { XS: 24, S: 25, M: 26, L: 27, XL: 28, XXL: 29 },
-            // Additional measurements for compatibility
+            // Neck width (from chart - direct measurement)
+            'neckWidth': { XS: 13, S: 14, M: 15, L: 16, XL: 17, XXL: 18 },
+            // Sleeve opening circumference (from chart)
+            'sleeveOpeningCircumference': { XS: 37, S: 38, M: 39, L: 40, XL: 42, XXL: 43 },
+            // Arm hole circumference (from chart)
+            'armHoleCircumference': { XS: 48, S: 50, M: 52, L: 54, XL: 56, XXL: 58 },
+            // Total length (from chart)
+            'totalLength': { XS: 73, S: 74, M: 75, L: 76, XL: 77, XXL: 78 },
+            // Additional measurements for compatibility (calculated)
             'chestHalf': { XS: 51, S: 53, M: 55, L: 57, XL: 59, XXL: 61 },
             'waistHalf': { XS: 47, S: 49, M: 51, L: 53, XL: 55, XXL: 57 },
-            'bottomHalf': { XS: 50, S: 52, M: 54, L: 56, XL: 58, XXL: 60 },
-            'totalLength': { XS: 73, S: 74, M: 75, L: 76, XL: 77, XXL: 78 }
+            'bottomHalf': { XS: 50, S: 52, M: 54, L: 56, XL: 58, XXL: 60 }
         },
         // Size ranges and tolerances for better prediction
         sizeRanges: {
             'XS': {
                 chestCircumference: { min: 98, max: 105, tolerance: 3.5 },
-                shoulderWidth: { min: 13, max: 14, tolerance: 0.5 },
+                shoulderWidth: { min: 38, max: 42, tolerance: 2.0 },
                 sleeveLength: { min: 64, max: 66, tolerance: 1.0 },
-                neckCircumference: { min: 73, max: 79, tolerance: 3.0 },
-                armCircumference: { min: 23, max: 25, tolerance: 1.0 }
+                neckWidth: { min: 12, max: 14, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 36, max: 38, tolerance: 1.0 },
+                armHoleCircumference: { min: 46, max: 50, tolerance: 2.0 }
             },
             'S': {
                 chestCircumference: { min: 102, max: 109, tolerance: 3.5 },
-                shoulderWidth: { min: 13.5, max: 14.5, tolerance: 0.5 },
+                shoulderWidth: { min: 40, max: 44, tolerance: 2.0 },
                 sleeveLength: { min: 65, max: 66.5, tolerance: 1.0 },
-                neckCircumference: { min: 75, max: 81, tolerance: 3.0 },
-                armCircumference: { min: 24, max: 26, tolerance: 1.0 }
+                neckWidth: { min: 13, max: 15, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 37, max: 39, tolerance: 1.0 },
+                armHoleCircumference: { min: 48, max: 52, tolerance: 2.0 }
             },
             'M': {
                 chestCircumference: { min: 106, max: 113, tolerance: 3.5 },
-                shoulderWidth: { min: 14, max: 15, tolerance: 0.5 },
+                shoulderWidth: { min: 42, max: 46, tolerance: 2.0 },
                 sleeveLength: { min: 65.5, max: 66.5, tolerance: 1.0 },
-                neckCircumference: { min: 79, max: 85, tolerance: 3.0 },
-                armCircumference: { min: 25, max: 27, tolerance: 1.0 }
+                neckWidth: { min: 14, max: 16, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 38, max: 40, tolerance: 1.0 },
+                armHoleCircumference: { min: 50, max: 54, tolerance: 2.0 }
             },
             'L': {
                 chestCircumference: { min: 110, max: 117, tolerance: 3.5 },
-                shoulderWidth: { min: 14.5, max: 15.5, tolerance: 0.5 },
+                shoulderWidth: { min: 44, max: 48, tolerance: 2.0 },
                 sleeveLength: { min: 66, max: 67, tolerance: 1.0 },
-                neckCircumference: { min: 83, max: 89, tolerance: 3.0 },
-                armCircumference: { min: 26, max: 28, tolerance: 1.0 }
+                neckWidth: { min: 15, max: 17, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 39, max: 41, tolerance: 1.0 },
+                armHoleCircumference: { min: 52, max: 56, tolerance: 2.0 }
             },
             'XL': {
                 chestCircumference: { min: 114, max: 121, tolerance: 3.5 },
-                shoulderWidth: { min: 15, max: 16, tolerance: 0.5 },
+                shoulderWidth: { min: 45, max: 49, tolerance: 2.0 },
                 sleeveLength: { min: 66.5, max: 67.5, tolerance: 1.0 },
-                neckCircumference: { min: 87, max: 93, tolerance: 3.0 },
-                armCircumference: { min: 27, max: 29, tolerance: 1.0 }
+                neckWidth: { min: 16, max: 18, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 41, max: 43, tolerance: 1.0 },
+                armHoleCircumference: { min: 54, max: 58, tolerance: 2.0 }
             },
             'XXL': {
                 chestCircumference: { min: 118, max: 125, tolerance: 3.5 },
-                shoulderWidth: { min: 15.5, max: 16.5, tolerance: 0.5 },
+                shoulderWidth: { min: 46, max: 50, tolerance: 2.0 },
                 sleeveLength: { min: 67, max: 68, tolerance: 1.0 },
-                neckCircumference: { min: 91, max: 97, tolerance: 3.0 },
-                armCircumference: { min: 28, max: 30, tolerance: 1.0 }
+                neckWidth: { min: 17, max: 19, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 42, max: 44, tolerance: 1.0 },
+                armHoleCircumference: { min: 56, max: 60, tolerance: 2.0 }
             }
         }
     },
@@ -170,75 +179,294 @@ const sizeCharts = {
             }
         }
     },
+    't-shirt': {
+        name: 'T-Shirt',
+        reference: 'Size Chart (cm)',
+        measurements: {
+            'length': { XS: 69, S: 71, M: 73, L: 75, XL: 77, XXL: 79 },
+            'chestCircumference': { XS: 100, S: 102, M: 106, L: 110, XL: 116, XXL: 118 },
+            'shoulderWidth': { XS: 44, S: 45, M: 46, L: 49, XL: 51, XXL: 52 },
+            'neckWidth': { XS: 14, S: 15, M: 16, L: 17, XL: 18, XXL: 18 },
+            'sleeveLength': { XS: 22, S: 23, M: 23, L: 24, XL: 25, XXL: 26 },
+            'sleeveOpeningCircumference': { XS: 32, S: 33, M: 35, L: 36, XL: 37, XXL: 40 },
+            'armHoleCircumference': { XS: 47, S: 48, M: 50, L: 52, XL: 54, XXL: 56 },
+            'varianceDeltoidVsBicept': { XS: 14, S: 15, M: 15, L: 16, XL: 17, XXL: 16 }
+        },
+        sizeRanges: {
+            'XS': {
+                length: { min: 67, max: 71, tolerance: 2.0 },
+                chestCircumference: { min: 98, max: 102, tolerance: 2.0 },
+                shoulderWidth: { min: 42, max: 46, tolerance: 2.0 },
+                neckWidth: { min: 13, max: 15, tolerance: 1.0 },
+                sleeveLength: { min: 21, max: 23, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 31, max: 33, tolerance: 1.0 },
+                armHoleCircumference: { min: 46, max: 48, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 13, max: 15, tolerance: 1.0 }
+            },
+            'S': {
+                length: { min: 69, max: 73, tolerance: 2.0 },
+                chestCircumference: { min: 100, max: 104, tolerance: 2.0 },
+                shoulderWidth: { min: 43, max: 47, tolerance: 2.0 },
+                neckWidth: { min: 14, max: 16, tolerance: 1.0 },
+                sleeveLength: { min: 22, max: 24, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 32, max: 34, tolerance: 1.0 },
+                armHoleCircumference: { min: 47, max: 49, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 14, max: 16, tolerance: 1.0 }
+            },
+            'M': {
+                length: { min: 71, max: 75, tolerance: 2.0 },
+                chestCircumference: { min: 104, max: 108, tolerance: 2.0 },
+                shoulderWidth: { min: 44, max: 48, tolerance: 2.0 },
+                neckWidth: { min: 15, max: 17, tolerance: 1.0 },
+                sleeveLength: { min: 22, max: 24, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 34, max: 36, tolerance: 1.0 },
+                armHoleCircumference: { min: 49, max: 51, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 14, max: 16, tolerance: 1.0 }
+            },
+            'L': {
+                length: { min: 73, max: 77, tolerance: 2.0 },
+                chestCircumference: { min: 108, max: 112, tolerance: 2.0 },
+                shoulderWidth: { min: 47, max: 51, tolerance: 2.0 },
+                neckWidth: { min: 16, max: 18, tolerance: 1.0 },
+                sleeveLength: { min: 23, max: 25, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 35, max: 37, tolerance: 1.0 },
+                armHoleCircumference: { min: 51, max: 53, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 15, max: 17, tolerance: 1.0 }
+            },
+            'XL': {
+                length: { min: 75, max: 79, tolerance: 2.0 },
+                chestCircumference: { min: 114, max: 118, tolerance: 2.0 },
+                shoulderWidth: { min: 49, max: 53, tolerance: 2.0 },
+                neckWidth: { min: 17, max: 19, tolerance: 1.0 },
+                sleeveLength: { min: 24, max: 26, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 36, max: 38, tolerance: 1.0 },
+                armHoleCircumference: { min: 53, max: 55, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 16, max: 18, tolerance: 1.0 }
+            },
+            'XXL': {
+                length: { min: 77, max: 81, tolerance: 2.0 },
+                chestCircumference: { min: 116, max: 120, tolerance: 2.0 },
+                shoulderWidth: { min: 50, max: 54, tolerance: 2.0 },
+                neckWidth: { min: 17, max: 19, tolerance: 1.0 },
+                sleeveLength: { min: 25, max: 27, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 39, max: 41, tolerance: 1.0 },
+                armHoleCircumference: { min: 55, max: 57, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 15, max: 17, tolerance: 1.0 }
+            }
+        }
+    },
     'pants': {
         name: 'Pants',
         reference: 'Accurate Size Chart (cm) - Based on PPsample measurements',
         measurements: {
-            'waist': { '36': 37, '38': 39, '40': 41, '42': 43, '44': 45, '46': 47, 'PPsample': 45 },
-            'seat': { '36': 47, '38': 49, '40': 51, '42': 53, '44': 55, '46': 57, 'PPsample': 55 },
-            'thigh': { '36': 29.1, '38': 30.1, '40': 31.1, '42': 32.3, '44': 33.5, '46': 34.3, 'PPsample': 34 },
-            'knee': { '36': 18.7, '38': 19.4, '40': 20.1, '42': 20.8, '44': 21.5, '46': 22.2, 'PPsample': 22.5 },
-            'bottom': { '36': 15.5, '38': 16, '40': 16.5, '42': 17, '44': 17.5, '46': 18, 'PPsample': 18.5 },
-            'frontcross': { '36': 18.5, '38': 19, '40': 19.5, '42': 20, '44': 20.5, '46': 21, 'PPsample': 20.5 },
-            'backcross': { '36': 31.2, '38': 31.9, '40': 32.6, '42': 33.3, '44': 34, '46': 34.7, 'PPsample': 35 },
-            'sleevelength': { '36': 104.6, '38': 105.2, '40': 105.8, '42': 106.4, '44': 107, '46': 107.6, 'PPsample': 107 },
+            'waist': { '36': 74, '38': 78, '40': 82, '42': 86, '44': 90, '46': 94, 'PPsample': 90 },
+            'seat': { '36': 94, '38': 98, '40': 102, '42': 106, '44': 110, '46': 114, 'PPsample': 110 },
+            'thigh': { '36': 58.2, '38': 60.2, '40': 62.2, '42': 64.6, '44': 67, '46': 68.6, 'PPsample': 68 },
+            'knee': { '36': 37.4, '38': 38.8, '40': 40.2, '42': 41.6, '44': 43, '46': 44.4, 'PPsample': 45 },
+            'bottom': { '36': 31, '38': 32, '40': 33, '42': 34, '44': 35, '46': 36, 'PPsample': 37 },
+            'frontcross': { '36': 37, '38': 38, '40': 39, '42': 40, '44': 41, '46': 42, 'PPsample': 41 },
+            'backcross': { '36': 62.4, '38': 63.8, '40': 65.2, '42': 66.6, '44': 68, '46': 69.4, 'PPsample': 70 },
+            'length': { '36': 104.6, '38': 105.2, '40': 105.8, '42': 106.4, '44': 107, '46': 107.6, 'PPsample': 107 },
             'pocketOpening': { '36': 17, '38': 17.25, '40': 17.5, '42': 17.75, '44': 18, '46': 18.25, 'PPsample': 18 }
         },
         // Size ranges and tolerances for better prediction
         sizeRanges: {
             '36': {
-                waist: { min: 35, max: 39, tolerance: 2.0 },
-                seat: { min: 45, max: 49, tolerance: 2.0 },
-                thigh: { min: 28, max: 30, tolerance: 1.0 },
-                knee: { min: 18, max: 19.5, tolerance: 0.8 },
-                bottom: { min: 15, max: 16, tolerance: 0.5 }
+                waist: { min: 70, max: 78, tolerance: 4.0 },
+                seat: { min: 90, max: 98, tolerance: 4.0 },
+                thigh: { min: 56, max: 60, tolerance: 2.0 },
+                knee: { min: 36, max: 39, tolerance: 1.5 },
+                bottom: { min: 30, max: 32, tolerance: 1.0 }
             },
             '38': {
-                waist: { min: 37, max: 41, tolerance: 2.0 },
-                seat: { min: 47, max: 51, tolerance: 2.0 },
-                thigh: { min: 29.5, max: 30.5, tolerance: 1.0 },
-                knee: { min: 19, max: 19.8, tolerance: 0.8 },
-                bottom: { min: 15.5, max: 16.5, tolerance: 0.5 }
+                waist: { min: 74, max: 82, tolerance: 4.0 },
+                seat: { min: 94, max: 102, tolerance: 4.0 },
+                thigh: { min: 58, max: 62, tolerance: 2.0 },
+                knee: { min: 37, max: 40, tolerance: 1.5 },
+                bottom: { min: 31, max: 33, tolerance: 1.0 }
             },
             '40': {
-                waist: { min: 39, max: 43, tolerance: 2.0 },
-                seat: { min: 49, max: 53, tolerance: 2.0 },
-                thigh: { min: 30.5, max: 31.5, tolerance: 1.0 },
-                knee: { min: 19.5, max: 20.5, tolerance: 0.8 },
-                bottom: { min: 16, max: 17, tolerance: 0.5 }
+                waist: { min: 78, max: 86, tolerance: 4.0 },
+                seat: { min: 98, max: 106, tolerance: 4.0 },
+                thigh: { min: 60, max: 64, tolerance: 2.0 },
+                knee: { min: 39, max: 42, tolerance: 1.5 },
+                bottom: { min: 32, max: 34, tolerance: 1.0 }
             },
             '42': {
-                waist: { min: 41, max: 45, tolerance: 2.0 },
-                seat: { min: 51, max: 55, tolerance: 2.0 },
-                thigh: { min: 31.8, max: 32.8, tolerance: 1.0 },
-                knee: { min: 20.3, max: 21.3, tolerance: 0.8 },
-                bottom: { min: 16.5, max: 17.5, tolerance: 0.5 }
+                waist: { min: 82, max: 90, tolerance: 4.0 },
+                seat: { min: 102, max: 110, tolerance: 4.0 },
+                thigh: { min: 62, max: 66, tolerance: 2.0 },
+                knee: { min: 40, max: 43, tolerance: 1.5 },
+                bottom: { min: 33, max: 35, tolerance: 1.0 }
             },
             '44': {
-                waist: { min: 43, max: 47, tolerance: 2.0 },
-                seat: { min: 53, max: 57, tolerance: 2.0 },
-                thigh: { min: 33, max: 34, tolerance: 1.0 },
-                knee: { min: 21, max: 22, tolerance: 0.8 },
-                bottom: { min: 17, max: 18, tolerance: 0.5 }
+                waist: { min: 86, max: 94, tolerance: 4.0 },
+                seat: { min: 106, max: 114, tolerance: 4.0 },
+                thigh: { min: 64, max: 68, tolerance: 2.0 },
+                knee: { min: 42, max: 45, tolerance: 1.5 },
+                bottom: { min: 34, max: 36, tolerance: 1.0 }
             },
             '46': {
-                waist: { min: 45, max: 49, tolerance: 2.0 },
-                seat: { min: 55, max: 59, tolerance: 2.0 },
-                thigh: { min: 33.8, max: 34.8, tolerance: 1.0 },
-                knee: { min: 21.7, max: 22.7, tolerance: 0.8 },
-                bottom: { min: 17.5, max: 18.5, tolerance: 0.5 }
+                waist: { min: 90, max: 98, tolerance: 4.0 },
+                seat: { min: 110, max: 118, tolerance: 4.0 },
+                thigh: { min: 66, max: 70, tolerance: 2.0 },
+                knee: { min: 43, max: 46, tolerance: 1.5 },
+                bottom: { min: 35, max: 37, tolerance: 1.0 }
             }
         }
     },
     'hooded-jacket': {
-        name: 'Hooded Jacket 3',
-        reference: 'SUMMER 2025 Collection',
+        name: 'Hooded Jacket',
+        reference: 'Size Chart (cm)',
         measurements: {
-            'chestHalf': { S: 59, M: 59, L: 59, XL: 59, XXL: 59 },
-            'waistHalf': { S: 56, M: 56, L: 56, XL: 56, XXL: 56 },
-            'bottomHalf': { S: 55, M: 55, L: 55, XL: 55, XXL: 55 },
-            'totalLength': { S: 72, M: 72, L: 72, XL: 72, XXL: 72 },
-            'shoulderLength': { S: 15, M: 15, L: 15, XL: 15, XXL: 15 }
+            'length': { XS: 70, S: 72, M: 74, L: 76, XL: 78, XXL: 80 },
+            'chestCircumference': { XS: 104, S: 108, M: 112, L: 116, XL: 120, XXL: 124 },
+            'shoulderWidth': { XS: 42, S: 44, M: 46, L: 48, XL: 50, XXL: 52 },
+            'neckWidth': { XS: 16, S: 17, M: 18, L: 19, XL: 20, XXL: 21 },
+            'sleeveLength': { XS: 24, S: 25, M: 26, L: 27, XL: 28, XXL: 29 },
+            'sleeveOpeningCircumference': { XS: 34, S: 36, M: 38, L: 40, XL: 42, XXL: 44 },
+            'armHoleCircumference': { XS: 49, S: 51, M: 53, L: 55, XL: 57, XXL: 59 },
+            'varianceDeltoidVsBicept': { XS: 15, S: 16, M: 17, L: 18, XL: 19, XXL: 20 }
+        },
+        // Size ranges and tolerances for better prediction
+        sizeRanges: {
+            'XS': {
+                length: { min: 68, max: 72, tolerance: 2.0 },
+                chestCircumference: { min: 102, max: 106, tolerance: 2.0 },
+                shoulderWidth: { min: 40, max: 44, tolerance: 2.0 },
+                neckWidth: { min: 15, max: 17, tolerance: 1.0 },
+                sleeveLength: { min: 23, max: 25, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 33, max: 35, tolerance: 1.0 },
+                armHoleCircumference: { min: 48, max: 50, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 14, max: 16, tolerance: 1.0 }
+            },
+            'S': {
+                length: { min: 70, max: 74, tolerance: 2.0 },
+                chestCircumference: { min: 106, max: 110, tolerance: 2.0 },
+                shoulderWidth: { min: 42, max: 46, tolerance: 2.0 },
+                neckWidth: { min: 16, max: 18, tolerance: 1.0 },
+                sleeveLength: { min: 24, max: 26, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 35, max: 37, tolerance: 1.0 },
+                armHoleCircumference: { min: 50, max: 52, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 15, max: 17, tolerance: 1.0 }
+            },
+            'M': {
+                length: { min: 72, max: 76, tolerance: 2.0 },
+                chestCircumference: { min: 110, max: 114, tolerance: 2.0 },
+                shoulderWidth: { min: 44, max: 48, tolerance: 2.0 },
+                neckWidth: { min: 17, max: 19, tolerance: 1.0 },
+                sleeveLength: { min: 25, max: 27, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 37, max: 39, tolerance: 1.0 },
+                armHoleCircumference: { min: 52, max: 54, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 16, max: 18, tolerance: 1.0 }
+            },
+            'L': {
+                length: { min: 74, max: 78, tolerance: 2.0 },
+                chestCircumference: { min: 114, max: 118, tolerance: 2.0 },
+                shoulderWidth: { min: 46, max: 50, tolerance: 2.0 },
+                neckWidth: { min: 18, max: 20, tolerance: 1.0 },
+                sleeveLength: { min: 26, max: 28, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 39, max: 41, tolerance: 1.0 },
+                armHoleCircumference: { min: 54, max: 56, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 17, max: 19, tolerance: 1.0 }
+            },
+            'XL': {
+                length: { min: 76, max: 80, tolerance: 2.0 },
+                chestCircumference: { min: 118, max: 122, tolerance: 2.0 },
+                shoulderWidth: { min: 48, max: 52, tolerance: 2.0 },
+                neckWidth: { min: 19, max: 21, tolerance: 1.0 },
+                sleeveLength: { min: 27, max: 29, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 41, max: 43, tolerance: 1.0 },
+                armHoleCircumference: { min: 56, max: 58, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 18, max: 20, tolerance: 1.0 }
+            },
+            'XXL': {
+                length: { min: 78, max: 82, tolerance: 2.0 },
+                chestCircumference: { min: 122, max: 126, tolerance: 2.0 },
+                shoulderWidth: { min: 50, max: 54, tolerance: 2.0 },
+                neckWidth: { min: 20, max: 22, tolerance: 1.0 },
+                sleeveLength: { min: 28, max: 30, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 43, max: 45, tolerance: 1.0 },
+                armHoleCircumference: { min: 58, max: 60, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 19, max: 21, tolerance: 1.0 }
+            }
+        }
+    },
+    'sweat-shirt': {
+        name: 'Sweat Shirt',
+        reference: 'Size Chart (cm)',
+        measurements: {
+            'length': { XS: 68, S: 70, M: 72, L: 74, XL: 76, XXL: 78 },
+            'chestCircumference': { XS: 98, S: 100, M: 104, L: 108, XL: 114, XXL: 116 },
+            'shoulderWidth': { XS: 43, S: 44, M: 45, L: 48, XL: 50, XXL: 51 },
+            'neckWidth': { XS: 13, S: 14, M: 15, L: 16, XL: 17, XXL: 17 },
+            'sleeveLength': { XS: 21, S: 22, M: 22, L: 23, XL: 24, XXL: 25 },
+            'sleeveOpeningCircumference': { XS: 31, S: 32, M: 34, L: 35, XL: 36, XXL: 39 },
+            'armHoleCircumference': { XS: 46, S: 47, M: 49, L: 51, XL: 53, XXL: 55 },
+            'varianceDeltoidVsBicept': { XS: 13, S: 14, M: 14, L: 15, XL: 16, XXL: 15 }
+        },
+        // Size ranges and tolerances for better prediction
+        sizeRanges: {
+            'XS': {
+                length: { min: 66, max: 70, tolerance: 2.0 },
+                chestCircumference: { min: 96, max: 100, tolerance: 2.0 },
+                shoulderWidth: { min: 41, max: 45, tolerance: 2.0 },
+                neckWidth: { min: 12, max: 14, tolerance: 1.0 },
+                sleeveLength: { min: 20, max: 22, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 30, max: 32, tolerance: 1.0 },
+                armHoleCircumference: { min: 45, max: 47, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 12, max: 14, tolerance: 1.0 }
+            },
+            'S': {
+                length: { min: 68, max: 72, tolerance: 2.0 },
+                chestCircumference: { min: 98, max: 102, tolerance: 2.0 },
+                shoulderWidth: { min: 42, max: 46, tolerance: 2.0 },
+                neckWidth: { min: 13, max: 15, tolerance: 1.0 },
+                sleeveLength: { min: 21, max: 23, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 31, max: 33, tolerance: 1.0 },
+                armHoleCircumference: { min: 46, max: 48, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 13, max: 15, tolerance: 1.0 }
+            },
+            'M': {
+                length: { min: 70, max: 74, tolerance: 2.0 },
+                chestCircumference: { min: 102, max: 106, tolerance: 2.0 },
+                shoulderWidth: { min: 43, max: 47, tolerance: 2.0 },
+                neckWidth: { min: 14, max: 16, tolerance: 1.0 },
+                sleeveLength: { min: 21, max: 23, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 33, max: 35, tolerance: 1.0 },
+                armHoleCircumference: { min: 48, max: 50, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 13, max: 15, tolerance: 1.0 }
+            },
+            'L': {
+                length: { min: 72, max: 76, tolerance: 2.0 },
+                chestCircumference: { min: 106, max: 110, tolerance: 2.0 },
+                shoulderWidth: { min: 46, max: 50, tolerance: 2.0 },
+                neckWidth: { min: 15, max: 17, tolerance: 1.0 },
+                sleeveLength: { min: 22, max: 24, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 34, max: 36, tolerance: 1.0 },
+                armHoleCircumference: { min: 50, max: 52, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 14, max: 16, tolerance: 1.0 }
+            },
+            'XL': {
+                length: { min: 74, max: 78, tolerance: 2.0 },
+                chestCircumference: { min: 112, max: 116, tolerance: 2.0 },
+                shoulderWidth: { min: 48, max: 52, tolerance: 2.0 },
+                neckWidth: { min: 16, max: 18, tolerance: 1.0 },
+                sleeveLength: { min: 23, max: 25, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 35, max: 37, tolerance: 1.0 },
+                armHoleCircumference: { min: 52, max: 54, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 15, max: 17, tolerance: 1.0 }
+            },
+            'XXL': {
+                length: { min: 76, max: 80, tolerance: 2.0 },
+                chestCircumference: { min: 114, max: 118, tolerance: 2.0 },
+                shoulderWidth: { min: 49, max: 53, tolerance: 2.0 },
+                neckWidth: { min: 16, max: 18, tolerance: 1.0 },
+                sleeveLength: { min: 24, max: 26, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 38, max: 40, tolerance: 1.0 },
+                armHoleCircumference: { min: 54, max: 56, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 14, max: 16, tolerance: 1.0 }
+            }
         }
     },
     'polar-overshirt': {
@@ -306,6 +534,83 @@ const sizeCharts = {
                 armCircumference: { min: 31.5, max: 32.5, tolerance: 0.5 }
             }
         }
+    },
+    'long-sleeve': {
+        name: 'Long Sleeve Shirt',
+        reference: 'Size Chart (cm)',
+        measurements: {
+            'length': { XS: 69, S: 71, M: 73, L: 75, XL: 77, XXL: 79 },
+            'chestCircumference': { XS: 100, S: 102, M: 106, L: 110, XL: 116, XXL: 118 },
+            'shoulderWidth': { XS: 44, S: 45, M: 46, L: 49, XL: 51, XXL: 52 },
+            'neckWidth': { XS: 14, S: 15, M: 16, L: 17, XL: 18, XXL: 18 },
+            'sleeveLength': { XS: 22, S: 23, M: 23, L: 24, XL: 25, XXL: 26 },
+            'sleeveOpeningCircumference': { XS: 32, S: 33, M: 35, L: 36, XL: 37, XXL: 40 },
+            'armHoleCircumference': { XS: 47, S: 48, M: 50, L: 52, XL: 54, XXL: 56 },
+            'varianceDeltoidVsBicept': { XS: 14, S: 15, M: 15, L: 16, XL: 17, XXL: 16 }
+        },
+        // Size ranges and tolerances for better prediction
+        sizeRanges: {
+            'XS': {
+                length: { min: 67, max: 71, tolerance: 2.0 },
+                chestCircumference: { min: 98, max: 102, tolerance: 2.0 },
+                shoulderWidth: { min: 42, max: 46, tolerance: 2.0 },
+                neckWidth: { min: 13, max: 15, tolerance: 1.0 },
+                sleeveLength: { min: 21, max: 23, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 31, max: 33, tolerance: 1.0 },
+                armHoleCircumference: { min: 46, max: 48, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 13, max: 15, tolerance: 1.0 }
+            },
+            'S': {
+                length: { min: 69, max: 73, tolerance: 2.0 },
+                chestCircumference: { min: 100, max: 104, tolerance: 2.0 },
+                shoulderWidth: { min: 43, max: 47, tolerance: 2.0 },
+                neckWidth: { min: 14, max: 16, tolerance: 1.0 },
+                sleeveLength: { min: 22, max: 24, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 32, max: 34, tolerance: 1.0 },
+                armHoleCircumference: { min: 47, max: 49, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 14, max: 16, tolerance: 1.0 }
+            },
+            'M': {
+                length: { min: 71, max: 75, tolerance: 2.0 },
+                chestCircumference: { min: 104, max: 108, tolerance: 2.0 },
+                shoulderWidth: { min: 44, max: 48, tolerance: 2.0 },
+                neckWidth: { min: 15, max: 17, tolerance: 1.0 },
+                sleeveLength: { min: 22, max: 24, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 34, max: 36, tolerance: 1.0 },
+                armHoleCircumference: { min: 49, max: 51, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 14, max: 16, tolerance: 1.0 }
+            },
+            'L': {
+                length: { min: 73, max: 77, tolerance: 2.0 },
+                chestCircumference: { min: 108, max: 112, tolerance: 2.0 },
+                shoulderWidth: { min: 47, max: 51, tolerance: 2.0 },
+                neckWidth: { min: 16, max: 18, tolerance: 1.0 },
+                sleeveLength: { min: 23, max: 25, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 35, max: 37, tolerance: 1.0 },
+                armHoleCircumference: { min: 51, max: 53, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 15, max: 17, tolerance: 1.0 }
+            },
+            'XL': {
+                length: { min: 75, max: 79, tolerance: 2.0 },
+                chestCircumference: { min: 114, max: 118, tolerance: 2.0 },
+                shoulderWidth: { min: 49, max: 53, tolerance: 2.0 },
+                neckWidth: { min: 17, max: 19, tolerance: 1.0 },
+                sleeveLength: { min: 24, max: 26, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 36, max: 38, tolerance: 1.0 },
+                armHoleCircumference: { min: 53, max: 55, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 16, max: 18, tolerance: 1.0 }
+            },
+            'XXL': {
+                length: { min: 77, max: 81, tolerance: 2.0 },
+                chestCircumference: { min: 116, max: 120, tolerance: 2.0 },
+                shoulderWidth: { min: 50, max: 54, tolerance: 2.0 },
+                neckWidth: { min: 17, max: 19, tolerance: 1.0 },
+                sleeveLength: { min: 25, max: 27, tolerance: 1.0 },
+                sleeveOpeningCircumference: { min: 39, max: 41, tolerance: 1.0 },
+                armHoleCircumference: { min: 55, max: 57, tolerance: 1.0 },
+                varianceDeltoidVsBicept: { min: 15, max: 17, tolerance: 1.0 }
+            }
+        }
     }
 };
 
@@ -364,6 +669,7 @@ function estimateMeasurements(height, weight, age, gender, bodyType, garmentType
             sleeveLengthCm: sleeveLengthCm,
             neckCircumferenceCm: neckCircumferenceCm,
             totalLengthCm: totalLengthCm,
+
             // Legacy measurements for compatibility
             chestHalf: chestHalfCm,
             waistHalf: waistHalfCm,
@@ -475,10 +781,12 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
         ? (measurements.waist && measurements.thigh && measurements.bottom && measurements.length)
         : garmentType === 'short-sleeves'
         ? (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength)
+        : garmentType === 't-shirt' || garmentType === 'long-sleeve' || garmentType === 'hooded-jacket' || garmentType === 'sweat-shirt'
+        ? (measurements.length && measurements.chestCircumference && measurements.shoulderWidth && measurements.neckWidth && measurements.sleeveLength && measurements.sleeveOpeningCircumference && measurements.armHoleCircumference && measurements.varianceDeltoidVsBicept)
         : garmentType === 'jagvi-shirt'
         ? (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength)
-        : garmentType === 'hooded-jacket'
-        ? (measurements.chestHalf || measurements.waistHalf || measurements.bottomHalf || measurements.shoulderLength || measurements.totalLength)
+        : garmentType === 'long-sleeve'
+        ? (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.totalLength)
         : garmentType === 'polar-overshirt'
         ? (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.neckCircumference && measurements.armCircumference && measurements.totalLength)
         : (measurements.chest || measurements.waist);
@@ -493,6 +801,14 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
     
     if (garmentType === 'short-sleeves' && !hasDetailedMeasurements) {
         throw new Error('All measurements are required for short sleeve shirt size prediction. Please provide: chestCircumference, shoulderWidth, sleeveLength, neckCircumference, armCircumference, and totalLength.');
+    }
+    
+    if ((garmentType === 't-shirt' || garmentType === 'long-sleeve' || garmentType === 'hooded-jacket' || garmentType === 'sweat-shirt') && !hasDetailedMeasurements) {
+        throw new Error('All measurements are required for T-shirt, Long Sleeve shirt, Hooded Jacket, and Sweat Shirt size prediction. Please provide: length, chestCircumference, shoulderWidth, neckWidth, sleeveLength, sleeveOpeningCircumference, armHoleCircumference, and varianceDeltoidVsBicept.');
+    }
+    
+    if (garmentType === 'long-sleeve' && !hasDetailedMeasurements) {
+        throw new Error('All measurements are required for long sleeve shirt size prediction. Please provide: chestCircumference, shoulderWidth, sleeveLength, and totalLength.');
     }
     
     if (garmentType === 'polar-overshirt' && !hasDetailedMeasurements) {
@@ -524,6 +840,15 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
         predictedSize = predictShortSleeveSize(finalMeasurements, chartMeasurements, gender, bodyType);
         console.log('Predicted size:', predictedSize);
         console.log('=== END SHORT SLEEVE SHIRT PREDICTION ===');
+    } else if (garmentType === 't-shirt' || garmentType === 'long-sleeve' || garmentType === 'hooded-jacket' || garmentType === 'sweat-shirt') {
+        // T-shirt, Long Sleeve, Hooded Jacket, and Sweat Shirt sizing logic (uses letter sizes)
+        console.log(`=== ${garmentType.toUpperCase()} PREDICTION ===`);
+        console.log('Input measurements:', finalMeasurements);
+        console.log('Chart measurements:', chartMeasurements);
+        console.log('Gender:', gender, 'Body type:', bodyType);
+        predictedSize = predictTShirtSize(finalMeasurements, chartMeasurements, gender, bodyType);
+        console.log('Predicted size:', predictedSize);
+        console.log(`=== END ${garmentType.toUpperCase()} PREDICTION ===`);
     } else if (garmentType === 'jagvi-shirt') {
         // Long sleeve sizing logic (uses letter sizes)
         console.log('=== JAGVI SHIRT PREDICTION ===');
@@ -533,9 +858,16 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
         predictedSize = predictLongSleeveSize(finalMeasurements, chartMeasurements, gender, bodyType);
         console.log('Predicted size:', predictedSize);
         console.log('=== END JAGVI SHIRT PREDICTION ===');
-    } else if (garmentType === 'hooded-jacket') {
-        // Hooded jacket sizing logic (uses letter sizes)
-        predictedSize = predictHoodedJacketSize(finalMeasurements, chartMeasurements, gender, bodyType);
+    } else if (garmentType === 'long-sleeve') {
+        // Long sleeve sizing logic (uses letter sizes)
+        console.log('=== LONG SLEEVE SHIRT PREDICTION ===');
+        console.log('Input measurements:', finalMeasurements);
+        console.log('Chart measurements:', chartMeasurements);
+        console.log('Gender:', gender, 'Body type:', bodyType);
+        predictedSize = predictLongSleeveSize(finalMeasurements, chartMeasurements, gender, bodyType);
+        console.log('Predicted size:', predictedSize);
+        console.log('=== END LONG SLEEVE SHIRT PREDICTION ===');
+
     } else if (garmentType === 'polar-overshirt') {
         // Polar overshirt sizing logic (uses letter sizes)
         predictedSize = predictPolarOvershirtSize(finalMeasurements, chartMeasurements, gender, bodyType);
@@ -569,31 +901,21 @@ function predictSize(height, weight, age, gender, bodyType, measurements, garmen
             // This should never happen due to validation above, but just in case
             confidence = 0; // No confidence if measurements are missing
         }
-    } else if (garmentType === 'hooded-jacket') {
-        if (measurements.chestHalf && measurements.waistHalf && measurements.bottomHalf && measurements.shoulderLength && measurements.totalLength) {
-            confidence += 30; // Maximum confidence for all five measurements
-        } else if (measurements.chestHalf && measurements.waistHalf && measurements.bottomHalf) {
-            confidence += 25;
-        } else if (measurements.chestHalf && measurements.waistHalf) {
-            confidence += 20;
-        } else if (measurements.chestHalf && measurements.bottomHalf) {
-            confidence += 20;
-        } else if (measurements.chestHalf && measurements.shoulderLength) {
-            confidence += 18;
-        } else if (measurements.chestHalf && measurements.totalLength) {
-            confidence += 18;
-        } else if (measurements.chestHalf) {
-            confidence += 15;
-        } else if (measurements.waistHalf) {
-            confidence += 15;
-        } else if (measurements.bottomHalf) {
-            confidence += 15;
-        } else if (measurements.shoulderLength) {
-            confidence += 10;
-        } else if (measurements.totalLength) {
-            confidence += 10;
-        } else if (hasDetailedMeasurements) {
-            confidence += 5;
+    } else if (garmentType === 'long-sleeve') {
+        // For long-sleeve, all measurements are required, so we always have maximum confidence
+        if (measurements.chestCircumference && measurements.shoulderWidth && measurements.sleeveLength && measurements.totalLength) {
+            confidence += 30; // Maximum confidence for all four measurements
+        } else {
+            // This should never happen due to validation above, but just in case
+            confidence = 0; // No confidence if measurements are missing
+        }
+    } else if (garmentType === 'hooded-jacket' || garmentType === 'sweat-shirt') {
+        // For hooded-jacket and sweat-shirt, all measurements are required, so we always have maximum confidence
+        if (measurements.length && measurements.chestCircumference && measurements.shoulderWidth && measurements.neckWidth && measurements.sleeveLength && measurements.sleeveOpeningCircumference && measurements.armHoleCircumference && measurements.varianceDeltoidVsBicept) {
+            confidence += 30; // Maximum confidence for all eight measurements
+        } else {
+            // This should never happen due to validation above, but just in case
+            confidence = 0; // No confidence if measurements are missing
         }
     } else if (garmentType === 'polar-overshirt') {
         // For polar-overshirt, all measurements are required, so we always have maximum confidence
@@ -723,8 +1045,8 @@ function predictPantsSize(measurements, chartMeasurements, gender, bodyType) {
         }
         
         // Compare length measurement (15% weight)
-        if (length && chartMeasurements.sleevelength[size]) {
-            const lengthDiff = Math.abs(chartMeasurements.sleevelength[size] - length);
+        if (length && chartMeasurements.length[size]) {
+            const lengthDiff = Math.abs(chartMeasurements.length[size] - length);
             totalDiff += lengthDiff;
             weightedDiff += lengthDiff * 0.15;
             measurementCount++;
@@ -739,25 +1061,23 @@ function predictPantsSize(measurements, chartMeasurements, gender, bodyType) {
         }
     }
     
-    // Adjust for body type with more precise logic
-    if (bodyType === 'slim') {
-        // For slim body type, go down one size
-        const sizeOrder = ['36', '38', '40', '42', '44', '46'];
-        const currentIndex = sizeOrder.indexOf(bestSize);
+    // Adjust for body type with more conservative logic
+    // Only adjust if the difference is very small (within tolerance)
+    const sizeOrder = ['36', '38', '40', '42', '44', '46'];
+    const currentIndex = sizeOrder.indexOf(bestSize);
+    
+    if (bodyType === 'slim' && smallestDiff > 2.0) {
+        // For slim body type, only go down if the match wasn't very close
         if (currentIndex > 0) {
             bestSize = sizeOrder[currentIndex - 1];
         }
-    } else if (bodyType === 'athletic') {
-        // For athletic body type, go up one size (especially for thighs)
-        const sizeOrder = ['36', '38', '40', '42', '44', '46'];
-        const currentIndex = sizeOrder.indexOf(bestSize);
+    } else if (bodyType === 'athletic' && smallestDiff > 2.0) {
+        // For athletic body type, only go up if the match wasn't very close
         if (currentIndex < sizeOrder.length - 1) {
             bestSize = sizeOrder[currentIndex + 1];
         }
-    } else if (bodyType === 'plus') {
-        // For plus body type, go up one size
-        const sizeOrder = ['36', '38', '40', '42', '44', '46'];
-        const currentIndex = sizeOrder.indexOf(bestSize);
+    } else if (bodyType === 'plus' && smallestDiff > 2.0) {
+        // For plus body type, only go up if the match wasn't very close
         if (currentIndex < sizeOrder.length - 1) {
             bestSize = sizeOrder[currentIndex + 1];
         }
@@ -863,18 +1183,19 @@ function predictShortSleeveSize(measurements, chartMeasurements, gender, bodyTyp
     
     console.log(`Final best size: ${bestSize} (smallestDiff: ${smallestDiff.toFixed(2)})`);
     
-    // Adjust for body type
-    if (bodyType === 'slim') {
+    // Adjust for body type with more conservative logic
+    // Only adjust if the difference is very small (within tolerance)
+    if (bodyType === 'slim' && smallestDiff > 2.0) {
         if (bestSize === 'M') bestSize = 'S';
         else if (bestSize === 'L') bestSize = 'M';
         else if (bestSize === 'XL') bestSize = 'L';
         else if (bestSize === 'XXL') bestSize = 'XL';
-    } else if (bodyType === 'athletic') {
+    } else if (bodyType === 'athletic' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
         else if (bestSize === 'XL') bestSize = 'XXL';
-    } else if (bodyType === 'plus') {
+    } else if (bodyType === 'plus' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
@@ -885,19 +1206,21 @@ function predictShortSleeveSize(measurements, chartMeasurements, gender, bodyTyp
     return bestSize;
 }
 
-// Predict long sleeve size based on new measurements
-function predictLongSleeveSize(measurements, chartMeasurements, gender, bodyType) {
+// Predict T-shirt, Long Sleeve shirt, and Hooded Jacket size based on new measurements
+function predictTShirtSize(measurements, chartMeasurements, gender, bodyType) {
+    const length = measurements.length;
     const chestCircumference = measurements.chestCircumference;
     const shoulderWidth = measurements.shoulderWidth;
+    const neckWidth = measurements.neckWidth;
     const sleeveLength = measurements.sleeveLength;
-    const neckCircumference = measurements.neckCircumference;
-    const armCircumference = measurements.armCircumference;
-    const totalLength = measurements.totalLength;
+    const sleeveOpeningCircumference = measurements.sleeveOpeningCircumference;
+    const armHoleCircumference = measurements.armHoleCircumference;
+    const varianceDeltoidVsBicept = measurements.varianceDeltoidVsBicept;
     
-    console.log('predictLongSleeveSize called with measurements:', measurements);
+    console.log('predictTShirtSize (T-shirt/Long Sleeve/Hooded Jacket/Sweat Shirt) called with measurements:', measurements);
     console.log('Chart measurements:', chartMeasurements);
     
-    if (!chestCircumference && !shoulderWidth && !sleeveLength && !neckCircumference && !armCircumference && !totalLength) {
+    if (!length && !chestCircumference && !shoulderWidth && !neckWidth && !sleeveLength && !sleeveOpeningCircumference && !armHoleCircumference && !varianceDeltoidVsBicept) {
         return 'M'; // Default size
     }
     
@@ -914,6 +1237,15 @@ function predictLongSleeveSize(measurements, chartMeasurements, gender, bodyType
         let measurementCount = 0;
         let weightedDiff = 0;
         
+        // Compare length (15% weight)
+        if (length && chartMeasurements.length[size]) {
+            const lengthDiff = Math.abs(chartMeasurements.length[size] - length);
+            totalDiff += lengthDiff;
+            weightedDiff += lengthDiff * 0.15;
+            measurementCount++;
+            console.log(`  Length: user=${length}, chart=${chartMeasurements.length[size]}, diff=${lengthDiff.toFixed(2)}`);
+        }
+        
         // Compare chest circumference (primary measurement - 25% weight)
         if (chestCircumference && chartMeasurements.chestCircumference[size]) {
             const chestDiff = Math.abs(chartMeasurements.chestCircumference[size] - chestCircumference);
@@ -923,11 +1255,137 @@ function predictLongSleeveSize(measurements, chartMeasurements, gender, bodyType
             console.log(`  Chest: user=${chestCircumference}, chart=${chartMeasurements.chestCircumference[size]}, diff=${chestDiff.toFixed(2)}`);
         }
         
-        // Compare shoulder width (25% weight)
+        // Compare shoulder width (20% weight)
         if (shoulderWidth && chartMeasurements.shoulderWidth[size]) {
             const shoulderDiff = Math.abs(chartMeasurements.shoulderWidth[size] - shoulderWidth);
             totalDiff += shoulderDiff;
-            weightedDiff += shoulderDiff * 0.25;
+            weightedDiff += shoulderDiff * 0.20;
+            measurementCount++;
+            console.log(`  Shoulder: user=${shoulderWidth}, chart=${chartMeasurements.shoulderWidth[size]}, diff=${shoulderDiff.toFixed(2)}`);
+        }
+        
+        // Compare neck width (10% weight)
+        if (neckWidth && chartMeasurements.neckWidth[size]) {
+            const neckDiff = Math.abs(chartMeasurements.neckWidth[size] - neckWidth);
+            totalDiff += neckDiff;
+            weightedDiff += neckDiff * 0.10;
+            measurementCount++;
+            console.log(`  Neck Width: user=${neckWidth}, chart=${chartMeasurements.neckWidth[size]}, diff=${neckDiff.toFixed(2)}`);
+        }
+        
+        // Compare sleeve length (15% weight)
+        if (sleeveLength && chartMeasurements.sleeveLength[size]) {
+            const sleeveDiff = Math.abs(chartMeasurements.sleeveLength[size] - sleeveLength);
+            totalDiff += sleeveDiff;
+            weightedDiff += sleeveDiff * 0.15;
+            measurementCount++;
+            console.log(`  Sleeve: user=${sleeveLength}, chart=${chartMeasurements.sleeveLength[size]}, diff=${sleeveDiff.toFixed(2)}`);
+        }
+        
+        // Compare sleeve opening circumference (10% weight)
+        if (sleeveOpeningCircumference && chartMeasurements.sleeveOpeningCircumference[size]) {
+            const sleeveOpeningDiff = Math.abs(chartMeasurements.sleeveOpeningCircumference[size] - sleeveOpeningCircumference);
+            totalDiff += sleeveOpeningDiff;
+            weightedDiff += sleeveOpeningDiff * 0.10;
+            measurementCount++;
+            console.log(`  Sleeve Opening: user=${sleeveOpeningCircumference}, chart=${chartMeasurements.sleeveOpeningCircumference[size]}, diff=${sleeveOpeningDiff.toFixed(2)}`);
+        }
+        
+        // Compare arm hole circumference (10% weight)
+        if (armHoleCircumference && chartMeasurements.armHoleCircumference[size]) {
+            const armHoleDiff = Math.abs(chartMeasurements.armHoleCircumference[size] - armHoleCircumference);
+            totalDiff += armHoleDiff;
+            weightedDiff += armHoleDiff * 0.10;
+            measurementCount++;
+            console.log(`  Arm Hole: user=${armHoleCircumference}, chart=${chartMeasurements.armHoleCircumference[size]}, diff=${armHoleDiff.toFixed(2)}`);
+        }
+        
+        // Compare variance deltoid vs bicept (5% weight)
+        if (varianceDeltoidVsBicept && chartMeasurements.varianceDeltoidVsBicept[size]) {
+            const varianceDiff = Math.abs(chartMeasurements.varianceDeltoidVsBicept[size] - varianceDeltoidVsBicept);
+            totalDiff += varianceDiff;
+            weightedDiff += varianceDiff * 0.05;
+            measurementCount++;
+            console.log(`  Variance: user=${varianceDeltoidVsBicept}, chart=${chartMeasurements.varianceDeltoidVsBicept[size]}, diff=${varianceDiff.toFixed(2)}`);
+        }
+        
+        console.log(`  Size ${size}: weightedDiff=${weightedDiff.toFixed(2)}, measurementCount=${measurementCount}`);
+        
+        // Use weighted difference directly
+        if (measurementCount > 0) {
+            if (weightedDiff < smallestDiff) {
+                smallestDiff = weightedDiff;
+                bestSize = size;
+                console.log(`  -> New best size: ${size} (weightedDiff: ${weightedDiff.toFixed(2)})`);
+            }
+        }
+    }
+    
+    console.log(`Final best size: ${bestSize} (smallestDiff: ${smallestDiff.toFixed(2)})`);
+    
+    // Adjust for body type with more conservative logic
+    // Only adjust if the difference is very small (within tolerance)
+    if (bodyType === 'slim' && smallestDiff > 2.0) {
+        if (bestSize === 'M') bestSize = 'S';
+        else if (bestSize === 'L') bestSize = 'M';
+        else if (bestSize === 'XL') bestSize = 'L';
+        else if (bestSize === 'XXL') bestSize = 'XL';
+    } else if (bodyType === 'athletic' && smallestDiff > 2.0) {
+        if (bestSize === 'S') bestSize = 'M';
+        else if (bestSize === 'M') bestSize = 'L';
+        else if (bestSize === 'L') bestSize = 'XL';
+        else if (bestSize === 'XL') bestSize = 'XXL';
+    } else if (bodyType === 'plus' && smallestDiff > 2.0) {
+        if (bestSize === 'S') bestSize = 'M';
+        else if (bestSize === 'L') bestSize = 'XL';
+        else if (bestSize === 'XL') bestSize = 'XXL';
+    }
+    
+    console.log(`Final size after body type adjustment: ${bestSize}`);
+    return bestSize;
+}
+
+// Predict long sleeve size based on new measurements
+function predictLongSleeveSize(measurements, chartMeasurements, gender, bodyType) {
+    const chestCircumference = measurements.chestCircumference;
+    const shoulderWidth = measurements.shoulderWidth;
+    const sleeveLength = measurements.sleeveLength;
+    const totalLength = measurements.totalLength;
+    
+    console.log('predictLongSleeveSize called with measurements:', measurements);
+    console.log('Chart measurements:', chartMeasurements);
+    
+    if (!chestCircumference && !shoulderWidth && !sleeveLength && !totalLength) {
+        return 'M'; // Default size
+    }
+    
+    // Find the best matching size based on all measurements
+    const sizes = Object.keys(chartMeasurements.chestCircumference);
+    let bestSize = 'M';
+    let smallestDiff = Infinity;
+    
+    console.log('Available sizes:', sizes);
+    console.log('Starting size analysis...');
+    
+    for (const size of sizes) {
+        let totalDiff = 0;
+        let measurementCount = 0;
+        let weightedDiff = 0;
+        
+        // Compare chest circumference (primary measurement - 40% weight)
+        if (chestCircumference && chartMeasurements.chestCircumference[size]) {
+            const chestDiff = Math.abs(chartMeasurements.chestCircumference[size] - chestCircumference);
+            totalDiff += chestDiff;
+            weightedDiff += chestDiff * 0.40;
+            measurementCount++;
+            console.log(`  Chest: user=${chestCircumference}, chart=${chartMeasurements.chestCircumference[size]}, diff=${chestDiff.toFixed(2)}`);
+        }
+        
+        // Compare shoulder width (30% weight)
+        if (shoulderWidth && chartMeasurements.shoulderWidth[size]) {
+            const shoulderDiff = Math.abs(chartMeasurements.shoulderWidth[size] - shoulderWidth);
+            totalDiff += shoulderDiff;
+            weightedDiff += shoulderDiff * 0.30;
             measurementCount++;
             console.log(`  Shoulder: user=${shoulderWidth}, chart=${chartMeasurements.shoulderWidth[size]}, diff=${shoulderDiff.toFixed(2)}`);
         }
@@ -941,23 +1399,7 @@ function predictLongSleeveSize(measurements, chartMeasurements, gender, bodyType
             console.log(`  Sleeve: user=${sleeveLength}, chart=${chartMeasurements.sleeveLength[size]}, diff=${sleeveDiff.toFixed(2)}`);
         }
         
-        // Compare neck circumference (15% weight)
-        if (neckCircumference && chartMeasurements.neckCircumference[size]) {
-            const neckDiff = Math.abs(chartMeasurements.neckCircumference[size] - neckCircumference);
-            totalDiff += neckDiff;
-            weightedDiff += neckDiff * 0.15;
-            measurementCount++;
-            console.log(`  Neck: user=${neckCircumference}, chart=${chartMeasurements.neckCircumference[size]}, diff=${neckDiff.toFixed(2)}`);
-        }
-        
-        // Compare arm circumference (10% weight)
-        if (armCircumference && chartMeasurements.armCircumference[size]) {
-            const armDiff = Math.abs(chartMeasurements.armCircumference[size] - armCircumference);
-            totalDiff += armDiff;
-            weightedDiff += armDiff * 0.10;
-            measurementCount++;
-            console.log(`  Arm: user=${armCircumference}, chart=${chartMeasurements.armCircumference[size]}, diff=${armDiff.toFixed(2)}`);
-        }
+
         
         // Compare total length (10% weight)
         if (totalLength && chartMeasurements.totalLength[size]) {
@@ -989,28 +1431,28 @@ function predictLongSleeveSize(measurements, chartMeasurements, gender, bodyType
     console.log(`This means the measurements best match size ${bestSize}`);
     console.log(`=== END ANALYSIS ===\n`);
     
-    // Adjust for body type
+    // Adjust for body type with more conservative logic
     console.log(`Body type adjustment: ${bodyType}`);
-    if (bodyType === 'slim') {
+    if (bodyType === 'slim' && smallestDiff > 2.0) {
         if (bestSize === 'M') bestSize = 'S';
         else if (bestSize === 'L') bestSize = 'M';
         else if (bestSize === 'XL') bestSize = 'L';
         else if (bestSize === 'XXL') bestSize = 'XL';
         console.log(`  Slim adjustment: ${bestSize}`);
-    } else if (bodyType === 'athletic') {
+    } else if (bodyType === 'athletic' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
         else if (bestSize === 'XL') bestSize = 'XXL';
         console.log(`  Athletic adjustment: ${bestSize}`);
-    } else if (bodyType === 'plus') {
+    } else if (bodyType === 'plus' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
         else if (bestSize === 'XL') bestSize = 'XXL';
         console.log(`  Plus adjustment: ${bestSize}`);
     } else {
-        console.log(`  No body type adjustment needed`);
+        console.log(`  No body type adjustment needed (difference too small: ${smallestDiff.toFixed(2)})`);
     }
     
     console.log(`Final best size after body type adjustment: ${bestSize}`);
@@ -1095,18 +1537,18 @@ function predictHoodedJacketSize(measurements, chartMeasurements, gender, bodyTy
         }
     }
     
-    // Adjust for body type
-    if (bodyType === 'slim') {
+    // Adjust for body type with more conservative logic
+    if (bodyType === 'slim' && smallestDiff > 2.0) {
         if (bestSize === 'M') bestSize = 'S';
         else if (bestSize === 'L') bestSize = 'M';
         else if (bestSize === 'XL') bestSize = 'L';
         else if (bestSize === 'XXL') bestSize = 'XL';
-    } else if (bodyType === 'athletic') {
+    } else if (bodyType === 'athletic' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
         else if (bestSize === 'XL') bestSize = 'XXL';
-    } else if (bodyType === 'plus') {
+    } else if (bodyType === 'plus' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
@@ -1203,18 +1645,19 @@ function predictPolarOvershirtSize(measurements, chartMeasurements, gender, body
         }
     }
     
-    // Adjust for body type
-    if (bodyType === 'slim') {
+    // Adjust for body type with more conservative logic
+    // Only adjust if the difference is very small (within tolerance)
+    if (bodyType === 'slim' && smallestDiff > 2.0) {
         if (bestSize === 'M') bestSize = 'S';
         else if (bestSize === 'L') bestSize = 'M';
         else if (bestSize === 'XL') bestSize = 'L';
         else if (bestSize === 'XXL') bestSize = 'XL';
-    } else if (bodyType === 'athletic') {
+    } else if (bodyType === 'athletic' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
         else if (bestSize === 'XL') bestSize = 'XXL';
-    } else if (bodyType === 'plus') {
+    } else if (bodyType === 'plus' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
@@ -1248,14 +1691,15 @@ function predictShirtSize(measurements, chartMeasurements, gender, bodyType) {
         }
     }
     
-    // Adjust for body type
-    if (bodyType === 'slim') {
+    // Adjust for body type with more conservative logic
+    // Only adjust if the difference is very small (within tolerance)
+    if (bodyType === 'slim' && smallestDiff > 2.0) {
         if (bestSize === 'M') bestSize = 'S';
         else if (bestSize === 'L') bestSize = 'M';
-    } else if (bodyType === 'athletic') {
+    } else if (bodyType === 'athletic' && smallestDiff > 2.0) {
         if (bestSize === 'S') bestSize = 'M';
         else if (bestSize === 'M') bestSize = 'L';
-    } else if (bodyType === 'plus') {
+    } else if (bodyType === 'plus' && smallestDiff > 2.0) {
         if (bestSize === 'M') bestSize = 'L';
         else if (bestSize === 'L') bestSize = 'XL';
     }

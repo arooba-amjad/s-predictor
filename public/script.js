@@ -149,6 +149,75 @@ const itemData = {
             }
         }
     },
+    'long-sleeve': {
+        name: 'Long Sleeve Shirt',
+        description: 'Premium Long Sleeve Shirt',
+        icon: 'fas fa-tshirt',
+        reference: 'Size Chart (cm)',
+        type: 'shirt',
+        sizeChart: {
+            'XS': { 
+                length: 69, 
+                chestCircumference: 100, 
+                shoulderWidth: 44, 
+                neckWidth: 14, 
+                sleeveLength: 22, 
+                sleeveOpeningCircumference: 32, 
+                armHoleCircumference: 47, 
+                varianceDeltoidVsBicept: 14 
+            },
+            'S': { 
+                length: 71, 
+                chestCircumference: 102, 
+                shoulderWidth: 45, 
+                neckWidth: 15, 
+                sleeveLength: 23, 
+                sleeveOpeningCircumference: 33, 
+                armHoleCircumference: 48, 
+                varianceDeltoidVsBicept: 15 
+            },
+            'M': { 
+                length: 73, 
+                chestCircumference: 106, 
+                shoulderWidth: 46, 
+                neckWidth: 16, 
+                sleeveLength: 23, 
+                sleeveOpeningCircumference: 35, 
+                armHoleCircumference: 50, 
+                varianceDeltoidVsBicept: 15 
+            },
+            'L': { 
+                length: 75, 
+                chestCircumference: 110, 
+                shoulderWidth: 49, 
+                neckWidth: 17, 
+                sleeveLength: 24, 
+                sleeveOpeningCircumference: 36, 
+                armHoleCircumference: 52, 
+                varianceDeltoidVsBicept: 16 
+            },
+            'XL': { 
+                length: 77, 
+                chestCircumference: 116, 
+                shoulderWidth: 51, 
+                neckWidth: 18, 
+                sleeveLength: 25, 
+                sleeveOpeningCircumference: 37, 
+                armHoleCircumference: 54, 
+                varianceDeltoidVsBicept: 17 
+            },
+            'XXL': { 
+                length: 79, 
+                chestCircumference: 118, 
+                shoulderWidth: 52, 
+                neckWidth: 18, 
+                sleeveLength: 26, 
+                sleeveOpeningCircumference: 40, 
+                armHoleCircumference: 56, 
+                varianceDeltoidVsBicept: 16 
+            }
+        }
+    },
     'short-sleeves': {
         name: 'Short Sleeve Shirt',
         description: 'Casual Comfortable Shirt',
@@ -157,67 +226,272 @@ const itemData = {
         type: 'shirt',
         sizeChart: {
             'XS': { 
-                chestCircumference: 104, 
-                shoulderWidth: 12.5, 
-                sleeveLength: 23, 
-                neckCircumference: 37, 
-                armCircumference: 22.5,
-                totalLength: 70 
+                length: 69, 
+                chestCircumference: 100, 
+                shoulderWidth: 44, 
+                neckWidth: 14, 
+                sleeveLength: 22, 
+                sleeveOpeningCircumference: 32, 
+                armHoleCircumference: 47, 
+                varianceDeltoidVsBicept: 14 
             },
             'S': { 
-                chestCircumference: 108, 
-                shoulderWidth: 13.25, 
-                sleeveLength: 24, 
-                neckCircumference: 38, 
-                armCircumference: 23,
-                totalLength: 71 
+                length: 71, 
+                chestCircumference: 102, 
+                shoulderWidth: 45, 
+                neckWidth: 15, 
+                sleeveLength: 23, 
+                sleeveOpeningCircumference: 33, 
+                armHoleCircumference: 48, 
+                varianceDeltoidVsBicept: 15 
             },
             'M': { 
-                chestCircumference: 112, 
-                shoulderWidth: 14, 
-                sleeveLength: 25, 
-                neckCircumference: 39, 
-                armCircumference: 25,
-                totalLength: 72 
+                length: 73, 
+                chestCircumference: 106, 
+                shoulderWidth: 46, 
+                neckWidth: 16, 
+                sleeveLength: 23, 
+                sleeveOpeningCircumference: 35, 
+                armHoleCircumference: 50, 
+                varianceDeltoidVsBicept: 15 
             },
             'L': { 
-                chestCircumference: 116, 
-                shoulderWidth: 14.75, 
-                sleeveLength: 26, 
-                neckCircumference: 40, 
-                armCircumference: 24,
-                totalLength: 73 
+                length: 75, 
+                chestCircumference: 110, 
+                shoulderWidth: 49, 
+                neckWidth: 17, 
+                sleeveLength: 24, 
+                sleeveOpeningCircumference: 36, 
+                armHoleCircumference: 52, 
+                varianceDeltoidVsBicept: 16 
             },
             'XL': { 
-                chestCircumference: 120, 
-                shoulderWidth: 15.5, 
-                sleeveLength: 27, 
-                neckCircumference: 41, 
-                armCircumference: 24.5,
-                totalLength: 74 
+                length: 77, 
+                chestCircumference: 116, 
+                shoulderWidth: 51, 
+                neckWidth: 18, 
+                sleeveLength: 25, 
+                sleeveOpeningCircumference: 37, 
+                armHoleCircumference: 54, 
+                varianceDeltoidVsBicept: 17 
             },
             'XXL': { 
-                chestCircumference: 124, 
-                shoulderWidth: 16.25, 
-                sleeveLength: 28, 
-                neckCircumference: 42, 
-                armCircumference: 25,
-                totalLength: 75 
+                length: 79, 
+                chestCircumference: 118, 
+                shoulderWidth: 52, 
+                neckWidth: 18, 
+                sleeveLength: 26, 
+                sleeveOpeningCircumference: 40, 
+                armHoleCircumference: 56, 
+                varianceDeltoidVsBicept: 16 
+            }
+        }
+    },
+    't-shirt': {
+        name: 'T-Shirt',
+        description: 'Premium Cotton T-Shirt',
+        icon: 'fas fa-tshirt',
+        reference: 'Size Chart (cm)',
+        type: 'shirt',
+        sizeChart: {
+            'XS': { 
+                length: 69, 
+                chestCircumference: 100, 
+                shoulderWidth: 44, 
+                neckWidth: 14, 
+                sleeveLength: 22, 
+                sleeveOpeningCircumference: 32, 
+                armHoleCircumference: 47, 
+                varianceDeltoidVsBicept: 14 
+            },
+            'S': { 
+                length: 71, 
+                chestCircumference: 102, 
+                shoulderWidth: 45, 
+                neckWidth: 15, 
+                sleeveLength: 23, 
+                sleeveOpeningCircumference: 33, 
+                armHoleCircumference: 48, 
+                varianceDeltoidVsBicept: 15 
+            },
+            'M': { 
+                length: 73, 
+                chestCircumference: 106, 
+                shoulderWidth: 46, 
+                neckWidth: 16, 
+                sleeveLength: 23, 
+                sleeveOpeningCircumference: 35, 
+                armHoleCircumference: 50, 
+                varianceDeltoidVsBicept: 15 
+            },
+            'L': { 
+                length: 75, 
+                chestCircumference: 110, 
+                shoulderWidth: 49, 
+                neckWidth: 17, 
+                sleeveLength: 24, 
+                sleeveOpeningCircumference: 36, 
+                armHoleCircumference: 52, 
+                varianceDeltoidVsBicept: 16 
+            },
+            'XL': { 
+                length: 77, 
+                chestCircumference: 116, 
+                shoulderWidth: 51, 
+                neckWidth: 18, 
+                sleeveLength: 25, 
+                sleeveOpeningCircumference: 37, 
+                armHoleCircumference: 54, 
+                varianceDeltoidVsBicept: 17 
+            },
+            'XXL': { 
+                length: 79, 
+                chestCircumference: 118, 
+                shoulderWidth: 52, 
+                neckWidth: 18, 
+                sleeveLength: 26, 
+                sleeveOpeningCircumference: 40, 
+                armHoleCircumference: 56, 
+                varianceDeltoidVsBicept: 16 
             }
         }
     },
     'hooded-jacket': {
         name: 'Hooded Jacket',
-        description: 'Summer 2025 Collection',
+        description: 'Premium Hooded Jacket',
         icon: 'fas fa-user-tie',
-        reference: 'SUMMER 2025 Collection',
+        reference: 'Size Chart (cm)',
         type: 'jacket',
         sizeChart: {
-            'S': { chestHalf: 57, shoulderWidth: 14.5, sleeveLength: 66, neckCircumference: 46, shirtLength: 71 },
-            'M': { chestHalf: 59, shoulderWidth: 15, sleeveLength: 67, neckCircumference: 48, shirtLength: 72 },
-            'L': { chestHalf: 61, shoulderWidth: 15.5, sleeveLength: 68, neckCircumference: 50, shirtLength: 73 },
-            'XL': { chestHalf: 63, shoulderWidth: 16, sleeveLength: 69, neckCircumference: 52, shirtLength: 74 },
-            'XXL': { chestHalf: 65, shoulderWidth: 16.5, sleeveLength: 70, neckCircumference: 54, shirtLength: 75 }
+            'XS': { 
+                length: 70, 
+                chestCircumference: 104, 
+                shoulderWidth: 42, 
+                neckWidth: 16, 
+                sleeveLength: 24, 
+                sleeveOpeningCircumference: 34, 
+                armHoleCircumference: 49, 
+                varianceDeltoidVsBicept: 15 
+            },
+            'S': { 
+                length: 72, 
+                chestCircumference: 108, 
+                shoulderWidth: 44, 
+                neckWidth: 17, 
+                sleeveLength: 25, 
+                sleeveOpeningCircumference: 36, 
+                armHoleCircumference: 51, 
+                varianceDeltoidVsBicept: 16 
+            },
+            'M': { 
+                length: 74, 
+                chestCircumference: 112, 
+                shoulderWidth: 46, 
+                neckWidth: 18, 
+                sleeveLength: 26, 
+                sleeveOpeningCircumference: 38, 
+                armHoleCircumference: 53, 
+                varianceDeltoidVsBicept: 17 
+            },
+            'L': { 
+                length: 76, 
+                chestCircumference: 116, 
+                shoulderWidth: 48, 
+                neckWidth: 19, 
+                sleeveLength: 27, 
+                sleeveOpeningCircumference: 40, 
+                armHoleCircumference: 55, 
+                varianceDeltoidVsBicept: 18 
+            },
+            'XL': { 
+                length: 78, 
+                chestCircumference: 120, 
+                shoulderWidth: 50, 
+                neckWidth: 20, 
+                sleeveLength: 28, 
+                sleeveOpeningCircumference: 42, 
+                armHoleCircumference: 57, 
+                varianceDeltoidVsBicept: 19 
+            },
+            'XXL': { 
+                length: 80, 
+                chestCircumference: 124, 
+                shoulderWidth: 52, 
+                neckWidth: 21, 
+                sleeveLength: 29, 
+                sleeveOpeningCircumference: 44, 
+                armHoleCircumference: 59, 
+                varianceDeltoidVsBicept: 20 
+            }
+        }
+    },
+    'sweat-shirt': {
+        name: 'Sweat Shirt',
+        description: 'Premium Sweat Shirt',
+        icon: 'fas fa-tshirt',
+        reference: 'Size Chart (cm)',
+        type: 'shirt',
+        sizeChart: {
+            'XS': { 
+                length: 68, 
+                chestCircumference: 98, 
+                shoulderWidth: 43, 
+                neckWidth: 13, 
+                sleeveLength: 21, 
+                sleeveOpeningCircumference: 31, 
+                armHoleCircumference: 46, 
+                varianceDeltoidVsBicept: 13 
+            },
+            'S': { 
+                length: 70, 
+                chestCircumference: 100, 
+                shoulderWidth: 44, 
+                neckWidth: 14, 
+                sleeveLength: 22, 
+                sleeveOpeningCircumference: 32, 
+                armHoleCircumference: 47, 
+                varianceDeltoidVsBicept: 14 
+            },
+            'M': { 
+                length: 72, 
+                chestCircumference: 104, 
+                shoulderWidth: 45, 
+                neckWidth: 15, 
+                sleeveLength: 22, 
+                sleeveOpeningCircumference: 34, 
+                armHoleCircumference: 49, 
+                varianceDeltoidVsBicept: 14 
+            },
+            'L': { 
+                length: 74, 
+                chestCircumference: 108, 
+                shoulderWidth: 48, 
+                neckWidth: 16, 
+                sleeveLength: 23, 
+                sleeveOpeningCircumference: 35, 
+                armHoleCircumference: 51, 
+                varianceDeltoidVsBicept: 15 
+            },
+            'XL': { 
+                length: 76, 
+                chestCircumference: 114, 
+                shoulderWidth: 50, 
+                neckWidth: 17, 
+                sleeveLength: 24, 
+                sleeveOpeningCircumference: 36, 
+                armHoleCircumference: 53, 
+                varianceDeltoidVsBicept: 16 
+            },
+            'XXL': { 
+                length: 78, 
+                chestCircumference: 116, 
+                shoulderWidth: 51, 
+                neckWidth: 17, 
+                sleeveLength: 25, 
+                sleeveOpeningCircumference: 39, 
+                armHoleCircumference: 55, 
+                varianceDeltoidVsBicept: 15 
+            }
         }
     },
     'polar-overshirt': {
@@ -284,12 +558,12 @@ const itemData = {
         reference: 'Accurate Size Chart (cm) - Based on PPsample measurements',
         type: 'pants',
         sizeChart: {
-            '36': { waist: 37, seat: 47, thigh: 29.1, knee: 18.7, bottom: 15.5, frontcross: 18.5, backcross: 31.2, sleevelength: 104.6, pocketOpening: 17 },
-            '38': { waist: 39, seat: 49, thigh: 30.1, knee: 19.4, bottom: 16, frontcross: 19, backcross: 31.9, sleevelength: 105.2, pocketOpening: 17.25 },
-            '40': { waist: 41, seat: 51, thigh: 31.1, knee: 20.1, bottom: 16.5, frontcross: 19.5, backcross: 32.6, sleevelength: 105.8, pocketOpening: 17.5 },
-            '42': { waist: 43, seat: 53, thigh: 32.3, knee: 20.8, bottom: 17, frontcross: 20, backcross: 33.3, sleevelength: 106.4, pocketOpening: 17.75 },
-            '44': { waist: 45, seat: 55, thigh: 33.5, knee: 21.5, bottom: 17.5, frontcross: 20.5, backcross: 34, sleevelength: 107, pocketOpening: 18 },
-            '46': { waist: 47, seat: 57, thigh: 34.3, knee: 22.2, bottom: 18, frontcross: 21, backcross: 34.7, sleevelength: 107.6, pocketOpening: 18.25 }
+            '36': { waist: 74, seat: 94, thigh: 58.2, knee: 37.4, bottom: 31, frontcross: 37, backcross: 62.4, length: 104.6, pocketOpening: 17 },
+            '38': { waist: 78, seat: 98, thigh: 60.2, knee: 38.8, bottom: 32, frontcross: 38, backcross: 63.8, length: 105.2, pocketOpening: 17.25 },
+            '40': { waist: 82, seat: 102, thigh: 62.2, knee: 40.2, bottom: 33, frontcross: 39, backcross: 65.2, length: 105.8, pocketOpening: 17.5 },
+            '42': { waist: 86, seat: 106, thigh: 64.6, knee: 41.6, bottom: 34, frontcross: 40, backcross: 66.6, length: 106.4, pocketOpening: 17.75 },
+            '44': { waist: 90, seat: 110, thigh: 67, knee: 43, bottom: 35, frontcross: 41, backcross: 68, length: 107, pocketOpening: 18 },
+            '46': { waist: 94, seat: 114, thigh: 68.6, knee: 44.4, bottom: 36, frontcross: 42, backcross: 69.4, length: 107.6, pocketOpening: 18.25 }
         }
     }
 };
@@ -466,10 +740,12 @@ function populateSizeChart() {
     
     // Add headers based on item type
     if (item.type === 'pants') {
-        tableHTML += '<th>Waist 1/2 (cm)</th><th>Bottom 1/2 (cm)</th><th>Length (cm)</th>';
-    } else {
-        tableHTML += '<th>Chest Circumference (cm)</th><th>Shoulder Width (cm)</th><th>Sleeve Length (cm)</th><th>Neck Circumference (cm)</th><th>Arm Circumference (cm)</th><th>Total Length (cm)</th>';
-    }
+        tableHTML += '<th>Waist (cm)</th><th>Thigh (cm)</th><th>Bottom (cm)</th><th>Length (cm)</th>';
+                            } else if (selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') {
+            tableHTML += '<th>Length (cm)</th><th>Chest (Cir) (cm)</th><th>Shoulder (cm)</th><th>Neck Width (cm)</th><th>Sleeve Length (cm)</th><th>Sleeve Opening (Cir) (cm)</th><th>Arm Hole (Cir) (cm)</th><th>Variance Deltoid Vs Bicept (cm)</th>';
+                } else {
+                    tableHTML += '<th>Chest Circumference (cm)</th><th>Shoulder Width (cm)</th><th>Sleeve Length (cm)</th><th>Neck Circumference (cm)</th><th>Arm Circumference (cm)</th><th>Total Length (cm)</th>';
+                }
     
     tableHTML += '</tr></thead><tbody>';
     
@@ -477,11 +753,13 @@ function populateSizeChart() {
         const measurements = chart[size];
         tableHTML += `<tr><td><strong>${size}</strong></td>`;
         
-        if (item.type === 'pants') {
-            tableHTML += `<td>${measurements.waist}</td><td>${measurements.bottom}</td><td>${measurements.length}</td>`;
-            } else {
-            tableHTML += `<td>${measurements.chestCircumference}</td><td>${measurements.shoulderWidth}</td><td>${measurements.sleeveLength}</td><td>${measurements.neckCircumference}</td><td>${measurements.armCircumference}</td><td>${measurements.totalLength}</td>`;
-        }
+                                if (item.type === 'pants') {
+            tableHTML += `<td>${measurements.waist}</td><td>${measurements.thigh}</td><td>${measurements.bottom}</td><td>${measurements.length}</td>`;
+        } else if (selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') {
+            tableHTML += `<td>${measurements.length}</td><td>${measurements.chestCircumference}</td><td>${measurements.shoulderWidth}</td><td>${measurements.neckWidth}</td><td>${measurements.sleeveLength}</td><td>${measurements.sleeveOpeningCircumference}</td><td>${measurements.armHoleCircumference}</td><td>${measurements.varianceDeltoidVsBicept}</td>`;
+                } else {
+                    tableHTML += `<td>${measurements.chestCircumference}</td><td>${measurements.shoulderWidth}</td><td>${measurements.sleeveLength}</td><td>${measurements.neckCircumference}</td><td>${measurements.armCircumference}</td><td>${measurements.totalLength}</td>`;
+                }
         
         tableHTML += '</tr>';
     });
@@ -527,7 +805,7 @@ function populateMeasurementFields() {
     // Update the measurement note based on item type
     const measurementNote = document.getElementById('measurementNote');
     if (measurementNote) {
-        if (selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 'polar-overshirt' || selectedItem === 'pants') {
+        if (selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt' || selectedItem === 'polar-overshirt' || selectedItem === 'pants') {
             measurementNote.textContent = 'All measurements are required for accurate size prediction';
         } else {
             measurementNote.textContent = 'Provide measurements for more accurate fit analysis (optional but recommended)';
@@ -543,18 +821,18 @@ function populateMeasurementFields() {
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="pantsWaist">Waist 1/2 (cm) *</label>
-                    <input type="number" id="pantsWaist" name="pantsWaist" min="30" max="60" step="0.1" placeholder="e.g., 41" required>
+                    <label for="pantsWaist">Waist (cm) *</label>
+                    <input type="number" id="pantsWaist" name="pantsWaist" min="60" max="120" step="0.1" placeholder="e.g., 82" required>
                 </div>
                 <div class="form-group">
-                    <label for="pantsThigh">Thigh 1/2 (cm) *</label>
-                    <input type="number" id="pantsThigh" name="pantsThigh" min="25" max="40" step="0.1" placeholder="e.g., 31.1" required>
+                    <label for="pantsThigh">Thigh (cm) *</label>
+                    <input type="number" id="pantsThigh" name="pantsThigh" min="50" max="80" step="0.1" placeholder="e.g., 62.2" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="pantsBottom">Bottom 1/2 (cm) *</label>
-                    <input type="number" id="pantsBottom" name="pantsBottom" min="10" max="25" step="0.1" placeholder="e.g., 16.5" required>
+                    <label for="pantsBottom">Bottom (cm) *</label>
+                    <input type="number" id="pantsBottom" name="pantsBottom" min="20" max="50" step="0.1" placeholder="e.g., 33" required>
                 </div>
                 <div class="form-group">
                     <label for="pantsLength">Length (cm) *</label>
@@ -599,6 +877,54 @@ function populateMeasurementFields() {
                     <div class="form-group">
                         <label for="totalLength">Total Length (cm) *</label>
                         <input type="number" id="totalLength" name="totalLength" min="60" max="90" step="0.5" placeholder="e.g., 75" required>
+                    </div>
+                </div>
+            `;
+        } else if (selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') {
+            fieldsHTML = `
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <p class="required-note">* All measurements are required for accurate size prediction</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="length">Length (cm) *</label>
+                        <input type="number" id="length" name="length" min="65" max="85" step="0.5" placeholder="e.g., 73" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="chestCircumference">Chest (Cir) (cm) *</label>
+                        <input type="number" id="chestCircumference" name="chestCircumference" min="95" max="125" step="0.5" placeholder="e.g., 106" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="shoulderWidth">Shoulder (cm) *</label>
+                        <input type="number" id="shoulderWidth" name="shoulderWidth" min="40" max="60" step="0.5" placeholder="e.g., 46" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="neckWidth">Neck Width (cm) *</label>
+                        <input type="number" id="neckWidth" name="neckWidth" min="12" max="22" step="0.5" placeholder="e.g., 16" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sleeveLength">Sleeve Length (cm) *</label>
+                        <input type="number" id="sleeveLength" name="sleeveLength" min="20" max="30" step="0.5" placeholder="e.g., 23" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sleeveOpeningCircumference">Sleeve Opening (Cir) (cm) *</label>
+                        <input type="number" id="sleeveOpeningCircumference" name="sleeveOpeningCircumference" min="30" max="45" step="0.5" placeholder="e.g., 35" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="armHoleCircumference">Arm Hole (Cir) (cm) *</label>
+                        <input type="number" id="armHoleCircumference" name="armHoleCircumference" min="45" max="60" step="0.5" placeholder="e.g., 50" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="varianceDeltoidVsBicept">Variance Deltoid Vs Bicept (cm) *</label>
+                        <input type="number" id="varianceDeltoidVsBicept" name="varianceDeltoidVsBicept" min="10" max="25" step="0.5" placeholder="e.g., 15" required>
                     </div>
                 </div>
             `;
@@ -732,7 +1058,16 @@ function populateMeasurementFields() {
                 field.addEventListener('blur', validateMeasurementField);
             }
         });
-    } else if (selectedItem === 'short-sleeves') {
+            } else if (selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') {
+            const requiredFields = ['length', 'chestCircumference', 'shoulderWidth', 'neckWidth', 'sleeveLength', 'sleeveOpeningCircumference', 'armHoleCircumference', 'varianceDeltoidVsBicept'];
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', validateMeasurementField);
+                    field.addEventListener('blur', validateMeasurementField);
+                }
+            });
+        } else if (selectedItem === 'short-sleeves') {
         const requiredFields = ['chestCircumference', 'shoulderWidth', 'sleeveLength', 'neckCircumference', 'armCircumference', 'totalLength'];
         requiredFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
@@ -776,8 +1111,8 @@ function analyzeFit() {
     // Show loading
     loadingOverlay.classList.remove('hidden');
     
-        if (selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 'polar-overshirt' || selectedItem === 'pants') {
-            // For Jagvi shirts, short sleeve shirts, polar overshirt, and pants, call the backend API to get optimal size prediction
+        if (selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt' || selectedItem === 'polar-overshirt' || selectedItem === 'pants') {
+            // For Jagvi shirts, short sleeve shirts, T-shirts, long sleeve shirts, hooded jackets, sweat shirts, polar overshirt, and pants, call the backend API to get optimal size prediction
             fetch('/api/predict-size', {
                 method: 'POST',
                 headers: {
@@ -831,7 +1166,13 @@ function isFormValid() {
             const value = document.getElementById(field)?.value;
             return value && value.trim() !== '' && !isNaN(parseFloat(value));
         });
-    } else if (selectedItem === 'short-sleeves') {
+            } else if (selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') {
+            const requiredFields = ['length', 'chestCircumference', 'shoulderWidth', 'neckWidth', 'sleeveLength', 'sleeveOpeningCircumference', 'armHoleCircumference', 'varianceDeltoidVsBicept'];
+            return requiredFields.every(field => {
+                const value = document.getElementById(field)?.value;
+                return value && value.trim() !== '' && !isNaN(parseFloat(value));
+            });
+        } else if (selectedItem === 'short-sleeves') {
         const requiredFields = ['chestCircumference', 'shoulderWidth', 'sleeveLength', 'neckCircumference', 'armCircumference', 'totalLength'];
         return requiredFields.every(field => {
             const value = document.getElementById(field)?.value;
@@ -967,6 +1308,29 @@ function collectFormData() {
             if (missingMeasurements.length > 0) {
                 throw new Error(`Please fill in all required measurements: ${missingMeasurements.join(', ')}`);
             }
+                } else if (selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') {
+            formData.measurements.length = parseFloat(document.getElementById('length')?.value) || null;
+            formData.measurements.chestCircumference = parseFloat(document.getElementById('chestCircumference')?.value) || null;
+            formData.measurements.shoulderWidth = parseFloat(document.getElementById('shoulderWidth')?.value) || null;
+            formData.measurements.neckWidth = parseFloat(document.getElementById('neckWidth')?.value) || null;
+            formData.measurements.sleeveLength = parseFloat(document.getElementById('sleeveLength')?.value) || null;
+            formData.measurements.sleeveOpeningCircumference = parseFloat(document.getElementById('sleeveOpeningCircumference')?.value) || null;
+            formData.measurements.armHoleCircumference = parseFloat(document.getElementById('armHoleCircumference')?.value) || null;
+            formData.measurements.varianceDeltoidVsBicept = parseFloat(document.getElementById('varianceDeltoidVsBicept')?.value) || null;
+
+            // Validate that all required measurements are present for t-shirt, long-sleeve, and sweat-shirt
+            const requiredMeasurements = [
+                'length', 'chestCircumference', 'shoulderWidth', 'neckWidth',
+                'sleeveLength', 'sleeveOpeningCircumference', 'armHoleCircumference', 'varianceDeltoidVsBicept'
+            ];
+
+            const missingMeasurements = requiredMeasurements.filter(measurement =>
+                !formData.measurements[measurement] || isNaN(formData.measurements[measurement])
+            );
+
+            if (missingMeasurements.length > 0) {
+                throw new Error(`Please fill in all required measurements: ${missingMeasurements.join(', ')}`);
+            }
         } else if (selectedItem === 'short-sleeves') {
             formData.measurements.chestCircumference = parseFloat(document.getElementById('chestCircumference')?.value) || null;
             formData.measurements.shoulderWidth = parseFloat(document.getElementById('shoulderWidth')?.value) || null;
@@ -1095,7 +1459,7 @@ function performFitAnalysis(formData) {
         }
         
         if (measurements.length) {
-            const lengthDiff = Math.abs(measurements.length - selectedSizeData.sleevelength);
+            const lengthDiff = Math.abs(measurements.length - selectedSizeData.length);
             fitScores.length = calculateFitScore(lengthDiff, 2);
             weightedScore += fitScores.length * weights.pantsLength;
             totalWeight += weights.pantsLength;
@@ -1107,7 +1471,66 @@ function performFitAnalysis(formData) {
         }
     } else {
         // Shirt/Jacket measurements
-        if (selectedItem === 'short-sleeves') {
+                if (selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') {
+            // T-shirt, Long Sleeve, Hooded Jacket, and Sweat Shirt measurements
+            if (measurements.length) {
+                const lengthDiff = Math.abs(measurements.length - selectedSizeData.length);
+                fitScores.length = calculateFitScore(lengthDiff, 1.5);
+                weightedScore += fitScores.length * weights.length;
+                totalWeight += weights.length;
+            }
+
+            if (measurements.chestCircumference) {
+                const adjustedChest = adjustMeasurementForBodyType(measurements.chestCircumference, formData.bodyType, 'chest');
+                const chestDiff = Math.abs(adjustedChest - selectedSizeData.chestCircumference);
+                fitScores.chest = calculateFitScore(chestDiff, 1.5);
+                weightedScore += fitScores.chest * weights.chest;
+                totalWeight += weights.chest;
+            }
+
+            if (measurements.shoulderWidth) {
+                const adjustedShoulder = adjustMeasurementForBodyType(measurements.shoulderWidth, formData.bodyType, 'shoulder');
+                const shoulderDiff = Math.abs(adjustedShoulder - selectedSizeData.shoulderWidth);
+                fitScores.shoulder = calculateFitScore(shoulderDiff, 0.75);
+                weightedScore += fitScores.shoulder * weights.shoulder;
+                totalWeight += weights.shoulder;
+            }
+
+            if (measurements.neckWidth) {
+                const neckDiff = Math.abs(measurements.neckWidth - selectedSizeData.neckWidth);
+                fitScores.neck = calculateFitScore(neckDiff, 2);
+                weightedScore += fitScores.neck * weights.neck;
+                totalWeight += weights.neck;
+            }
+
+            if (measurements.sleeveLength) {
+                const sleeveDiff = Math.abs(measurements.sleeveLength - selectedSizeData.sleeveLength);
+                fitScores.sleeve = calculateFitScore(sleeveDiff, 1);
+                weightedScore += fitScores.sleeve * weights.sleeve;
+                totalWeight += weights.sleeve;
+            }
+
+            if (measurements.sleeveOpeningCircumference) {
+                const sleeveOpeningDiff = Math.abs(measurements.sleeveOpeningCircumference - selectedSizeData.sleeveOpeningCircumference);
+                fitScores.sleeveOpening = calculateFitScore(sleeveOpeningDiff, 1.5);
+                weightedScore += fitScores.sleeveOpening * weights.arm;
+                totalWeight += weights.arm;
+            }
+
+            if (measurements.armHoleCircumference) {
+                const armHoleDiff = Math.abs(measurements.armHoleCircumference - selectedSizeData.armHoleCircumference);
+                fitScores.armHole = calculateFitScore(armHoleDiff, 1.5);
+                weightedScore += fitScores.armHole * weights.arm;
+                totalWeight += weights.arm;
+            }
+
+            if (measurements.varianceDeltoidVsBicept) {
+                const varianceDiff = Math.abs(measurements.varianceDeltoidVsBicept - selectedSizeData.varianceDeltoidVsBicept);
+                fitScores.variance = calculateFitScore(varianceDiff, 1.0);
+                weightedScore += fitScores.variance * weights.arm;
+                totalWeight += weights.arm;
+            }
+        } else if (selectedItem === 'short-sleeves') {
             // Short sleeve shirt measurements
             if (measurements.chestCircumference) {
                 const adjustedChest = adjustMeasurementForBodyType(measurements.chestCircumference, formData.bodyType, 'chest');
@@ -1389,8 +1812,8 @@ function findAlternativeSizes(formData, item, fitScores) {
     const validScores = Object.values(fitScores).filter(score => score !== undefined && score !== null);
     const avgScore = validScores.length > 0 ? validScores.reduce((sum, score) => sum + score, 0) / validScores.length : 0.8;
     
-    // For Jagvi shirts and short sleeve shirts, use the predicted optimal size from backend if available
-    if ((selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves') && window.predictedOptimalSize) {
+    // For Jagvi shirts, short sleeve shirts, T-shirts, long sleeve shirts, hooded jackets, and sweat shirts, use the predicted optimal size from backend if available
+    if ((selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') && window.predictedOptimalSize) {
         const predictedSize = window.predictedOptimalSize;
         const predictedIndex = sizes.indexOf(predictedSize);
         
@@ -1437,8 +1860,8 @@ function findAlternativeSizes(formData, item, fitScores) {
         }
     }
     
-    // For Jagvi shirts and short sleeve shirts, also try local analysis if backend prediction is not available
-    if ((selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves') && !window.predictedOptimalSize) {
+    // For Jagvi shirts, short sleeve shirts, T-shirts, long sleeve shirts, hooded jackets, and sweat shirts, also try local analysis if backend prediction is not available
+    if ((selectedItem === 'jagvi-shirt' || selectedItem === 'short-sleeves' || selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') && !window.predictedOptimalSize) {
         const localBestSize = findBestMatchingSize(formData.measurements, item);
         console.log('Local analysis best size:', localBestSize); // Debug log
         if (localBestSize && localBestSize !== selectedSize) {
@@ -1528,7 +1951,56 @@ function findBestMatchingSize(measurements, item) {
         let measurementCount = 0;
         
         // Handle different measurement types for different shirt types
-        if (selectedItem === 'short-sleeves') {
+                if (selectedItem === 't-shirt' || selectedItem === 'long-sleeve' || selectedItem === 'hooded-jacket' || selectedItem === 'sweat-shirt') {
+            // T-shirt, Long Sleeve, Hooded Jacket, and Sweat Shirt measurements
+            if (measurements.length && item.sizeChart[size].length) {
+                const diff = Math.abs(item.sizeChart[size].length - measurements.length);
+                totalDiff += diff * 0.15; // Length has 15% weight
+                measurementCount++;
+            }
+
+            if (measurements.chestCircumference && item.sizeChart[size].chestCircumference) {
+                const diff = Math.abs(item.sizeChart[size].chestCircumference - measurements.chestCircumference);
+                totalDiff += diff * 0.25; // Chest has 25% weight
+                measurementCount++;
+            }
+
+            if (measurements.shoulderWidth && item.sizeChart[size].shoulderWidth) {
+                const diff = Math.abs(item.sizeChart[size].shoulderWidth - measurements.shoulderWidth);
+                totalDiff += diff * 0.20; // Shoulder has 20% weight
+                measurementCount++;
+            }
+
+            if (measurements.neckWidth && item.sizeChart[size].neckWidth) {
+                const diff = Math.abs(item.sizeChart[size].neckWidth - measurements.neckWidth);
+                totalDiff += diff * 0.10; // Neck width has 10% weight
+                measurementCount++;
+            }
+
+            if (measurements.sleeveLength && item.sizeChart[size].sleeveLength) {
+                const diff = Math.abs(item.sizeChart[size].sleeveLength - measurements.sleeveLength);
+                totalDiff += diff * 0.15; // Sleeve has 15% weight
+                measurementCount++;
+            }
+
+            if (measurements.sleeveOpeningCircumference && item.sizeChart[size].sleeveOpeningCircumference) {
+                const diff = Math.abs(item.sizeChart[size].sleeveOpeningCircumference - measurements.sleeveOpeningCircumference);
+                totalDiff += diff * 0.10; // Sleeve opening has 10% weight
+                measurementCount++;
+            }
+
+            if (measurements.armHoleCircumference && item.sizeChart[size].armHoleCircumference) {
+                const diff = Math.abs(item.sizeChart[size].armHoleCircumference - measurements.armHoleCircumference);
+                totalDiff += diff * 0.10; // Arm hole has 10% weight
+                measurementCount++;
+            }
+
+            if (measurements.varianceDeltoidVsBicept && item.sizeChart[size].varianceDeltoidVsBicept) {
+                const diff = Math.abs(item.sizeChart[size].varianceDeltoidVsBicept - measurements.varianceDeltoidVsBicept);
+                totalDiff += diff * 0.05; // Variance has 5% weight
+                measurementCount++;
+            }
+        } else if (selectedItem === 'short-sleeves') {
             // Short sleeve shirt measurements
             if (measurements.chestCircumference && item.sizeChart[size].chestCircumference) {
                 const diff = Math.abs(item.sizeChart[size].chestCircumference - measurements.chestCircumference);
